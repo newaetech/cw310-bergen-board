@@ -31,9 +31,17 @@ Once the temperature is above 80C the power is immediately cut to the target dev
 
 ## Configuration Options
 
-## Power Analysis
+The mode switches on the bottom of the board allow you to set the M0/M1/M2 pins. Note that the microcontroller can override the DIP switch settings - this is done to make it easier to work with the board, as you don't need to worry about changing the switches if you want to switch from one mode to another.
 
-## Serial Port / Debug
+If you use the Python API to configure the device, it will automatically override the mode switches to set Xilinx "slave serial" mode for example. This serial mode is the *default and supported configuration mode* for most users.
+
+## Power Analysis Options
+
+## USB Serial Ports
+
+The SAM3X exposes two USB-CDC serial ports. On plugging the USB-C data connector in, you should see two USB serial ports on your host. These ports are connected on the FPGA as follows:
+
+TODO
 
 ## SRAM
 
