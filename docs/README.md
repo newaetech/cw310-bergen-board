@@ -54,11 +54,13 @@ Due to the access required to the FPGA top-side when performing certain security
 * Bottom-side cross-flow fan (best with heatsink).
 * Bottom-side heatsink mounted fan.
 
+The cross-flow fan is part number `BFB03505HHA-A`, the heatsink mounted fan is part number `MR3010H05B1-RSR`.
+
 TODO - fan header
 
 ### Heatsink
 
-The board is designed to work with XXXX TODO.
+The board is designed to work with XXXX TODO. For this heatsink, fan part number `MR3010H05B1-RSR` can be mounted on it using M3 bolts.
 
 ### Thermal Monitoring
 
@@ -133,15 +135,19 @@ The SAM3X includes a 10/100 Ethernet MAC & PHY. This is currently unused with th
 
 ## Memory
 
-### User QSPI Sockets
+### User QSPI Sockets / QSPI Chips
 
-Two user QSPI sockets are present, tested for example with Micron `MT25QL256ABA1EW9-0SIT`. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
+One or two user QSPI sockets are present. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
 
 <img src="images/cw310-spi-pinout.png" width=350px>
 
-There are two QSPI sockets: one with a fixed 1.8V VCC, one with the same VCC as the USERIO-B header (which can be 1.2 -- 3.3V).
+Part `U29` is always a QSPI socket, part `U4` may be a QSPI socket or may be a soldered-on board QSPI chip depending on the board variant (contact us to confirm if required).
 
-#### 1.8V VCC QSPI Socket
+Part `U4` has a fixed 1.8V VCC, part `U29` has a variable VCC that matches the USERIO-B header (which can be 1.2 -- 3.3V).
+
+#### 1.8V VCC QSPI Socket or On-Board SPI
+
+Part `U4` is either a soldered-down QSPI chip or a WSON socket.
 
 The connection between QSPI and FPGA is given below:
 
@@ -156,7 +162,13 @@ The connection between QSPI and FPGA is given below:
 | 7        | DQ3 (HOLD# or RESET#)       | AC22
 | 8        | VDD       | 1.8V
 
+If soldered on-board, part number `IS25WP128-JLLE` is normally used (but due to supply chain issues other parts may be substituted, confirm if you require a specific part). If the socket is installed, the same part number (`IS25WP128-JLLE`) can be installed in the socket.
+
+Part number `IS25WP128-JLLE` is a 1.8V only QSPI chip.
+
 #### USERIO-A VCC QSPI Socket
+
+Part `U29` is a socket that fits a WSON68 sized chip, tested for example with Micron `MT25QL256ABA1EW9-0SIT` (the same part used in the FPGA configuration).
 
 The connection between QSPI and FPGA is given below:
 
@@ -180,7 +192,7 @@ a MicroSD card is also present for user use. The MicroSD card has the following 
 | 1        | DAT2      | AC21
 | 2        | CD/DAT3   | AD21
 | 3        | CMD       | AE21
-| 4        | VDD       | 3.3V/1.8V from S4
+| 4        | VDD       | 1.8V
 | 5        | CLK       | AD23
 | 6        | GND       | GND
 | 7        | DAT0      | AE23
@@ -214,21 +226,25 @@ Two expansion headers are provided, which use standard 0.05" (1.27mm) pitch head
 
 Each header can be set to a separate I/O level, as each header routes to a different FPGA bank.
 
-You can drive an I/O voltage into the XXX pin on each header, or you can set the voltage using jumper JP1 (USERIO-A) or JP2 (USERIO-B).
+You can drive an I/O voltage into the `VCCUSERIO` pin on each header, or you can set the voltage using jumper JP1 (USERIO-A) or JP2 (USERIO-B).
 
 ## User PMOD Headers
 
 Two PMOD headers are provided on the board. These provide 16 digital I/O signals (8 per header) along with 3.3V and GND pins. The I/O level for these headers is always 3.3V.
+
+These allow any standard PMODs to be plugged into the board.
 
 ## User JTAG Headers
 
 For soft-core implementations, several standard JTAG headers are provided on the board. Three standard headers are provided which reflect:
 
 * 20-pin 0.1" JTAG (Arm Standard)
-* 10-pin 0.05" JTAG/SWD (Arm Cortex-M)
-* 20-pin 0.05" Trace/SWD (Arm Cortex-M)
+* 10-pin 0.05" JTAG/SWD (Arm Cortex-M) or RISC-V MIPI-10
+* 20-pin 0.05" Trace/SWD (Arm Cortex-M) or RISC-V MIPI-20
 
-Each of these includes a VCC pin. Switch S2 sets if the VCC pin is driven from the board with 3.3V ("+3.3V" setting), or if it connects via a resistor to FPGA pin XXXXX to use for sensing purposes ("Sense" setting). Normally if you are implementing a soft-core & using the debug header, your debugger will require you to drive the VCC pin with 3.3V for detection purposes.
+Each of these includes a VCC pin. Switch S2 sets if the VCC pin is driven from the board with 3.3V ("+3.3V" setting), or if it connects via a resistor to the `USR_DBG_VCCDETECT` net which routes to FPGA pin `T19` to use for sensing purposes ("Sense" setting). Normally if you are implementing a soft-core & using the debug header, your debugger will require you to drive the VCC pin with 3.3V for detection purposes.
+
+Switch `S2` allows these headers to be used for either standard debug connectivity, or to implement debugger connectivity in your FPGA.
 
 ## User USB
 
