@@ -26,6 +26,8 @@ You can toggle the target portion of the power supplies off using switch S1, lab
 
 When set to "off", the power supplies on the FPGA side will be turned off, and signals driving the FPGA will be disabled. When set to "auto", the target power is controlled by the API (default is "on", but the user can now toggle it). This switch can be used to quickly turn the target power off without closing the USB computer connection, or to quickly toggle the target power to clear any corrupt configuration data.
 
+The USB control power can be toggled on and off with switch XX, near the USB-C data connector. This allows you to effectively turn off the entire board. Note the "USB-C PD" status LEDs may still stay on here, as there is still power applied via that connector (but disabled to the rest of the board).
+
 ### Power Good Monitoring
 
 The power good outputs are monitored by the microcontroller. If they cycle several times (indicating the device is struggling to maintain power), the device goes into fail-safe mode which shuts off the target power. This will often occur if your source power supply is insufficient, but could also indicate a short (such as an accessory board is shorting out). The failure will be indicated by the "Surge" LED coming on:
@@ -33,6 +35,10 @@ The power good outputs are monitored by the microcontroller. If they cycle sever
 <img src="images/cw310-restart-power.png" width=350px>
 
 If this happens, double-check the setting of the 5V source switch - be sure you are using the on-board 5V regulator instead of just taking power from the control USB-C port. You can restart the regulators with the "Restart Power" button once you have rectified any latent faults.
+
+This button will also be used to recover from thermal faults.
+
+NOTE: These faults can also be cleared via the Python API, allowing fully remote usage.
 
 ### USB-C PD Profiles
 
@@ -49,7 +55,7 @@ The CW310 integrates a FPGA thermal monitor, and turns on fans as required. If t
 
 Due to the access required to the FPGA top-side when performing certain security evaluation work, the CW310 can be physically set up to use one of four fans (all four are driven from the same signal):
 
-* Top-side cross-flow fan (for heatsink or exposed die back).
+* Top-side cross-flow fan (for heatsink or exposed die backside work).
 * Top-side heatsink mounted fan.
 * Bottom-side cross-flow fan (best with heatsink).
 * Bottom-side heatsink mounted fan.
@@ -76,7 +82,7 @@ You can read the FPGA temperature from the Python API as well.
 
 ## Configuration Options
 
-The mode switches on the bottom of the board allow you to set the M0/M1/M2 pins. Note that the microcontroller can override the DIP switch settings - this is done to make it easier to work with the board, as you don't need to worry about changing the switches if you want to switch from one mode to another.
+The mode switches on the bottom of the board allow you to set the M0/M1/M2 pins. Note that the microcontroller can override the DIP switch settings - this is done to make it easier to work with the board, as most normal usage of the board will automatically set the mode switches.
 
 If you use the Python API to configure the device, it will automatically override the mode switches to what Xilinx calls "slave serial" mode (referred to as "controller driven" for clarity here) for example. This serial mode is the *default and supported configuration mode* for most users.
 
@@ -92,7 +98,7 @@ TODO TEST
 
 Two methods are used to detect configuration failure. The most basic is the `DONE` pin, which goes high when the device is configured successfully. When the `DONE` pin goes high LED `D6` will also *turn off*.
 
-The `INITB` signal is also routed to LED D10, in addition to being monitored by the controller. You can configure the FPGA to perform an automatic "continuous CRC" function which will
+The `INITB` signal is also routed to LED D10, in addition to being monitored by the controller. You can configure the FPGA to perform an automatic "continuous CRC" function which will flag configuration errors as they occur. If using the board for fault injection this is **mandatory**. You can monitor the status of the INITB flag via the Python API.
 
 ### Configuration Signal Breakout
 
