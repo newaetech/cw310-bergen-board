@@ -20,6 +20,8 @@ The normal operating mode of the board is to use a higher voltage input, supplie
 
 As an alternative, you can also take the 5V supply from the "control" USB-C controller. This is normally not recommended, as the current requirement can exceed what a typical computer/laptop is willing to supply out of it's USB-C port (and even worse if you use the USB-A to USB-C adapter).
 
+WARNING: Even though we don't recommend it, in practice it can be very handy. If you are working with the smaller K160T device it can be supported by the USB port power for most normal designs, and the K410T can be used for very light work. It's suggested to confirm the power draw with a USB current monitor in this case. You'll notice many of our photos of the board will have only the USB data cable attached.
+
 You can toggle the target portion of the power supplies off using switch S1, labelled "Tgt Power" on the PCB:
 
 <img src="images/cw310-tgt-power.png">
@@ -46,6 +48,7 @@ If using the USB-C power-only port, the board will attempt to request one of the
 
 * TODO
 
+If the attached supply is not detected or does not provide this, the 'PD Fail' LED will come on.
 
 ## Thermal
 
@@ -61,6 +64,12 @@ Due to the access required to the FPGA top-side when performing certain security
 * Bottom-side heatsink mounted fan.
 
 The cross-flow fan is part number `BFB03505HHA-A`, the heatsink mounted fan is part number `MR3010H05B1-RSR`.
+
+The fan PWM speed is automatically controlled, and can cycle on/off which you may find annoying. If you prefer to have a constant fan speed, you can specify a "minimum pwm" speed using this python command:
+
+TODO
+
+Note the same PWM is sent to both the cross-flow and heatsink fan. The heatsink mounted fan responds differently than the cross-flow fan, so you may find it necessary to change the minimum speed value depending on the fan you have mounted.
 
 TODO - fan header
 
@@ -124,7 +133,7 @@ For more information on the USB/SAM3X microcontroller, see the `microfw` directo
 
 ### USB Serial Ports
 
-The SAM3X exposes two USB-CDC serial ports with the default firmware. On plugging the USB-C data connector in, you should see two USB serial ports on your host. These ports are connected on the FPGA as follows, where the direction is relative to the FPGA (i.e. - the keywork you would use in your top module):
+The SAM3X exposes two USB-CDC serial ports with the default firmware. On plugging the USB-C data connector in, you should see two USB serial ports on your host. These ports are connected on the FPGA as follows, where the direction is relative to the FPGA (i.e. - the keyword you would use in your top module):
 
 | Name | FPGA Pin | FPGA Direction |
 | ---- | -------- | -------------- |
@@ -225,6 +234,17 @@ To use the DDR3L chip, you will need to:
 
 * Turn on the 200 MHz oscillator using signal `LVDS_XO_200M_ENA` (this is required to be a reference clock for the MIG).
 * Turn on the 1.35V DDR3L power supply with `VDDR_ENABLE` (you should check the signal `VDDR_PGOOD` to confirm).
+
+An example XDC file is provided that can be loaded during the MIG tool to assign pins correctly for the DDR3 on-board. Note the MIG tool needs both a 200 MHz reference clock and a system clock - but the system clock can only be certain multiples of the DDR3 frequency. If you want to run a simple setup, the suggested timing is as follows:
+
+* Set DDR3 period to XXXX on page X of MIG wizard.
+* Set system clock frequency to 200.08 MHz on page X of MIG wizard.
+* Specify the system clock as using the reference.
+* Specify the reference clock as differential input, and later assign it to pins XXX.
+
+**NB: Be sure if using the example design to add pins to turn on the clock+DDR3 power**
+
+See the DDR3 setup details for more information.
 
 ## User Expansion Headers A / B
 
