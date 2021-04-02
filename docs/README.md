@@ -60,11 +60,13 @@ Due to the access required to the FPGA top-side when performing certain security
 * Bottom-side cross-flow fan (best with heatsink).
 * Bottom-side heatsink mounted fan.
 
+The cross-flow fan is part number `BFB03505HHA-A`, the heatsink mounted fan is part number `MR3010H05B1-RSR`.
+
 TODO - fan header
 
 ### Heatsink
 
-The board is designed to work with XXXX TODO.
+The board is designed to work with XXXX TODO. For this heatsink, fan part number `MR3010H05B1-RSR` can be mounted on it using M3 bolts.
 
 ### Thermal Monitoring
 
@@ -90,9 +92,7 @@ If you use the Python API to configure the device, it will automatically overrid
 
 The default mode of loading a bitstream into the board is over the USB interface, which happens with the Python API. This allows simple integration of your target into a larger test environment without relying on additional connections.
 
-This configuration is moderately fast - the current firmware loads an uncompressed K160T bitstream in XX seconds, and an uncompressed K410T bitstream in XX seconds. The bitstream compression feature can be enabled which results in significant loading time improvements, especially for small designs. 
-
-TODO TEST
+This configuration is moderately fast - the current firmware loads an uncompressed K160T bitstream in 6 seconds, and an uncompressed K410T bitstream in 16 seconds. The bitstream compression feature can be enabled which results in significant loading time improvements, especially for small designs. 
 
 ### Configuration Failure Detection
 
@@ -139,11 +139,21 @@ These  act as normal serial ports, with a configurable baud rate from the host c
 
 The SAM3X includes a 10/100 Ethernet MAC & PHY. This is currently unused with the default firmware, but you can use this to provide the same features as the USB interface but over Ethernet (helpful for using many target boards).
 
-## User QSPI & MicroSD Card
+## Memory
 
-A user QSPI socket is present, tested with Micron `MT25QL256ABA1EW9-0SIT`. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
+### User QSPI Sockets / QSPI Chips
+
+One or two user QSPI sockets are present. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
 
 <img src="images/cw310-spi-pinout.png" width=350px>
+
+Part `U29` is always a QSPI socket, part `U4` may be a QSPI socket or may be a soldered-on board QSPI chip depending on the board variant (contact us to confirm if required).
+
+Part `U4` has a fixed 1.8V VCC, part `U29` has a variable VCC that matches the USERIO-B header (which can be 1.2 -- 3.3V).
+
+#### 1.8V VCC QSPI Socket or On-Board SPI
+
+Part `U4` is either a soldered-down QSPI chip or a WSON socket.
 
 The connection between QSPI and FPGA is given below:
 
@@ -156,50 +166,93 @@ The connection between QSPI and FPGA is given below:
 | 5        | DQ0 (DIN) | AB21
 | 6        | CLK       | AE25
 | 7        | DQ3 (HOLD# or RESET#)       | AC22
-| 8        | VDD       | 3.3V/1.8V from S4
+| 8        | VDD       | 1.8V
 
-In addition, a MicroSD card is also present for user use. The MicroSD card has the following pinout for the FPGA:
+If soldered on-board, part number `IS25WP128-JLLE` is normally used (but due to supply chain issues other parts may be substituted, confirm if you require a specific part). If the socket is installed, the same part number (`IS25WP128-JLLE`) can be installed in the socket.
+
+Part number `IS25WP128-JLLE` is a 1.8V only QSPI chip.
+
+#### USERIO-A VCC QSPI Socket
+
+Part `U29` is a socket that fits a WSON68 sized chip, tested for example with Micron `MT25QL256ABA1EW9-0SIT` (the same part used in the FPGA configuration).
+
+The connection between QSPI and FPGA is given below:
+
+| QSPI Pin | QSPI (SPI) Name | FPGA Pin |
+| -------- | --------- | -------- |
+| 1        | CS#       | AF23
+| 2        | DQ1 (DOUT) | AE22
+| 3        | DQ2 (WP#) | AF22
+| 4        | GND       | GND
+| 5        | DQ0 (DIN) | AB21
+| 6        | CLK       | AE25
+| 7        | DQ3 (HOLD# or RESET#)       | AC22
+| 8        | VDD       | 1.8V
+
+### MicroSD Card
+
+a MicroSD card is also present for user use. The MicroSD card has the following pinout for the FPGA:
 
 | Micro SD Pin | Micro SD Name | FPGA Pin |
 | -------- | --------- | -------- |
 | 1        | DAT2      | AC21
 | 2        | CD/DAT3   | AD21
 | 3        | CMD       | AE21
-| 4        | VDD       | 3.3V/1.8V from S4
+| 4        | VDD       | 1.8V
 | 5        | CLK       | AD23
 | 6        | GND       | GND
 | 7        | DAT0      | AE23
 | 8        | DAT1      | AF24
 | --       | Card Detect | AF25
 
-Both of these devices connect to the same FPGA bank, which has a voltage level set with Switch S4. The voltage level for this bank also routes to the MicroSD and QSPI VCC pin - confirm the expected voltage before using these peripherals!
+
+Note the MicroSD card routes to a 1.8V bank and is powered at 1.8V. Many MicroSD cards operate at 1.8V, but you can specifically look for "low voltage" (LV) MicroSD cards that should work at 1.8V.
+
+MicroSD cards by specification start at 3.3V, and are they powered down to 1.8V by a command if they support 1.8V operation.
+
+Due to FPGA bank limitations, the MicroSD lines are only 1.8V compatible on this board.
+
+### SRAM
+
+A 8Mbit (1MByte) SRAM chip is provided. It is organized as 8bits x 1024K, and has 55 ns access time.
+
+
+### DDR3L
+
+A Micron MT41K512M8DA-107 DDR3L is provided for user use (soft-core SoC, etc). The pinout of this matches the expected pinout as provided by Vivado MIG for the K160T & K410T.
+
+To use the DDR3L chip, you will need to:
+
+* Turn on the 200 MHz oscillator using signal `LVDS_XO_200M_ENA` (this is required to be a reference clock for the MIG).
+* Turn on the 1.35V DDR3L power supply with `VDDR_ENABLE` (you should check the signal `VDDR_PGOOD` to confirm).
 
 ## User Expansion Headers A / B
 
 Two expansion headers are provided, which use standard 0.05" (1.27mm) pitch headers. These allow mating of either daughter boards or cables as required.
 
-Each header can be set to a separate I/O level, as each header routes to a different FPGA bank. 
+Each header can be set to a separate I/O level, as each header routes to a different FPGA bank.
+
+You can drive an I/O voltage into the `VCCUSERIO` pin on each header, or you can set the voltage using jumper JP1 (USERIO-A) or JP2 (USERIO-B).
 
 ## User PMOD Headers
 
 Two PMOD headers are provided on the board. These provide 16 digital I/O signals (8 per header) along with 3.3V and GND pins. The I/O level for these headers is always 3.3V.
+
+These allow any standard PMODs to be plugged into the board.
 
 ## User JTAG Headers
 
 For soft-core implementations, several standard JTAG headers are provided on the board. Three standard headers are provided which reflect:
 
 * 20-pin 0.1" JTAG (Arm Standard)
-* 10-pin 0.05" JTAG/SWD (Arm Cortex-M)
-* 20-pin 0.05" Trace/SWD (Arm Cortex-M)
+* 10-pin 0.05" JTAG/SWD (Arm Cortex-M) or RISC-V MIPI-10
+* 20-pin 0.05" Trace/SWD (Arm Cortex-M) or RISC-V MIPI-20
 
-Each of these includes a VCC pin. Switch XXX sets if the VCC pin is driven from the board with 3.3V (XXXX setting), or if it connects via a resistor to FPGA pin XXXXX to use for sensing purposes. Normally if you are implementing a soft-core & using the debug header, your debugger will require you to drive the VCC pin with 3.3V for detection.
+Each of these includes a VCC pin. Switch S2 sets if the VCC pin is driven from the board with 3.3V ("+3.3V" setting), or if it connects via a resistor to the `USR_DBG_VCCDETECT` net which routes to FPGA pin `T19` to use for sensing purposes ("Sense" setting). Normally if you are implementing a soft-core & using the debug header, your debugger will require you to drive the VCC pin with 3.3V for detection purposes.
 
-
+Switch `S2` allows these headers to be used for either standard debug connectivity, or to implement debugger connectivity in your FPGA.
 
 ## User USB
 
 An additional USB-C connector is provided that allows you to route a user USB signal.
 
-## SRAM
-
-## DDR3
