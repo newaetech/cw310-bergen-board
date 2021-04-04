@@ -225,7 +225,7 @@ For debugging purposes, several of the signals related to configuration are brok
 
 ![](Images/cw310-cfgheader.png "Configuration Header Breakout")
 
-See [Page 11 of the Schematics](#reference-materials-schematics) for more details of this header.
+See [Page 11 of the Schematics](#reference-material-schematics) for more details of this header.
 
 ### Xilinx JTAG Configuration & Debug
 
@@ -359,7 +359,7 @@ Due to FPGA bank limitations, the MicroSD lines are only 1.8V compatible on this
 
 A 8Mbit (1MByte) SRAM chip is provided. It is organized as 8bits x 1024K, and has 55 ns access time.
 
-See [Page 11 of the Schematics](#reference-materials-schematics) or the XDC file for pinout.
+See [Page 11 of the Schematics](#reference-material-schematics) or the XDC file for pinout.
 
 ### DDR3L
 
@@ -429,7 +429,7 @@ These allow any standard PMODs to be plugged into the board. The PMOD pinout is 
 
 ![](Images/cw310-pmod.png "PMOD pins are not counted like regular headers")
 
-See [Page 26 of the Schematics](#reference-materials-schematics) for more detail on the connection.
+See [Page 26 of the Schematics](#reference-material-schematics) for more detail on the connection.
 
 These can be used to interface with a wide range of [PMod extensions from Digilent Inc](https://store.digilentinc.com/boards-and-components/expansion-modules/pmods/) and other vendors.
 
@@ -445,7 +445,7 @@ Each of these includes a VCC pin. Switch S2 sets if the VCC pin is driven from t
 
 Switch `S2` allows these headers to be used for either standard debug connectivity, or to implement debugger connectivity in your FPGA.
 
-See [Page 25 of the Schematics](#reference-materials-schematics) for more detail.
+See [Page 25 of the Schematics](#reference-material-schematics) for more detail.
 
 ## XADC Connections
 
@@ -460,13 +460,13 @@ AD1N | A19 | GND
 AD8P | A18 | VCC-INT / 2 | For comparison of external vs. internal VCC-INT measurements (XADC has internal VCC-INT channel).
 AD8N | A17 | GND
 
-In addition, the USERIOA header contains several XADC capable ports. See [Page 13 of the Schematics](#reference-materials-schematics) for more detail. Any FPGA pin name that ends in "ADxxN_15" and "ADxxP_15" is a ADC channel, where "xx" must be the same channel number to access both the positive and negative inputs. 
+In addition, the USERIOA header contains several XADC capable ports. See [Page 13 of the Schematics](#reference-material-schematics) for more detail. Any FPGA pin name that ends in "ADxxN_15" and "ADxxP_15" is a ADC channel, where "xx" must be the same channel number to access both the positive and negative inputs. 
 
 ## User USB
 
 An additional USB-C connector is provided that allows you to route a user USB signal. This is connected to a TUSB1106 full-speed USB phy.
 
-See [Page 27 of the Schematics](#reference-materials-schematics) for more detail.
+See [Page 27 of the Schematics](#reference-material-schematics) for more detail.
 
 ## Reference Material (Schematics)
 
