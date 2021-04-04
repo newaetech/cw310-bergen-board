@@ -220,6 +220,9 @@ A standard 14-pin Xilinx JTAG header is provided, which also allows usage of deb
 
 Yes.
 
+!!! note "Coming Soon"
+    This section is coming shortly.
+
 ## USB Interface (via SAM3X)
 
 The CW310 integrates a SAM3X microcontroller that provides the host USB interface. This microcontroller is preloaded with firmware that provides features such as:
@@ -260,7 +263,7 @@ The SAM3X includes a 10/100 Ethernet MAC & PHY. This is currently unused with th
 
 One or two user QSPI sockets are present. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
 
-<img src="Images/cw310-spi-pinout.png" width=350px>
+![](Images/cw310-spi-pinout.png "Standard QSPI Pinout")
 
 Part `U29` is always a QSPI socket, part `U4` may be a QSPI socket or may be a soldered-on board QSPI chip depending on the board variant (contact us to confirm if required).
 
