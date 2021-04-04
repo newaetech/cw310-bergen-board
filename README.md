@@ -14,7 +14,12 @@ The documentation in the `docs` folder is rendered to [https://rtfm.newae.com/Ta
 
 ### Schematic
 
-You can find a [PDF Schematic](docs/BergenBoard_Rev06.PDF) in this repo.
+* [View schematics online](https://github.com/newaetech/cw310-bergen-board/blob/main/docs/BergenBoard_Rev06.pdf)
+* [Download PDF of Schematics](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
+
+### Xilinx XDC Constraints file
+
+* [Vivado XDC Constraint File](https://github.com/newaetech/cw310-bergen-board/tree/main/pins)
 
 ### Local documentation editing
 
