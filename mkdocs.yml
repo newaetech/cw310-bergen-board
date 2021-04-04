@@ -1,0 +1,65 @@
+# Project information
+site_name: CW310 Bergen Board
+site_description: Kintex FPGA Target Board
+site_author: NewAE Technology Inc.
+#site_url: https://squidfunk.github.io/mkdocs-material/
+
+# Repository
+#repo_name: squidfunk/mkdocs-material
+#repo_url: https://github.com/squidfunk/mkdocs-material
+
+# Copyright
+copyright: Copyright &copy; 2015-2021 NewAE Technology Inc.
+
+# Configuration
+theme:
+  name: material
+#  custom_dir: overrides
+  language: en
+  palette:
+    scheme: slate
+    primary: deep orange
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+# Extras
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/newaetech
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/newaetech
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/newae-technology-inc-
+
+# Google Analytics
+google_analytics:
+  - UA-XXXXXXXX-X
+  - auto
+
+# Extensions - before this works
+# pip install markdown-include
+markdown_extensions:
+  - admonition
+  - extra
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - markdown_include.include:
+      base_path: docs
+  - attr_list
+  - admonition
+  - yafg:
+      stripTitle: false
+      figureNumbering: true
+
+#Needed for mathjax3
+extra_javascript:
+  - javascripts/config.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
