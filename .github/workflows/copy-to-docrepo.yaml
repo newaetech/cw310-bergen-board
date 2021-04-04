@@ -1,0 +1,26 @@
+name: Copy to Documentation Repo
+on: [push]
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - name: Copycat
+      uses: andstor/copycat-action@v3.2.3
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        dst_owner: newaetech
+        dst_repo_name: documentation-main
+        src_path: /docs/README.md
+        dst_path: /docs/Targets/CW310 Bergen Board.md
+
+    - uses: actions/checkout@main
+    - name: Copycat
+      uses: andstor/copycat-action@v3.2.3
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        dst_owner: newaetech
+        dst_repo_name: documentation-main
+        src_path: /docs/Images/
+        dst_path: /docs/Targets/Images/
+
