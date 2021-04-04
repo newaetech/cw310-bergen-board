@@ -208,7 +208,7 @@ The `INITB` signal is also routed to LED D10, in addition to being monitored by 
 
 For debugging purposes, several of the signals related to configuration are broken out on header P2 with the pinout shown here:
 
-![](Images\cw310-cfgheader.png "Configuration Header Breakout")
+![](Images/cw310-cfgheader.png "Configuration Header Breakout")
 
 See [Page 11 of the Schematics](#reference-materials-schematics) for more details of this header.
 
@@ -367,7 +367,7 @@ See the DDR3 setup details for more information.
 
 Two expansion headers are provided, which use standard 0.05" (1.27mm) pitch headers. These allow mating of either daughter boards or cables as required. These headers are shown here:
 
-![header photo](Images\cw310-userheaders.jpeg "CW310 USER-IO Headers on lower right of board."){width=300}
+![header photo](Images/cw310-userheaders.jpeg "CW310 USER-IO Headers on lower right of board."){width=300}
 
 Each header can be set to a separate I/O level, as each header routes to a different FPGA bank.
 
@@ -380,9 +380,9 @@ Each header can be set to a separate I/O level, as each header routes to a diffe
 
 You can drive an I/O voltage into the `VCCUSERIO` pin on each header, or you can set the voltage using jumper JP1 (USERIO-A) or JP2 (USERIO-B).
 
-![](Images\cw310-userioa.png "USER-IO Header A Pinout")
+![](Images/cw310-userioa.png "USER-IO Header A Pinout")
 
-![](Images\cw310-useriob.png "USER-IO Header B Pinout")
+![](Images/cw310-useriob.png "USER-IO Header B Pinout")
 
 ## User PMOD Headers
 
@@ -390,7 +390,7 @@ Two PMOD headers are provided on the board. These provide 16 digital I/O signals
 
 These allow any standard PMODs to be plugged into the board. The PMOD pinout is as follows (pin numbering follows PMOD "standard"):
 
-![](Images\cw310-pmod.png "PMOD pins are not counted like regular headers")
+![](Images/cw310-pmod.png "PMOD pins are not counted like regular headers")
 
 See [Page 26 of the Schematics](#reference-materials-schematics) for more detail on the connection.
 
