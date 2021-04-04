@@ -1,8 +1,7 @@
----
-title: CW310 Bergen Board (Kintex FPGA Target)
----
+# CW310 Bergen Board (Kintex FPGA Target)
 
-[ ![CW310 Bergen Board](images/cw310-bergenk410t.jpeg "CW310 Bergen Board") ](images/cw310-bergenk410t.jpeg)
+
+[ ![CW310 Bergen Board](Images/cw310-bergenk410t.jpeg "CW310 Bergen Board") ](Images/cw310-bergenk410t.jpeg)
 
 The ChipWhisperer CW310 "Bergen Board" is an advanced evaluation platform for FPGA-based security SoC, RoT, or HSM based designs. It is specifically designed to meet the needs of security evaluation purposes, while having the features you would expect in an easy-to-use FPGA development board.
 
@@ -46,11 +45,11 @@ The board also contains multiple features specific for power analysis & fault in
 
 You can see a block diagram of the board below:
 
-[ ![CW310 block diagram](images/cw310-blockdiagram-whitebackground.png "CW310 Block Diagram (click for full size)") ](images/cw310-blockdiagram-whitebackground.png)
+[ ![CW310 block diagram](Images/cw310-blockdiagram-whitebackground.png "CW310 Block Diagram (click for full size)") ](Images/cw310-blockdiagram-whitebackground.png)
 
 An overview of all the location of various board features are given below:
 
-[ ![CW310 block diagram](images/cw310-bergenk410t_annotated.jpg "CW310 Bergen Board Features") ](images/cw310-bergenk410t_annotated.jpg)
+[ ![CW310 block diagram](Images/cw310-bergenk410t_annotated.jpg "CW310 Bergen Board Features") ](Images/cw310-bergenk410t_annotated.jpg)
 
 * **A**: USB-C connector for computer control & power.
 * **B**: Control power switch.
@@ -90,7 +89,7 @@ From this 5V supply, the following are derived:
 
 The normal operating mode of the board is to use a higher voltage input, supplied from a USB-C wall adapter or DC barrel jack, which generates the main 5V supply for the board. This configuration is set by switch SW2 as shown here:
 
-<img src="images/cw310-5v-power-src.png">
+![](Images/cw310-5v-power-src.png)
 
 As an alternative, you can also take the 5V supply from the "control" USB-C controller. This is normally not recommended, as the current requirement can exceed what a typical computer/laptop is willing to supply out of it's USB-C port (and even worse if you use the USB-A to USB-C adapter).
 
@@ -99,7 +98,7 @@ As an alternative, you can also take the 5V supply from the "control" USB-C cont
 
 You can toggle the target portion of the power supplies off using switch S1, labelled "Tgt Power" on the PCB:
 
-<img src="images/cw310-tgt-power.png">
+![](Images/cw310-tgt-power.png)
 
 When set to "off", the power supplies on the FPGA side will be turned off, and signals driving the FPGA will be disabled. When set to "auto", the target power is controlled by the API (default is "on", but the user can now toggle it). This switch can be used to quickly turn the target power off without closing the USB computer connection, or to quickly toggle the target power to clear any corrupt configuration data.
 
@@ -109,7 +108,7 @@ The USB control power can be toggled on and off with switch SW7, near the USB-C 
 
 The power good outputs are monitored by the microcontroller. If they cycle several times (indicating the device is struggling to maintain power), the device goes into fail-safe mode which shuts off the target power. This will often occur if your source power supply is insufficient, but could also indicate a short (such as an accessory board is shorting out). The failure will be indicated by the "Surge" LED coming on:
 
-<img src="images/cw310-restart-power.png" width=350px>
+![](Images/cw310-restart-power.png){width=300}
 
 If this happens, double-check the setting of the 5V source switch - be sure you are using the on-board 5V regulator instead of just taking power from the control USB-C port. You can restart the regulators with the "Restart Power" button once you have rectified any latent faults.
 
@@ -183,7 +182,7 @@ The two LEDs indicate the thermal status:
 
 Once the temperature is above 65C the power is immediately cut to the target device. The die temperature is still reflected in the LED state, but you will need to press the `Restart Power` button to bring the target power back (also can be done via a API call). If the target device temperature is above 55C, the power will not be turned onto the device.
 
-<img src="images/cw310-restart-power.png" width=350px>
+![](Images/cw310-restart-power.png){width=350}
 
 You can read the FPGA temperature from the Python API as well.
 
@@ -261,7 +260,7 @@ The SAM3X includes a 10/100 Ethernet MAC & PHY. This is currently unused with th
 
 One or two user QSPI sockets are present. This is designed to fit standard 6x8 WSON package QSPI chips. The expected pinout of the chip is as follows:
 
-<img src="images/cw310-spi-pinout.png" width=350px>
+<img src="Images/cw310-spi-pinout.png" width=350px>
 
 Part `U29` is always a QSPI socket, part `U4` may be a QSPI socket or may be a soldered-on board QSPI chip depending on the board variant (contact us to confirm if required).
 
@@ -434,6 +433,6 @@ See [Page 27 of the Schematics](#reference-materials-schematics) for more detail
 
 ## Reference Material (Schematics)
 
-* [View schematics online](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
+* [View schematics online](https://github.com/newaetech/cw310-bergen-board/blob/main/docs/BergenBoard_Rev06.pdf)
 * [Download PDF of Schematics](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
 * [Vivado XDC Constraint File](https://github.com/newaetech/cw310-bergen-board/tree/main/pins)
