@@ -389,11 +389,13 @@ You can drive an I/O voltage into the `VCCUSERIO` pin on each header, or you can
 
 Two PMOD headers are provided on the board. These provide 16 digital I/O signals (8 per header) along with 3.3V and GND pins. The I/O level for these headers is always 3.3V.
 
-These allow any standard PMODs to be plugged into the board. The PMOD pinout is as follow (pin numbering follows PMOD "standard"):
+These allow any standard PMODs to be plugged into the board. The PMOD pinout is as follows (pin numbering follows PMOD "standard"):
 
-The pins are connected to:
+![](Images\cw310-pmod.png "PMOD pins are not counted like regular headers")
 
-See [Page 26 of the Schematics](#reference-materials-schematics) for more detail.
+See [Page 26 of the Schematics](#reference-materials-schematics) for more detail on the connection.
+
+These can be used to interface with a wide range of [PMod extensions from Digilent Inc](https://store.digilentinc.com/boards-and-components/expansion-modules/pmods/) and other vendors.
 
 ## User JTAG Headers
 
@@ -422,7 +424,7 @@ AD0N | A19 | GND
 AD8P | A18 | VCC-INT / 2 | For comparison of external vs. internal VCC-INT measurements (XADC has internal VCC-INT channel).
 AD8N | A17 | GND
 
-In addition, the USERIOA header contains several XADC signals. See [Page 13 of the Schematics](#reference-materials-schematics) for more detail.
+In addition, the USERIOA header contains several XADC capable ports. See [Page 13 of the Schematics](#reference-materials-schematics) for more detail. Any FPGA pin name that ends in "ADxxN_15" and "ADxxP_15" is a ADC channel, where "xx" must be the same channel number to access both the positive and negative inputs. 
 
 ## User USB
 
@@ -434,4 +436,4 @@ See [Page 27 of the Schematics](#reference-materials-schematics) for more detail
 
 * [View schematics online](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
 * [Download PDF of Schematics](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
-* [Vivado XDC Constraint File]
+* [Vivado XDC Constraint File](https://github.com/newaetech/cw310-bergen-board/tree/main/pins)
