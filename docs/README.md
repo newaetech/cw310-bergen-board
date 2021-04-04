@@ -158,9 +158,24 @@ The fan PWM speed is automatically controlled, and can cycle on/off which you ma
 TODO
 ```
 
-Note the same PWM is sent to both the cross-flow and heatsink fan. The heatsink mounted fan responds differently than the cross-flow fan, so you may find it necessary to change the minimum speed value depending on the fan you have mounted.
+Note the same PWM is sent to both the cross-flow and heatsink fan. The heatsink mounted fan responds differently than the cross-flow fan, so you may find it necessary to change the minimum speed value depending on the fan you have mounted. If you want to add a different fan
 
-TODO - fan header
+* Housing: GHR-04V-S
+* Contacts: SSHL-002T-P0.2
+* Crimp tool for contacts: YRS-1590
+
+The pinout for the fan header is:
+
+| Pin Number | Function
+|------------|---------
+|      1     |   GND (Constant)
+|      2     |   +5V (Constant)
+|      3     | No Connection
+|      4     |   GND / PWM
+
+For most fans connect the red (+5V) to pin `2`, and connect black (GND) to `4`. Many fans have a tachometer output which is unused - you can connect this to pin 3 or cut the wire.
+
+Some fans will have a PWM input as well - in which case you can connect the PWM input to pin `4`, and the black GND to pin 1. This will require you to reverse the PWM polarity on the SAM3X (firmware change needed).
 
 ### Heatsink
 
@@ -441,7 +456,7 @@ XADC Pin | FPGA Pin | Connection | Note
 AD0P | C16 | USB-C User CC2 Pin | 0.24444x scaling factor
 AD0N | B16 | GND
 AD1P | B17 | USB-C User CC1 Pin | 0.24444x scaling factor
-AD0N | A19 | GND 
+AD1N | A19 | GND 
 AD8P | A18 | VCC-INT / 2 | For comparison of external vs. internal VCC-INT measurements (XADC has internal VCC-INT channel).
 AD8N | A17 | GND
 
