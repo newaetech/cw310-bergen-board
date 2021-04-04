@@ -387,6 +387,25 @@ You can drive an I/O voltage into the `VCCUSERIO` pin on each header, or you can
 
 ![](Images/cw310-useriob.png "USER-IO Header B Pinout")
 
+### Mating Headers
+
+The use of 0.05"x0.05" headers makes it easy to use a variety of standard headers. Some useful part numbers for building breakout and adapter boards:
+
+| Number Pins | Type                       | Mounting             | Part Number 
+|-------------|----------------------------|----------------------|---------------
+| 34          | Shrouded pin header        | SMD                  | SHF-117-01-L-D-SM-K-TR
+| 34          | Sockets for cables         | IDC (Cable mount)    | M50-3301742
+| 34          | Ribbon cable, 0.025"       | --                   | 3754/34 300
+| 34          | Socket to Socket cable, 6" | --                   | FFSD-17-D-06.00-01-N
+| 34          | Sockets for PCB mount      | Through-Hole         | M50-3002045
+| 40          | Shrouded pin header        | SMD                  | SHF-120-01-L-D-SM-K-TR
+| 40          | Sockets                    | IDC (Cable mount)    | M50-3302042
+| 40          | Sockets                    | IDC (Cable mount)    | 3230-40-0101-00
+| 40          | Ribbon cable, 0.025"       | --                   | 3754/40 300
+| 40          | Socket to Socket cable, 6" | --                   | FFSD-20-D-06.00-01-N
+
+
+
 ## User PMOD Headers
 
 Two PMOD headers are provided on the board. These provide 16 digital I/O signals (8 per header) along with 3.3V and GND pins. The I/O level for these headers is always 3.3V.
