@@ -1,3 +1,10 @@
+#
+# NewAE Technology Inc - CW310 Bergen Board XDC Constaints File.
+#
+# This file is released into the public domain, and has no distribution restrictions. However be aware
+# there is NO WARRANTY and this file may have errors, the usage is at your own risk. Certain signals
+# may not be sufficiently constrained, or incorrect constraints may be included herein.
+
 
 set_property CFGBVS VCCO [current_design]
 set_property CONFIG_VOLTAGE 3.3 [current_design]
@@ -127,10 +134,10 @@ set_property -dict { PACKAGE_PIN  D26  IOSTANDARD   LVCMOS33 } [get_ports { USB_
 # SAM3X UART/USART Interface (Serial Console)
 #####
 
-set_property -dict { PACKAGE_PIN AB22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD0 }] #IO_L17P_T2_12
-set_property -dict { PACKAGE_PIN AA22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD1 }] #IO_L13N_T2_MRCC_12
-set_property -dict { PACKAGE_PIN AA24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD0 }] #IO_L12N_T1_MRCC_12
-set_property -dict { PACKAGE_PIN  W24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD1 }] #IO_L8N_T1_12
+set_property -dict { PACKAGE_PIN AB22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD0 }] #IO_L17P_T2_12 - This is an OUTPUT from the FPGA
+set_property -dict { PACKAGE_PIN AA24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD0 }] #IO_L12N_T1_MRCC_12 - This is an INPUT to the FPGA
+set_property -dict { PACKAGE_PIN AA22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD1 }] #IO_L13N_T2_MRCC_12 - This is an OUTPUT from FPGA
+set_property -dict { PACKAGE_PIN  W24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD1 }] #IO_L8N_T1_12 - This is an INPUT to the FPGA
 
 #####
 # PMODs
@@ -279,6 +286,10 @@ set_property -dict { PACKAGE_PIN  E13                        } [get_ports { USER
 set_property -dict { PACKAGE_PIN   H8                        } [get_ports { USERIOB-8 }] #IO_L1N_T0_16
 set_property -dict { PACKAGE_PIN   A8                        } [get_ports { USERIOB-9 }] #IO_L9N_T1_DQS_16
 
+#####
+# QSPI Socket tracking USERIO-B Voltage ""
+#####
+
 set_property -dict { PACKAGE_PIN  F12                        } [get_ports { USR_SPI1CLK }] #IO_L16N_T2_16
 set_property -dict { PACKAGE_PIN  F14                        } [get_ports { USR_SPI1CS }] #IO_L15P_T2_DQS_16
 set_property -dict { PACKAGE_PIN  E11                        } [get_ports { USR_SPI1DQ0 }] #IO_L14P_T2_SRCC_16
@@ -287,7 +298,7 @@ set_property -dict { PACKAGE_PIN  B15                        } [get_ports { USR_
 set_property -dict { PACKAGE_PIN  F13                        } [get_ports { USR_SPI1DQ3 }] #IO_L15N_T2_DQS_16
 
 #####
-# 1.8V QSPI Socket
+# 1.8V QSPI Socket "U4"
 #####
 
 set_property -dict { PACKAGE_PIN  AF8  IOSTANDARD   LVCMOS18 } [get_ports { USR_SPI0CLK }] #IO_L22N_T3_33
