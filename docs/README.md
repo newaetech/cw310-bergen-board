@@ -372,12 +372,22 @@ To use the DDR3L chip, you will need to:
 
 An example XDC file is provided that can be loaded during the MIG tool to assign pins correctly for the DDR3 on-board. Note the MIG tool needs both a 200 MHz reference clock and a system clock - but the system clock can only be certain multiples of the DDR3 frequency. If you want to run a simple setup, the suggested timing is as follows:
 
-* Set DDR3 period to XXXX on page X of MIG wizard.
-* Set system clock frequency to 200.08 MHz on page X of MIG wizard.
-* Specify the system clock as using the reference.
-* Specify the reference clock as differential input, and later assign it to pins XXX.
+* Set DDR3 period to **3,076 ps** (325.1 MHz frequency) on page 5 of MIG wizard.
+* On the next configuration page (page 6), use the **Input Clock Period Select** drop-down and select the **4998 ps** (200.08 MHz) system clock frequency.
+* On the next page (page 7):
+	* Specify the **System Clock** as **Differential**
+	* Specify the **Reference Clock** as **Use System Clock**
+	* Specify the **System Reset Polarity** as **Active Low**
+* On the next page (page 8):
+	* Specify **Internal Termination Impedance** as **40 Ohms**
+* Load the DDR3 pinout from XDC file (or manually specify it so it matches board)
+* On **System Signals Selection** (page 10):
+	* Specify the **System clock pin** as **Bank 33**, pins **AC9/AD9**.
+	* The **Reference clock selection** should be blanked out.
+	* The **sys_rst** should go to **Bank 33** pin **Y7** (USRSW2 on PCB).
+	* Pin out the other signals to LEDs if you wish feedback visually.
 
-**NB: Be sure if using the example design to add pins to turn on the clock+DDR3 power**
+**NB: Be sure if using the example design to add pins to turn on the clock + DDR3 power which defaults to off due to pull-down resistors on the PCB.**
 
 See the DDR3 setup details for more information.
 
