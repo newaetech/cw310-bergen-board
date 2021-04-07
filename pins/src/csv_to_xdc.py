@@ -16,6 +16,6 @@ with open('bergen_pins.csv', newline='') as csvfile:
                 io_standard = "                     "
             
             pin_spec = pin_name + "  " + io_standard
-            line = "set_property -dict { " + pin_spec + " } [get_ports { " + row[1] + " }] #" + row[2]
+            line = "set_property -dict { " + pin_spec + " } [get_ports { " + row[1] + " }]; #" + row[2]
             
             print(line)
