@@ -179,7 +179,7 @@ Some fans will have a PWM input as well - in which case you can connect the PWM 
 
 ### Heatsink
 
-The board is designed to work with XXXX TODO. For this heatsink, fan part number `MR3010H05B1-RSR` can be mounted on it using M3 bolts. You can even choose to mount both fans at once, for example from the topside:
+The board is designed to work with `960-29-18-D-AB-0` to which a 9mil thick piece of thermal pad is added to reduce risk of damage on the chip. For this heatsink, fan part number `MR3010H05B1-RSR` can be mounted on it using M3 bolts. You can even choose to mount both fans at once, for example from the topside:
 
 ![dual fans](Images/cw310-dualfan.jpeg "All that's missing is RBG leds to make those case modders jealous."){width=75%}
 
