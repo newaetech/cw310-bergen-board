@@ -772,7 +772,16 @@ bool main_setup_in_received(void)
 			udd_g_ctrlreq.payload = spi1util_data_buffer;
 			udd_g_ctrlreq.payload_size = udd_g_ctrlreq.req.wLength;
 			return true;
-			break;           
+			break;
+			
+		case REQ_FPGAIO_UTIL:
+			0;
+			int pin = udd_g_ctrlreq.req.wValue & 0xFF;
+			respbuf[0] = gpio_pin_is_high(pin);
+			udd_g_ctrlreq.payload = respbuf;
+			udd_g_ctrlreq.payload_size = 1;
+			return true;
+			break;         
 
         default:
             return false;
