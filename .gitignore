@@ -21,3 +21,9 @@ tags
 *.ip_user_files/
 *.runs/
 *.hw/
+/microfw/CW310/Debug/CW310.eep
+/microfw/CW310/Debug/CW310.elf
+/microfw/CW310/Debug/CW310.hex
+/microfw/CW310/Debug/CW310.lss
+/microfw/CW310/Debug/CW310.map
+/microfw/CW310/Debug/CW310.srec
