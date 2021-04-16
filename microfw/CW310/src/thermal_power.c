@@ -183,12 +183,14 @@ void enable_fpga_power(void)
 {
 	gpio_set_pin_high(PIN_FPGA_PWR_ENABLE);
 	fpga_pins(true);
+	power_killed = false;
 }
 
 void kill_fpga_power(void)
 {
 	gpio_set_pin_low(PIN_FPGA_PWR_ENABLE);
 	fpga_pins(false);
+	power_killed = true;
 	
 }
 

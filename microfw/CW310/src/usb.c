@@ -27,6 +27,7 @@
 #include "fpga_xmem.h"
 #include "cdce906.h"
 #include "tps56520.h"
+#include "thermal_power.h"
 #include <string.h>
 
 #define FW_VER_MAJOR 0
@@ -45,6 +46,10 @@ void main_vendor_bulk_in_received(udd_ep_status_t status,
         iram_size_t nb_transfered, udd_ep_id_t ep);
 void main_vendor_bulk_out_received(udd_ep_status_t status,
         iram_size_t nb_transfered, udd_ep_id_t ep);
+		
+int max1617_register_read(uint8_t reg_addr, int8_t *result);
+
+int max1617_register_write(uint8_t reg_addr, int8_t data);
 
 void main_suspend_action(void)
 {
@@ -123,6 +128,8 @@ void main_vendor_disable(void)
 #define FREQ_FPGASPI1_XFER 0x35
 
 #define REQ_CDC_SETTINGS_EN 0x41
+
+#define REQ_FPGA_TEMP 0x42
 
 COMPILER_WORD_ALIGNED static uint8_t ctrlbuffer[64];
 #define CTRLBUFFER_WORDPTR ((uint32_t *) ((void *)ctrlbuffer))
@@ -318,6 +325,17 @@ static void ctrl_sam3ucfg_cb(void)
             /* Toggle trigger pin */
         case 0x06:
             break;
+			
+			/* Turn target power off */
+		case 0x07:
+			kill_fpga_power();
+			break;
+			
+			/* Turn target power on */
+		case 0x08:
+			enable_fpga_power();
+			break;
+			
 
             /* Oh well, sucks to be you */
         default:
@@ -574,6 +592,11 @@ static void ctrl_spi1util(void){
 	}
 }
 
+void ctrl_fpga_temp_cb(void)
+{
+	max1617_register_write(udd_g_ctrlreq.req.wValue & 0xFF, udd_g_ctrlreq.payload[0]);
+}
+
 bool main_setup_out_received(void)
 {
     //Add buffer if used
@@ -614,7 +637,7 @@ bool main_setup_out_received(void)
             /*
                udd_g_ctrlreq.payload = xmegabuffer;
                udd_g_ctrlreq.payload_size = min(udd_g_ctrlreq.req.wLength,	sizeof(xmegabuffer));
-               */
+            */
             udd_g_ctrlreq.callback = ctrl_xmega_program_void;
             return true;
 
@@ -651,6 +674,10 @@ bool main_setup_out_received(void)
         case FREQ_FPGASPI1_XFER:
             udd_g_ctrlreq.callback = ctrl_spi1util;
             return true;
+			
+		case REQ_FPGA_TEMP:
+			udd_g_ctrlreq.callback = ctrl_fpga_temp_cb;
+			return true;
 
         default:
             return false;
@@ -782,12 +809,24 @@ bool main_setup_in_received(void)
 			udd_g_ctrlreq.payload_size = 1;
 			return true;
 			break;         
+		case REQ_FPGA_TEMP:
+			0;
+			uint8_t addr = udd_g_ctrlreq.req.wValue & 0xFF;
+			max1617_register_read(addr, respbuf);
+			udd_g_ctrlreq.payload = respbuf;
+			udd_g_ctrlreq.payload_size = 1;
+			return true;
+			break;
 
         default:
             return false;
     }
     return false;
 }
+
+
+
+
 
 void main_vendor_bulk_in_received(udd_ep_status_t status,
         iram_size_t nb_transfered, udd_ep_id_t ep)
