@@ -295,6 +295,9 @@ int main(void)
 	//disable watchdog
 	WDT->WDT_MR = (1 << 25);
 	
+	//Fan on for now - will switch to PWM later.
+	gpio_configure_pin(PIO_PB25_IDX, PIO_TYPE_PIO_OUTPUT_1);
+	
 	flash_read_unique_id(serial_number, sizeof(serial_number));
 	
 	ioport_init();
@@ -380,6 +383,7 @@ int main(void)
 	gpio_configure_pin(PIO_PB25_IDX, PIO_PERIPH_B);	
 	
 	fan_pwm_init();
+	fan_pwm_set_duty_cycle(75); //Set at 50% in case we crash - will be tuned later
 	power_init();
 	
 	//Following is 60MHz version
@@ -387,7 +391,7 @@ int main(void)
 	thermals_init();
 	periodic_timer_init();
 	udc_start();
-	fan_pwm_set_duty_cycle(50); //Set at 50% in case we crash - will be tuned later
+	
 	
 	gpio_configure_pin(PIO_PB27_IDX, PIO_OUTPUT_1 | PIO_DEFAULT);
 	enable_fpga_power();
