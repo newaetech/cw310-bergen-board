@@ -1,0 +1,13 @@
+tb.v
+../hdl/cw310_top.v
+../hdl/aes_core.v
+../hdl/aes_ks.v
+../hdl/aes_sbox.v
+../hdl/cdc_pulse.v
+../hdl/clocks.v
+../hdl/cw310_defines.v
+../hdl/cw310_usb_reg_fe.v
+../hdl/cw310_reg_aes.v
+../hdl/simple_sram_rwtest.v
+../hdl/lfsr.v
+
