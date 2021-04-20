@@ -38,11 +38,12 @@ module simple_sram_rwtest #(
    input wire                           active,
    output reg                           pass,
    output reg                           fail,
+   input wire [7:0]                     I_top_address,
 
    output reg                           wen,
    output reg                           oen,
    output reg                           cen,
-   output reg                           ce2,
+   output wire                          ce2,
    output reg  [pADDR_WIDTH-1:0]        addr,
    inout  wire [pDATA_WIDTH-1:0]        data
 );
@@ -71,10 +72,12 @@ reg [31:0] lfsr_seed;
 
 wire state_write = state == pS_WRITE || state == pS_WRITE_NEXT;
 wire state_read = state == pS_READ || state == pS_READ_NEXT;
+wire [pADDR_WIDTH-1:0] top_address = I_top_address? I_top_address : {pADDR_WIDTH{1'b1}};
 
 assign data = isout? wdata : 8'bz;
 assign wdata = lfsr_data[7:0];
 assign expected = lfsr_data[7:0];
+assign ce2 = ~cen;
 
 always @ (posedge clk) begin
    if (reset)
@@ -113,61 +116,55 @@ always @ (posedge clk) begin
                lfsr_load <= 1;
                state <= pS_WRITE;
                cen <= 0;
-               ce2 <= 1;
             end
             else begin
                fail <= 0;
                pass <= 0;
                cen <= 1;
-               ce2 <= 0;
             end
          end
 
          pS_WRITE: begin
             cen <= 0;
-            ce2 <= 1;
             oen <= 1;
             if (~active)
                state <= pS_IDLE;
             else begin
-               if (count == 0) begin
-                  wen <= 1'b0;
-               end
-               else if (count == 2) begin
+               if (count == 2) begin
                   isout <= 1'b1;
                end
                else if (count == 4) begin
                   restart_count <= 1;
-                  wen <= 1'b1;
                   cen <= 1'b1;
-                  if (addr == {pADDR_WIDTH{1'b1}}) begin
-                  //if (addr == 4) begin
-                     lfsr_load <= 1;
-                     addr <= 0;
-                     state <= pS_READ;
-
-                     isout <= 0;
-                  end
-                  else begin
-                     lfsr_next <= 1'b1;
-                     state <= pS_WRITE_NEXT;
-                  end
+                  lfsr_next <= 1'b1;
+                  state <= pS_WRITE_NEXT;
                end
             end
          end
 
          pS_WRITE_NEXT: begin
             cen <= 0;
-            ce2 <= 1;
             oen <= 1;
             isout <= 1'b0;
-            addr <= addr + 1;
-            state <= pS_WRITE;
+            //if (addr == {pADDR_WIDTH{1'b1}}) begin
+            if (addr == top_address) begin
+               wen <= 1;
+               if (count == 2) begin
+                  restart_count <= 1;
+                  lfsr_load <= 1;
+                  addr <= 0;
+                  oen <= 0;
+                  state <= pS_READ;
+               end
+            end
+            else begin
+               addr <= addr + 1;
+               state <= pS_WRITE;
+            end
          end
 
          pS_READ: begin
             cen <= 0;
-            ce2 <= 1;
             oen <= 0;
             if (~active)
                state <= pS_IDLE;
@@ -181,7 +178,6 @@ always @ (posedge clk) begin
 
          pS_READ_NEXT: begin
             cen <= 0;
-            ce2 <= 1;
             oen <= 0;
             addr <= addr + 1;
             if (data != expected) begin
@@ -190,8 +186,8 @@ always @ (posedge clk) begin
             end
             else
                pass <= 1;
-            if (addr == {pADDR_WIDTH{1'b1}}) begin
-            //if (addr == 4) begin
+            //if (addr == {pADDR_WIDTH{1'b1}}) begin
+            if (addr == top_address) begin
                lfsr_seed <= lfsr_seed + 1;
                state <= pS_IDLE; // easiest way to restart
             end

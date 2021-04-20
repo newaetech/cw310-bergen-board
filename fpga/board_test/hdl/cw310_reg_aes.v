@@ -82,7 +82,8 @@ module cw310_reg_aes #(
    output reg                                   O_sram_en,
    output reg                                   O_xo_en,
    output reg  [7:0]                            O_leds,
-   output reg                                   O_hearbeats
+   output reg                                   O_hearbeats,
+   output reg  [7:0]                            O_top_address
 
 );
 
@@ -162,6 +163,7 @@ module cw310_reg_aes #(
             `REG_XO_FREQ:               reg_read_data = I_sysclk_freq[reg_bytecnt*8 +: 8];
             `REG_LEDS:                  reg_read_data = O_leds;
             `REG_HEARTBEATS:            reg_read_data = O_hearbeats;
+            `REG_SRAM_MEM_BYTES:        reg_read_data = O_top_address;
             default:                    reg_read_data = 0;
          endcase
       end
@@ -190,6 +192,7 @@ module cw310_reg_aes #(
          O_xo_en <= 1;
          O_leds <= 8'hFF;
          O_hearbeats <= 0;
+         O_top_address <= 0;
          reg_crypt_go_pulse <= 1'b0;
       end
 
@@ -206,6 +209,7 @@ module cw310_reg_aes #(
                `REG_XO_EN:              O_xo_en <= write_data[0];
                `REG_LEDS:               O_leds <= write_data;
                `REG_HEARTBEATS:         O_hearbeats <= write_data[0];
+               `REG_SRAM_MEM_BYTES:     O_top_address <= write_data;
             endcase
          end
          // REG_CRYPT_GO register is special: writing it creates a pulse. Reading it gives you the "busy" status.

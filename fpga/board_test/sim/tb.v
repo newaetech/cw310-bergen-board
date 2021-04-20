@@ -156,6 +156,7 @@ module tb();
       end
 
       $display("SRAM test...");
+      write_byte(0, `REG_SRAM_MEM_BYTES, 0, 4);
       write_bytes(0, 1, `REG_SRAM_EN, 8'h01);
       #(pUSB_CLOCK_PERIOD*100);
 

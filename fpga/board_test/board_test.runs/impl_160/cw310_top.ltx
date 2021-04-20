@@ -1710,27 +1710,27 @@
                         "name": "reset",
                         "state_reg": [
                             {
-                                "name": "U_sram_test/FSM_sequential_state_reg[0]",
+                                "name": "U_sram_test/FSM_onehot_state_reg[1]",
                                 "states": [
                                     {
-                                        "name": "pS_WRITE",
-                                        "val": "001"
+                                        "name": "pS_WRITE_NEXT",
+                                        "val": "00100"
                                     },
                                     {
-                                        "name": "pS_WRITE_NEXT",
-                                        "val": "100"
+                                        "name": "pS_WRITE",
+                                        "val": "00010"
                                     },
                                     {
                                         "name": "pS_READ_NEXT",
-                                        "val": "011"
+                                        "val": "10000"
                                     },
                                     {
                                         "name": "pS_READ",
-                                        "val": "010"
+                                        "val": "01000"
                                     },
                                     {
                                         "name": "pS_IDLE",
-                                        "val": "000"
+                                        "val": "00001"
                                     }
                                 ]
                             }

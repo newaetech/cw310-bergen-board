@@ -55,3 +55,4 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_XO_FREQ                     'h12
 `define REG_LEDS                        'h13
 `define REG_HEARTBEATS                  'h14
+`define REG_SRAM_MEM_BYTES              'h15

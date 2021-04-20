@@ -103,6 +103,7 @@ module cw310_top #(
 
     wire [7:0] reg_leds;
     wire hearbeats;
+    wire [7:0] top_address;
     wire ddr3_pass;
     wire sram_pass;
     wire sram_fail;
@@ -191,7 +192,8 @@ module cw310_top #(
        .O_sram_en               (sram_en),
        .O_xo_en                 (LVDS_XO_200M_ENA),
        .O_leds                  (reg_leds),
-       .O_hearbeats             (hearbeats)
+       .O_hearbeats             (hearbeats),
+       .O_top_address           (top_address)
 
     );
 
@@ -251,6 +253,7 @@ module cw310_top #(
       .active           (sram_en),
       .pass             (sram_pass),
       .fail             (sram_fail),
+      .I_top_address    (top_address),
    
       .wen              (SRAM_WEn),
       .oen              (SRAM_OEn),
