@@ -111,6 +111,7 @@ always @ (posedge clk) begin
             isout <= 0;
             if (active) begin
                wen <= 0;
+               cen <= 0;
                restart_count <= 1;
                lfsr_load <= 1;
                state <= pS_WRITE;
@@ -127,13 +128,15 @@ always @ (posedge clk) begin
             else begin
                if (count == 0) begin
                   wen <= 1'b0;
+                  cen <= 1'b0;
                end
                else if (count == 2) begin
                   isout <= 1'b1;
                end
-               else if (count == 3) begin
+               else if (count == 4) begin
                   restart_count <= 1;
-                  wen <= 1;
+                  wen <= 1'b1;
+                  cen <= 1'b1;
                   if (addr == {pADDR_WIDTH{1'b1}}) begin
                   //if (addr == 4) begin
                      lfsr_load <= 1;
@@ -161,7 +164,7 @@ always @ (posedge clk) begin
             if (~active)
                state <= pS_IDLE;
             else begin
-               if (count == 3) begin
+               if (count == 4) begin
                   restart_count <= 1;
                   state <= pS_READ_NEXT;
                end
