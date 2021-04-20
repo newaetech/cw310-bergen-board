@@ -106,29 +106,32 @@ always @ (posedge clk) begin
             addr <= 0;
             wen <= 1;
             oen <= 1;
-            cen <= 1;
-            ce2 <= 0;
-            isout <= 0;
+            isout <= 0;     
             if (active) begin
                wen <= 0;
-               cen <= 0;
                restart_count <= 1;
                lfsr_load <= 1;
                state <= pS_WRITE;
+               cen <= 0;
+               ce2 <= 1;
             end
             else begin
                fail <= 0;
                pass <= 0;
+               cen <= 1;
+               ce2 <= 0;
             end
          end
 
          pS_WRITE: begin
+            cen <= 0;
+            ce2 <= 1;
+            oen <= 1;
             if (~active)
                state <= pS_IDLE;
             else begin
                if (count == 0) begin
                   wen <= 1'b0;
-                  cen <= 1'b0;
                end
                else if (count == 2) begin
                   isout <= 1'b1;
@@ -142,8 +145,7 @@ always @ (posedge clk) begin
                      lfsr_load <= 1;
                      addr <= 0;
                      state <= pS_READ;
-                     cen <= 0;
-                     ce2 <= 1;
+
                      isout <= 0;
                   end
                   else begin
@@ -155,12 +157,18 @@ always @ (posedge clk) begin
          end
 
          pS_WRITE_NEXT: begin
+            cen <= 0;
+            ce2 <= 1;
+            oen <= 1;
             isout <= 1'b0;
             addr <= addr + 1;
             state <= pS_WRITE;
          end
 
          pS_READ: begin
+            cen <= 0;
+            ce2 <= 1;
+            oen <= 0;
             if (~active)
                state <= pS_IDLE;
             else begin
@@ -172,6 +180,9 @@ always @ (posedge clk) begin
          end
 
          pS_READ_NEXT: begin
+            cen <= 0;
+            ce2 <= 1;
+            oen <= 0;
             addr <= addr + 1;
             if (data != expected) begin
                fail <= 1;
