@@ -1137,16 +1137,13 @@
                                 "direction": "IN",
                                 "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 20,
+                                "rightIndex": 19,
                                 "portIndex": 7,
                                 "nets": [
                                     {
                                         "name": "U_sram_test/addr",
                                         "isBus": true,
                                         "subnets": [
-                                            {
-                                                "name": "U_sram_test/addr[20]"
-                                            },
                                             {
                                                 "name": "U_sram_test/addr[19]"
                                             },
@@ -1212,8 +1209,24 @@
                                 ]
                             },
                             {
-                                "name": "probe8",
+                                "name": "probe7",
                                 "id": 32,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 20,
+                                "rightIndex": 20,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/<const0>",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 33,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1254,6 +1267,120 @@
                                         "isBus": false
                                     }
                                 ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 34,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/test_runs",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_sram_test/test_runs[31]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[30]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[29]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[28]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[27]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[26]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[25]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[24]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[23]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[22]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[21]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[20]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[19]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[18]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[17]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[16]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[15]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[14]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[13]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[12]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[11]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[10]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[9]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[8]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[7]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[6]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[5]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[4]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[3]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[2]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[1]"
+                                            },
+                                            {
+                                                "name": "U_sram_test/test_runs[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1271,7 +1398,7 @@
                         "pins": [
                             {
                                 "name": "probe0",
-                                "id": 33,
+                                "id": 35,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1313,7 +1440,7 @@
                             },
                             {
                                 "name": "probe1",
-                                "id": 34,
+                                "id": 36,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1355,7 +1482,7 @@
                             },
                             {
                                 "name": "probe2",
-                                "id": 35,
+                                "id": 37,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1371,7 +1498,7 @@
                             },
                             {
                                 "name": "probe3",
-                                "id": 36,
+                                "id": 38,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1446,7 +1573,7 @@
                             },
                             {
                                 "name": "probe4",
-                                "id": 37,
+                                "id": 39,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1462,7 +1589,7 @@
                             },
                             {
                                 "name": "probe5",
-                                "id": 38,
+                                "id": 40,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1478,7 +1605,7 @@
                             },
                             {
                                 "name": "probe6",
-                                "id": 39,
+                                "id": 41,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1494,7 +1621,7 @@
                             },
                             {
                                 "name": "probe7",
-                                "id": 40,
+                                "id": 42,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1548,7 +1675,7 @@
                             },
                             {
                                 "name": "probe8",
-                                "id": 41,
+                                "id": 43,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1587,7 +1714,7 @@
                             },
                             {
                                 "name": "probe9",
-                                "id": 42,
+                                "id": 44,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1629,7 +1756,7 @@
                             },
                             {
                                 "name": "probe10",
-                                "id": 43,
+                                "id": 45,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1671,7 +1798,7 @@
                             },
                             {
                                 "name": "probe11",
-                                "id": 44,
+                                "id": 46,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1687,7 +1814,7 @@
                             },
                             {
                                 "name": "probe12",
-                                "id": 45,
+                                "id": 47,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,

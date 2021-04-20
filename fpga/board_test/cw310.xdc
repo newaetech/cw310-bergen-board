@@ -110,7 +110,7 @@ set_property -dict { PACKAGE_PIN  H24  IOSTANDARD   LVCMOS33 } [get_ports { SRAM
 set_property -dict { PACKAGE_PIN  J26  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[18] }]; #IO_L18P_T2_A12_D28_14
 set_property -dict { PACKAGE_PIN  H26  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[19] }]; #IO_L18N_T2_A11_D27_14
 set_property -dict { PACKAGE_PIN  G24  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[2]  }]; #IO_L14P_T2_SRCC_14
-set_property -dict { PACKAGE_PIN  L23  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[20] }]; #IO_25_14
+#set_property -dict { PACKAGE_PIN  L23  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[20] }]; #IO_25_14
 set_property -dict { PACKAGE_PIN  F22  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[3]  }]; #IO_L12P_T1_MRCC_14
 set_property -dict { PACKAGE_PIN  G21  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[4]  }]; #IO_L19N_T3_A09_D25_VREF_14
 set_property -dict { PACKAGE_PIN  B20  IOSTANDARD   LVCMOS33 } [get_ports { SRAM_A[5]  }]; #IO_L8P_T1_D11_14

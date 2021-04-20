@@ -31,15 +31,16 @@ either expressed or implied, of NewAE Technology Inc.
 
 module cw310_top #(
     parameter pBYTECNT_SIZE = 7,
-    parameter pADDR_WIDTH = 20,
+    parameter pUSB_ADDR_WIDTH = 20,
     parameter pPT_WIDTH = 128,
     parameter pCT_WIDTH = 128,
-    parameter pKEY_WIDTH = 128
+    parameter pKEY_WIDTH = 128,
+    parameter pSRAM_ADDR_WIDTH = 20
 )(
     // USB Interface
     input wire                          usb_clk,        // Clock
     inout wire [7:0]                    USB_D,          // Data for write/read
-    input wire [pADDR_WIDTH-1:0]        USB_A,          // Address
+    input wire [pUSB_ADDR_WIDTH-1:0]    USB_A,          // Address
     input wire                          USB_nRD,        // !RD, low when addr valid for read
     input wire                          USB_nWR,        // !WR, low when data+addr valid for write
     input wire                          USB_nCE,        // !CE, active low chip enable
@@ -65,7 +66,7 @@ module cw310_top #(
     input  wire                         vauxp8,
     input  wire                         vauxn8,
 
-    output wire [20:0]                  SRAM_A,
+    output wire [pSRAM_ADDR_WIDTH-1:0]  SRAM_A,
     inout  wire [7:0]                   SRAM_DQ,
     output wire                         SRAM_CE2,
     output wire                         SRAM_CEn,
@@ -91,7 +92,7 @@ module cw310_top #(
     wire usb_clk_buf;
     wire [7:0] usb_dout;
     wire isout;
-    wire [pADDR_WIDTH-pBYTECNT_SIZE-1:0] reg_address;
+    wire [pUSB_ADDR_WIDTH-pBYTECNT_SIZE-1:0] reg_address;
     wire [pBYTECNT_SIZE-1:0] reg_bytecnt;
     wire reg_addrvalid;
     wire [7:0] write_data;
@@ -130,7 +131,7 @@ module cw310_top #(
 
     cw310_usb_reg_fe #(
        .pBYTECNT_SIZE           (pBYTECNT_SIZE),
-       .pADDR_WIDTH             (pADDR_WIDTH)
+       .pADDR_WIDTH             (pUSB_ADDR_WIDTH)
     ) U_usb_reg_fe (
        .rst                     (reset),
        .usb_clk                 (usb_clk_buf), 
@@ -154,7 +155,7 @@ module cw310_top #(
 
     cw310_reg_aes #(
        .pBYTECNT_SIZE           (pBYTECNT_SIZE),
-       .pADDR_WIDTH             (pADDR_WIDTH),
+       .pADDR_WIDTH             (pUSB_ADDR_WIDTH),
        .pPT_WIDTH               (pPT_WIDTH),
        .pCT_WIDTH               (pCT_WIDTH),
        .pKEY_WIDTH              (pKEY_WIDTH)
@@ -162,7 +163,7 @@ module cw310_top #(
        .reset_i                 (reset),
        .crypto_clk              (crypt_clk),
        .usb_clk                 (usb_clk_buf), 
-       .reg_address             (reg_address[pADDR_WIDTH-pBYTECNT_SIZE-1:0]), 
+       .reg_address             (reg_address[pUSB_ADDR_WIDTH-pBYTECNT_SIZE-1:0]), 
        .reg_bytecnt             (reg_bytecnt), 
        .read_data               (read_data), 
        .write_data              (write_data),
@@ -246,7 +247,7 @@ module cw310_top #(
 
    simple_sram_rwtest #(
       .pDATA_WIDTH      (8),
-      .pADDR_WIDTH      (21)
+      .pADDR_WIDTH      (pSRAM_ADDR_WIDTH)
    ) U_sram_test (
       .clk              (usb_clk_buf),
       .reset            (reset),

@@ -31,7 +31,7 @@ either expressed or implied, of NewAE Technology Inc.
 
 module simple_sram_rwtest #(
    parameter pDATA_WIDTH = 8,
-   parameter pADDR_WIDTH = 21
+   parameter pADDR_WIDTH = 20
 )(
    input wire                           clk,
    input wire                           reset,
@@ -69,6 +69,7 @@ wire [31:0] lfsr_data;
 reg lfsr_load;
 reg lfsr_next;
 reg [31:0] lfsr_seed;
+reg [31:0] test_runs;
 
 wire state_write = state == pS_WRITE || state == pS_WRITE_NEXT;
 wire state_read = state == pS_READ || state == pS_READ_NEXT;
@@ -98,6 +99,7 @@ always @ (posedge clk) begin
       lfsr_load <= 0;
       lfsr_next <= 0;
       lfsr_seed <= 1;
+      test_runs <= 0;
    end 
    else begin
       restart_count <= 0;
@@ -189,6 +191,7 @@ always @ (posedge clk) begin
             //if (addr == {pADDR_WIDTH{1'b1}}) begin
             if (addr == top_address) begin
                lfsr_seed <= lfsr_seed + 1;
+               test_runs <= test_runs + 1;
                state <= pS_IDLE; // easiest way to restart
             end
             else begin
@@ -229,7 +232,8 @@ lfsr U_lfsr (
 	    .probe5         (cen),                          // input wire [0:0]  probe5 
 	    .probe6         (ce2),                          // input wire [0:0]  probe6 
 	    .probe7         (addr),                         // input wire [21:0] probe7 
-	    .probe8         (data)                          // input wire [7:0]  probe8 
+	    .probe8         (data),                         // input wire [7:0]  probe8 
+	    .probe9         (test_runs)                     // input wire [7:0]  probe9 
        );
    `endif
 

@@ -62,7 +62,7 @@ module tb();
     wire tio_trigger;
     wire tio_clkout;
 
-    wire [20:0] SRAM_A;
+    wire [19:0] SRAM_A;
     wire [7:0] SRAM_DQ;
     wire SRAM_CE2;
     wire SRAM_CEn;
@@ -158,7 +158,7 @@ module tb();
       $display("SRAM test...");
       write_byte(0, `REG_SRAM_MEM_BYTES, 0, 4);
       write_bytes(0, 1, `REG_SRAM_EN, 8'h01);
-      #(pUSB_CLOCK_PERIOD*100);
+      #(pUSB_CLOCK_PERIOD*1000);
 
 
       $display("done!");
@@ -216,7 +216,7 @@ module tb();
 
    cw310_top #(
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
-      .pADDR_WIDTH              (pADDR_WIDTH)
+      .pUSB_ADDR_WIDTH          (pADDR_WIDTH)
    ) U_dut (
       .usb_clk                  (usb_clk & usb_clk_enable),
       .USB_D                    (usb_data),
