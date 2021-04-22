@@ -55,14 +55,19 @@
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 xadc_wiz_0 your_instance_name (
+  .m_axis_tvalid(m_axis_tvalid),              // output wire m_axis_tvalid
+  .m_axis_tready(m_axis_tready),              // input wire m_axis_tready
+  .m_axis_tdata(m_axis_tdata),                // output wire [15 : 0] m_axis_tdata
+  .m_axis_tid(m_axis_tid),                    // output wire [4 : 0] m_axis_tid
+  .m_axis_aclk(m_axis_aclk),                  // input wire m_axis_aclk
+  .s_axis_aclk(s_axis_aclk),                  // input wire s_axis_aclk
+  .m_axis_resetn(m_axis_resetn),              // input wire m_axis_resetn
   .di_in(di_in),                              // input wire [15 : 0] di_in
   .daddr_in(daddr_in),                        // input wire [6 : 0] daddr_in
   .den_in(den_in),                            // input wire den_in
   .dwe_in(dwe_in),                            // input wire dwe_in
   .drdy_out(drdy_out),                        // output wire drdy_out
   .do_out(do_out),                            // output wire [15 : 0] do_out
-  .dclk_in(dclk_in),                          // input wire dclk_in
-  .reset_in(reset_in),                        // input wire reset_in
   .vp_in(vp_in),                              // input wire vp_in
   .vn_in(vn_in),                              // input wire vn_in
   .vauxp0(vauxp0),                            // input wire vauxp0
@@ -80,7 +85,8 @@ xadc_wiz_0 your_instance_name (
   .vbram_alarm_out(vbram_alarm_out),          // output wire vbram_alarm_out
   .alarm_out(alarm_out),                      // output wire alarm_out
   .eos_out(eos_out),                          // output wire eos_out
-  .busy_out(busy_out)                        // output wire busy_out
+  .busy_out(busy_out),                        // output wire busy_out
+  .temp_out(temp_out)                        // output wire [11 : 0] temp_out
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

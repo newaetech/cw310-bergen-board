@@ -50,4 +50,8 @@
 # Input clock periods. These duplicate the values entered for the
 #  input clocks. You can use these to time your system
 #----------------------------------------------------------------
-#create_clock -period 10 [get_ports dclk_in]
+#create_clock -period 10 [get_ports m_axis_aclk]
+#create_clock -period 10 [get_ports s_axis_aclk]
+
+# False path on RST pin of FIFO18E1 in ASYNC mode
+set_false_path -to [get_pins -leaf -of_objects [get_cells -hier *FIFO18E1*] -filter NAME=~*/RST]

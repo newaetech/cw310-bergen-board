@@ -65,6 +65,7 @@ module cw310_reg_aes #(
    input  wire                                  I_ready,  /* Crypto core ready. Tie to '1' if not used. */
    input  wire                                  I_done,   /* Crypto done. Can be high for one crypto_clk cycle or longer. */
    input  wire                                  I_busy,   /* Crypto busy. */
+   input  wire                                  I_ddr3_calib_complete,
    input  wire                                  I_ddr3_pass,
    input  wire                                  I_sram_pass,
    input  wire [7:0]                            I_dip,
@@ -156,7 +157,7 @@ module cw310_reg_aes #(
             `REG_BUILDTIME:             reg_read_data = buildtime[reg_bytecnt*8 +: 8];
             `REG_DDR3_EN:               reg_read_data = O_ddr3_en;
             `REG_SRAM_EN:               reg_read_data = O_sram_en;
-            `REG_DDR3_PASS:             reg_read_data = I_ddr3_pass;
+            `REG_DDR3_PASS:             reg_read_data = {6'b0, I_ddr3_calib_complete, I_ddr3_pass};
             `REG_SRAM_PASS:             reg_read_data = I_sram_pass;
             `REG_DIP:                   reg_read_data = I_dip;
             `REG_XO_EN:                 reg_read_data = O_xo_en;

@@ -1,12 +1,12 @@
 # default unless otherwise specified:
-set_property IOSTANDARD LVCMOS33 [get_ports *]
+#set_property IOSTANDARD LVCMOS33 [get_ports *]
 
-set_property -dict { PACKAGE_PIN C16   IOSTANDARD LVCMOS33 } [get_ports { vauxp0 }]
-set_property -dict { PACKAGE_PIN B16   IOSTANDARD LVCMOS33 } [get_ports { vauxn0 }]
-set_property -dict { PACKAGE_PIN B17   IOSTANDARD LVCMOS33 } [get_ports { vauxp1 }]
-set_property -dict { PACKAGE_PIN A19   IOSTANDARD LVCMOS33 } [get_ports { vauxn1 }]
-set_property -dict { PACKAGE_PIN A18   IOSTANDARD LVCMOS33 } [get_ports { vauxp8 }]
-set_property -dict { PACKAGE_PIN B16   IOSTANDARD LVCMOS33 } [get_ports { vauxn8 }]
+#set_property -dict { PACKAGE_PIN C16   IOSTANDARD LVCMOS33 } [get_ports { vauxp0 }]
+#set_property -dict { PACKAGE_PIN B16   IOSTANDARD LVCMOS33 } [get_ports { vauxn0 }]
+#set_property -dict { PACKAGE_PIN B17   IOSTANDARD LVCMOS33 } [get_ports { vauxp1 }]
+#set_property -dict { PACKAGE_PIN A19   IOSTANDARD LVCMOS33 } [get_ports { vauxn1 }]
+#set_property -dict { PACKAGE_PIN A18   IOSTANDARD LVCMOS33 } [get_ports { vauxp8 }]
+#set_property -dict { PACKAGE_PIN B16   IOSTANDARD LVCMOS33 } [get_ports { vauxn8 }]
 
 set_property -dict { PACKAGE_PIN Y23   IOSTANDARD LVCMOS33 } [get_ports { usb_clk }]
 set_property -dict { PACKAGE_PIN A23   IOSTANDARD LVCMOS33 } [get_ports { usb_trigger }]
@@ -89,8 +89,8 @@ set_property -dict { PACKAGE_PIN  R22  IOSTANDARD   LVCMOS33 } [get_ports { PLL_
 
 set_property -dict { PACKAGE_PIN  AB7  IOSTANDARD   LVCMOS18 } [get_ports { LVDS_XO_200M_ENA }]; #IO_L10P_T1_33
 
-#set_property -dict { PACKAGE_PIN  AD9  IOSTANDARD    LVDS_18 } [get_ports { SYSCLK_N }]; #IO_L12N_T1_MRCC_33
-#set_property -dict { PACKAGE_PIN  AC9  IOSTANDARD    LVDS_18 } [get_ports { SYSCLK_P }]; #IO_L12P_T1_MRCC_33
+set_property -dict { PACKAGE_PIN  AD9  IOSTANDARD   LVDS } [get_ports { SYSCLK_N }]; #IO_L12N_T1_MRCC_33
+set_property -dict { PACKAGE_PIN  AC9  IOSTANDARD   LVDS } [get_ports { SYSCLK_P }]; #IO_L12P_T1_MRCC_33
 
 
 #####
@@ -149,19 +149,15 @@ set_input_delay -clock usb_clk -add_delay 2.000 [get_ports USB_nCE]
 set_input_delay -clock usb_clk -add_delay 2.000 [get_ports USB_nRD]
 set_input_delay -clock usb_clk -add_delay 2.000 [get_ports USB_nWR]
 
-set_input_delay -clock usb_clk -add_delay 0.000 [get_ports USRDIP0]
-set_input_delay -clock usb_clk -add_delay 0.000 [get_ports USRDIP1]
+set_input_delay -clock usb_clk -add_delay 0.000 [get_ports USRDIP]
 set_input_delay -clock [get_clocks usb_clk] -add_delay 0.500 [get_ports USRSW2]
-
-set_output_delay -clock usb_clk 0.000 [get_ports USRLED0]
-set_output_delay -clock usb_clk 0.000 [get_ports USRLED1]
-set_output_delay -clock usb_clk 0.000 [get_ports USRLED2]
+set_output_delay -clock usb_clk 0.000 [get_ports USRLED]
 set_output_delay -clock usb_clk 0.000 [get_ports USB_D]
 set_output_delay -clock usb_clk 0.000 [get_ports CWIO_IO4]
 set_output_delay -clock usb_clk 0.000 [get_ports CWIO_HS1]
-set_false_path -to [get_ports USRLED0]
-set_false_path -to [get_ports USRLED1]
-set_false_path -to [get_ports USRLED2]
+set_false_path -from [get_ports USRDIP]
+set_false_path -from [get_ports USRSW2]
+set_false_path -to [get_ports USRLED]
 set_false_path -to [get_ports USB_D]
 set_false_path -to [get_ports CWIO_IO4]
 set_false_path -to [get_ports CWIO_HS1]

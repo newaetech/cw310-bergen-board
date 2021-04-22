@@ -1008,7 +1008,7 @@
                     },
                     {
                         "type": "ILA_V3",
-                        "name": "U_sram_test/U_ila_sram",
+                        "name": "U_simple_ddr3_rwtest/U_simple_ddr3_rwtest_ila",
                         "spec": "labtools_ila_v6",
                         "ipName": "ila",
                         "core_location": {
@@ -1016,7 +1016,7 @@
                             "slave_index": 2,
                             "bscan_switch_index": 0
                         },
-                        "uuid": "C9C3E5EBE6E756A099D190CEB8DBEF65",
+                        "uuid": "F7E0798E782059A683CDCFFB279A5816",
                         "pins": [
                             {
                                 "name": "probe0",
@@ -1029,7 +1029,7 @@
                                 "portIndex": 0,
                                 "nets": [
                                     {
-                                        "name": "U_sram_test/active",
+                                        "name": "U_simple_ddr3_rwtest/active",
                                         "isBus": false
                                     }
                                 ]
@@ -1045,7 +1045,7 @@
                                 "portIndex": 1,
                                 "nets": [
                                     {
-                                        "name": "U_sram_test/pass",
+                                        "name": "U_simple_ddr3_rwtest/init_calib_complete",
                                         "isBus": false
                                     }
                                 ]
@@ -1061,7 +1061,7 @@
                                 "portIndex": 2,
                                 "nets": [
                                     {
-                                        "name": "U_sram_test/fail",
+                                        "name": "U_simple_ddr3_rwtest/pass",
                                         "isBus": false
                                     }
                                 ]
@@ -1077,7 +1077,7 @@
                                 "portIndex": 3,
                                 "nets": [
                                     {
-                                        "name": "U_sram_test/wen",
+                                        "name": "U_simple_ddr3_rwtest/fail",
                                         "isBus": false
                                     }
                                 ]
@@ -1085,6 +1085,820 @@
                             {
                                 "name": "probe4",
                                 "id": 28,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 28,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_addr",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[28]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[27]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[26]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[25]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[24]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[23]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[22]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[21]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[20]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[19]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[18]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[17]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[16]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[15]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[14]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[13]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[12]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[11]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[10]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[9]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[8]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[7]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[6]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[5]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[4]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_addr[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 29,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_cmd",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_cmd[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_cmd[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_cmd[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 30,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_en",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 31,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_wdf_data",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[31]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[30]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[29]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[28]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[27]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[26]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[25]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[24]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[23]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[22]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[21]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[20]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[19]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[18]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[17]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[16]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[15]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[14]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[13]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[12]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[11]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[10]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[9]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[8]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[7]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[6]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[5]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[4]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_data[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 32,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_wdf_end",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 33,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_wdf_wren",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 34,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_sr_req",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 35,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_ref_req",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 36,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_zq_req",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 37,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 3,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_wdf_mask",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_mask[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_mask[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_mask[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_wdf_mask[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 38,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_sr_active",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 39,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_ref_ack",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 40,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_zq_ack",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 41,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_rd_data",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[31]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[30]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[29]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[28]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[27]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[26]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[25]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[24]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[23]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[22]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[21]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[20]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[19]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[18]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[17]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[16]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[15]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[14]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[13]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[12]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[11]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[10]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[9]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[8]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[7]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[6]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[5]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[4]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/app_rd_data[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 42,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_rd_data_end",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe19",
+                                "id": 43,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 19,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_rd_data_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe20",
+                                "id": 44,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 20,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_rdy",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe21",
+                                "id": 45,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 21,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/app_wdf_rdy",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe22",
+                                "id": 46,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 22,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/state[2]",
+                                                "parentNetId": 315
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/state[1]",
+                                                "parentNetId": 316
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/state[0]",
+                                                "parentNetId": 317
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe23",
+                                "id": 47,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 23,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/index",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[7]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[6]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[5]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[4]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/index[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe24",
+                                "id": 48,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 24,
+                                "nets": [
+                                    {
+                                        "name": "U_simple_ddr3_rwtest/iteration",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[15]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[14]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[13]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[12]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[11]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[10]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[9]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[8]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[7]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[6]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[5]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[4]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[3]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[2]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[1]"
+                                            },
+                                            {
+                                                "name": "U_simple_ddr3_rwtest/iteration[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "U_sram_test/U_ila_sram",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 3,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "C9C3E5EBE6E756A099D190CEB8DBEF65",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 49,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/active",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 50,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/pass",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 51,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/fail",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 52,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "U_sram_test/wen",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 53,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1100,7 +1914,7 @@
                             },
                             {
                                 "name": "probe5",
-                                "id": 29,
+                                "id": 54,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1116,7 +1930,7 @@
                             },
                             {
                                 "name": "probe6",
-                                "id": 30,
+                                "id": 55,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1132,7 +1946,7 @@
                             },
                             {
                                 "name": "probe7",
-                                "id": 31,
+                                "id": 56,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1210,7 +2024,7 @@
                             },
                             {
                                 "name": "probe7",
-                                "id": 32,
+                                "id": 57,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1226,7 +2040,7 @@
                             },
                             {
                                 "name": "probe8",
-                                "id": 33,
+                                "id": 58,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1270,7 +2084,7 @@
                             },
                             {
                                 "name": "probe9",
-                                "id": 34,
+                                "id": 59,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1391,14 +2205,14 @@
                         "ipName": "ila",
                         "core_location": {
                             "user_chain": 1,
-                            "slave_index": 3,
+                            "slave_index": 4,
                             "bscan_switch_index": 0
                         },
                         "uuid": "5CACD72A69945CA39D47D073B9E4EB92",
                         "pins": [
                             {
                                 "name": "probe0",
-                                "id": 35,
+                                "id": 60,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1440,7 +2254,7 @@
                             },
                             {
                                 "name": "probe1",
-                                "id": 36,
+                                "id": 61,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1482,7 +2296,7 @@
                             },
                             {
                                 "name": "probe2",
-                                "id": 37,
+                                "id": 62,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1498,7 +2312,7 @@
                             },
                             {
                                 "name": "probe3",
-                                "id": 38,
+                                "id": 63,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1573,7 +2387,7 @@
                             },
                             {
                                 "name": "probe4",
-                                "id": 39,
+                                "id": 64,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1589,7 +2403,7 @@
                             },
                             {
                                 "name": "probe5",
-                                "id": 40,
+                                "id": 65,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1605,7 +2419,7 @@
                             },
                             {
                                 "name": "probe6",
-                                "id": 41,
+                                "id": 66,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1621,7 +2435,7 @@
                             },
                             {
                                 "name": "probe7",
-                                "id": 42,
+                                "id": 67,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1675,7 +2489,7 @@
                             },
                             {
                                 "name": "probe8",
-                                "id": 43,
+                                "id": 68,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1714,7 +2528,7 @@
                             },
                             {
                                 "name": "probe9",
-                                "id": 44,
+                                "id": 69,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1756,7 +2570,7 @@
                             },
                             {
                                 "name": "probe10",
-                                "id": 45,
+                                "id": 70,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
@@ -1798,7 +2612,7 @@
                             },
                             {
                                 "name": "probe11",
-                                "id": 46,
+                                "id": 71,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1814,7 +2628,7 @@
                             },
                             {
                                 "name": "probe12",
-                                "id": 47,
+                                "id": 72,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
@@ -1837,27 +2651,136 @@
                         "name": "reset",
                         "state_reg": [
                             {
-                                "name": "U_sram_test/FSM_onehot_state_reg[1]",
+                                "name": "U_simple_ddr3_rwtest/state_reg[0]",
                                 "states": [
                                     {
-                                        "name": "pS_WRITE_NEXT",
-                                        "val": "00100"
+                                        "name": "IDLE",
+                                        "val": "000"
                                     },
                                     {
-                                        "name": "pS_WRITE",
-                                        "val": "00010"
+                                        "name": "WRITE",
+                                        "val": "001"
                                     },
                                     {
-                                        "name": "pS_READ_NEXT",
-                                        "val": "10000"
+                                        "name": "WRITE_DONE",
+                                        "val": "010"
                                     },
                                     {
-                                        "name": "pS_READ",
-                                        "val": "01000"
+                                        "name": "READ",
+                                        "val": "011"
                                     },
                                     {
-                                        "name": "pS_IDLE",
-                                        "val": "00001"
+                                        "name": "READ_DONE",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "CHECK",
+                                        "val": "101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 315,
+                        "name": "U_simple_ddr3_rwtest/state[2]",
+                        "state_reg": [
+                            {
+                                "name": "U_simple_ddr3_rwtest/state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "WRITE_DONE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "READ_DONE",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "CHECK",
+                                        "val": "101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 316,
+                        "name": "U_simple_ddr3_rwtest/state[1]",
+                        "state_reg": [
+                            {
+                                "name": "U_simple_ddr3_rwtest/state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "WRITE_DONE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "READ_DONE",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "CHECK",
+                                        "val": "101"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 317,
+                        "name": "U_simple_ddr3_rwtest/state[0]",
+                        "state_reg": [
+                            {
+                                "name": "U_simple_ddr3_rwtest/state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "WRITE_DONE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "READ_DONE",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "CHECK",
+                                        "val": "101"
                                     }
                                 ]
                             }

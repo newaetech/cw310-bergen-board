@@ -9,5 +9,6 @@ tb.v
 ../hdl/cw310_usb_reg_fe.v
 ../hdl/cw310_reg_aes.v
 ../hdl/simple_sram_rwtest.v
+../hdl/simple_ddr3_rwtest.v
 ../hdl/lfsr.v
 

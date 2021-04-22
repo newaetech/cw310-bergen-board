@@ -54,14 +54,19 @@
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT xadc_wiz_0
   PORT (
+    m_axis_tvalid : OUT STD_LOGIC;
+    m_axis_tready : IN STD_LOGIC;
+    m_axis_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+    m_axis_tid : OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
+    m_axis_aclk : IN STD_LOGIC;
+    s_axis_aclk : IN STD_LOGIC;
+    m_axis_resetn : IN STD_LOGIC;
     di_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
     daddr_in : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
     den_in : IN STD_LOGIC;
     dwe_in : IN STD_LOGIC;
     drdy_out : OUT STD_LOGIC;
     do_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-    dclk_in : IN STD_LOGIC;
-    reset_in : IN STD_LOGIC;
     vp_in : IN STD_LOGIC;
     vn_in : IN STD_LOGIC;
     vauxp0 : IN STD_LOGIC;
@@ -79,7 +84,8 @@ COMPONENT xadc_wiz_0
     vbram_alarm_out : OUT STD_LOGIC;
     alarm_out : OUT STD_LOGIC;
     eos_out : OUT STD_LOGIC;
-    busy_out : OUT STD_LOGIC
+    busy_out : OUT STD_LOGIC;
+    temp_out : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -90,14 +96,19 @@ END COMPONENT;
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 your_instance_name : xadc_wiz_0
   PORT MAP (
+    m_axis_tvalid => m_axis_tvalid,
+    m_axis_tready => m_axis_tready,
+    m_axis_tdata => m_axis_tdata,
+    m_axis_tid => m_axis_tid,
+    m_axis_aclk => m_axis_aclk,
+    s_axis_aclk => s_axis_aclk,
+    m_axis_resetn => m_axis_resetn,
     di_in => di_in,
     daddr_in => daddr_in,
     den_in => den_in,
     dwe_in => dwe_in,
     drdy_out => drdy_out,
     do_out => do_out,
-    dclk_in => dclk_in,
-    reset_in => reset_in,
     vp_in => vp_in,
     vn_in => vn_in,
     vauxp0 => vauxp0,
@@ -115,7 +126,8 @@ your_instance_name : xadc_wiz_0
     vbram_alarm_out => vbram_alarm_out,
     alarm_out => alarm_out,
     eos_out => eos_out,
-    busy_out => busy_out
+    busy_out => busy_out,
+    temp_out => temp_out
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

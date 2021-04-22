@@ -4,9 +4,15 @@
 
 ## DDR3
 - LVDS_XO_200M_ENA output: set by REG_XO_EN register (0x11)
-- TODO: SYSCLK input monitoring: cycle counts per XXX usb clocks: read REG_XO_FREQ
+- SYSCLK input monitoring: cycle counts per 2\*\*22 usb clocks: read REG_XO_FREQ
   register (0x12)
-- self-test: TODO
+- enable self-test by setting REG_DDR3_EN (0xc)
+- pass/fail status by reading REG_DDR3_PASS (0xe)
+    - bit 1 reflects MIG's init_calib_complete
+    - bit 0 high means test is passing -- continuously updated, but if a
+      failure is seen, it sticks to 0 until FPGA is reset or DDR3 test is
+      disabled and re-enabled
+- doesn't cover the full address space or use random data (yet)
 
 ## DIP switches
 - their state can be read from REG_DIP (0x10)
@@ -25,5 +31,4 @@
       full SRAM, using LFSR-generated data, continuously when enabled
     - driven by USB clock
     - read/write of the full memory takes about 1 second
-- haven't tested this on hardware, so there's an ILA just in case
 

@@ -52,5 +52,6 @@
 ############################################################
 # Clock Period Constraints                                 #
 ############################################################
-#create_clock -period 10 [get_ports dclk_in]
+create_clock -period 10 [get_ports m_axis_aclk]
+#create_clock -period 10 [get_ports s_axis_aclk]
 

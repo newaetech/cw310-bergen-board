@@ -107,16 +107,23 @@ always @ (posedge clk) begin
     pass <= 0;
     fail <= 0;
   end else begin
+
     case (state)
       IDLE: begin
         index <= 0;
         if (init_calib_complete && active) begin
           state <= WRITE;
         end
+        else begin
+          pass <= 0;
+          fail <= 0;
+        end
       end
 
       WRITE: begin
-        if (app_rdy & app_wdf_rdy) begin
+        if (~active)
+          state <= IDLE;
+        else if (app_rdy & app_wdf_rdy) begin
           state <= WRITE_DONE;
           app_en <= 1;
           app_wdf_wren <= 1;
@@ -136,7 +143,9 @@ always @ (posedge clk) begin
           app_wdf_wren <= 0;
         end
 
-        if (~app_en & ~app_wdf_wren) begin
+        if (~active)
+          state <= IDLE;
+        else if (~app_en & ~app_wdf_wren) begin
           //if (index == 3) begin
           if (index == 63) begin
              index <= 0;
@@ -150,7 +159,9 @@ always @ (posedge clk) begin
       end
 
       READ: begin
-        if (app_rdy) begin
+        if (~active)
+          state <= IDLE;
+        else if (app_rdy) begin
           app_en <= 1;
           app_addr <= index << 8;
           app_cmd <= CMD_READ;
@@ -163,7 +174,9 @@ always @ (posedge clk) begin
           app_en <= 0;
         end
 
-        if (app_rd_data_valid) begin
+        if (~active)
+          state <= IDLE;
+        else if (app_rd_data_valid) begin
           data_read_from_memory <= app_rd_data;
           state <= CHECK;
         end
@@ -196,36 +209,35 @@ always @ (posedge clk) begin
 end
 
 
-`ifndef __ICARUS__
-ila_1 U_simple_ddr3_rwtest_ila (
+`ifdef ILA_DDR3
+ila_ddr3 U_simple_ddr3_rwtest_ila (
 	.clk(clk), // input wire clk
 
 	.probe0         (active             ),      // input wire [0:0]  probe0  
 	.probe1         (init_calib_complete),      // input wire [0:0]  probe1 
 	.probe2         (pass               ),      // input wire [0:0]  probe2 
 	.probe3         (fail               ),      // input wire [0:0]  probe3 
-	.probe4         (app_addr[14:0]     ),      // input wire [14:0]  probe4 
+	.probe4         (app_addr           ),      // input wire [28:0] probe4 
 	.probe5         (app_cmd            ),      // input wire [2:0]  probe5 
 	.probe6         (app_en             ),      // input wire [0:0]  probe6 
-	.probe7         (app_wdf_data       ),      // input wire [255:0]  probe7 
+	.probe7         (app_wdf_data       ),      // input wire [31:0] probe7 
 	.probe8         (app_wdf_end        ),      // input wire [0:0]  probe8 
 	.probe9         (app_wdf_wren       ),      // input wire [0:0]  probe9 
 	.probe10        (app_sr_req         ),      // input wire [0:0]  probe10 
 	.probe11        (app_ref_req        ),      // input wire [0:0]  probe11 
 	.probe12        (app_zq_req         ),      // input wire [0:0]  probe12 
-	.probe13        (app_wdf_mask       ),      // input wire [31:0]  probe13 
+	.probe13        (app_wdf_mask       ),      // input wire [3:0]  probe13 
 	.probe14        (app_sr_active      ),      // input wire [0:0]  probe14 
 	.probe15        (app_ref_ack        ),      // input wire [0:0]  probe15 
 	.probe16        (app_zq_ack         ),      // input wire [0:0]  probe16 
-	.probe17        (app_rd_data        ),      // input wire [255:0]  probe17 
+	.probe17        (app_rd_data        ),      // input wire [31:0] probe17 
 	.probe18        (app_rd_data_end    ),      // input wire [0:0]  probe18 
 	.probe19        (app_rd_data_valid  ),      // input wire [0:0]  probe19 
 	.probe20        (app_rdy            ),      // input wire [0:0]  probe20 
 	.probe21        (app_wdf_rdy        ),      // input wire [0:0]  probe21
 	.probe22        (state              ),      // input wire [2:0]  probe22
-	.probe23        (index[1:0]         ),      // input wire [1:0]  probe23
-	//.probe24        (iteration          )       // input wire [63:0] probe24
-	.probe24        ({48'b0, iteration} )       // input wire [63:0] probe24
+	.probe23        (index              ),      // input wire [7:0]  probe23
+	.probe24        (iteration          )       // input wire [15:0] probe24
 );
 `endif
 
