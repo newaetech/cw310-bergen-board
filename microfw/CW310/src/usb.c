@@ -720,6 +720,9 @@ bool main_setup_in_received(void)
 
     static uint8_t  respbuf[64];
     //unsigned int cnt;
+	
+	int pin;
+	uint8_t addr;
 
     switch(udd_g_ctrlreq.req.bRequest){
         case REQ_MEMREAD_CTRL:
@@ -801,17 +804,15 @@ bool main_setup_in_received(void)
 			return true;
 			break;
 			
-		case REQ_FPGAIO_UTIL:
-			0;
-			int pin = udd_g_ctrlreq.req.wValue & 0xFF;
+		case REQ_FPGAIO_UTIL:			
+			pin = udd_g_ctrlreq.req.wValue & 0xFF;
 			respbuf[0] = gpio_pin_is_high(pin);
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = 1;
 			return true;
 			break;         
 		case REQ_FPGA_TEMP:
-			0;
-			uint8_t addr = udd_g_ctrlreq.req.wValue & 0xFF;
+			addr = udd_g_ctrlreq.req.wValue & 0xFF;
 			max1617_register_read(addr, respbuf);
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = 1;
