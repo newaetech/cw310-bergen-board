@@ -82,6 +82,8 @@ module cw310_reg_aes #(
    output reg                                   O_ddr3_en,
    output reg                                   O_sram_en,
    output reg                                   O_xo_en,
+   output reg                                   O_vddr_enable,
+   input  wire                                  I_vddr_pgood,
    output reg  [7:0]                            O_leds,
    output reg                                   O_hearbeats,
    output reg  [7:0]                            O_top_address
@@ -160,11 +162,12 @@ module cw310_reg_aes #(
             `REG_DDR3_PASS:             reg_read_data = {6'b0, I_ddr3_calib_complete, I_ddr3_pass};
             `REG_SRAM_PASS:             reg_read_data = I_sram_pass;
             `REG_DIP:                   reg_read_data = I_dip;
-            `REG_XO_EN:                 reg_read_data = O_xo_en;
+            `REG_XO_EN:                 reg_read_data = {6'b0, O_vddr_enable, O_xo_en};
             `REG_XO_FREQ:               reg_read_data = I_sysclk_freq[reg_bytecnt*8 +: 8];
             `REG_LEDS:                  reg_read_data = O_leds;
             `REG_HEARTBEATS:            reg_read_data = O_hearbeats;
             `REG_SRAM_MEM_BYTES:        reg_read_data = O_top_address;
+            `REG_VDDR_PGOOD:            reg_read_data = I_vddr_pgood;
             default:                    reg_read_data = 0;
          endcase
       end
@@ -191,6 +194,7 @@ module cw310_reg_aes #(
          O_sram_en <= 0;
          O_ddr3_en <= 0;
          O_xo_en <= 1;
+         O_vddr_enable <= 0;
          O_leds <= 8'hFF;
          O_hearbeats <= 0;
          O_top_address <= 0;
@@ -207,7 +211,7 @@ module cw310_reg_aes #(
                `REG_CRYPT_KEY:          reg_crypt_key[reg_bytecnt*8 +: 8] <= write_data;
                `REG_DDR3_EN:            O_ddr3_en <= write_data[0];
                `REG_SRAM_EN:            O_sram_en <= write_data[0];
-               `REG_XO_EN:              O_xo_en <= write_data[0];
+               `REG_XO_EN:              {O_vddr_enable, O_xo_en} <= write_data[1:0];
                `REG_LEDS:               O_leds <= write_data;
                `REG_HEARTBEATS:         O_hearbeats <= write_data[0];
                `REG_SRAM_MEM_BYTES:     O_top_address <= write_data;

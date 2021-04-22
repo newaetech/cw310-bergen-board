@@ -3,7 +3,9 @@
 - Clocks controlled as on CW305, with J16 = DIP0 and K16 = DIP1.
 
 ## DDR3
-- LVDS_XO_200M_ENA output: set by REG_XO_EN register (0x11)
+- LVDS_XO_200M_ENA output: set by REG_XO_EN register (0x11) bit 0
+- VDDR_ENABLE: set by REG_XO_EN register (0x11) bit 1
+- VDDR_PGOOD can be read at REG_VDDR_PGOOD register (0x16)
 - SYSCLK input monitoring: cycle counts per 2\*\*22 usb clocks: read REG_XO_FREQ
   register (0x12)
 - enable self-test by setting REG_DDR3_EN (0xc)

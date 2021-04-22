@@ -91,10 +91,12 @@ module cw310_top #(
     output wire                         ddr3_cs_n,
     output wire                         ddr3_odt,
 
-    output wire                         LVDS_XO_200M_ENA,
-    // TODO NEXT: how was this in my standalone project?
     input  wire                         SYSCLK_P,
-    input  wire                         SYSCLK_N
+    input  wire                         SYSCLK_N,
+
+    output wire                         LVDS_XO_200M_ENA,
+    output wire                         vddr_enable,
+    input  wire                         vddr_pgood
     );
 
 
@@ -216,6 +218,8 @@ module cw310_top #(
        .O_ddr3_en               (ddr3_en),
        .O_sram_en               (sram_en),
        .O_xo_en                 (LVDS_XO_200M_ENA),
+       .O_vddr_enable           (vddr_enable),
+       .I_vddr_pgood            (vddr_pgood),
        .O_leds                  (reg_leds),
        .O_hearbeats             (hearbeats),
        .O_top_address           (top_address)

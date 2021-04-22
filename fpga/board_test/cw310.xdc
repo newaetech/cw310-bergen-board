@@ -88,6 +88,8 @@ set_property -dict { PACKAGE_PIN  R22  IOSTANDARD   LVCMOS33 } [get_ports { PLL_
 #set_property -dict { PACKAGE_PIN  N21  IOSTANDARD   LVCMOS33 } [get_ports { PLL_CLK2 }]; #IO_L12P_T1_MRCC_13
 
 set_property -dict { PACKAGE_PIN  AB7  IOSTANDARD   LVCMOS18 } [get_ports { LVDS_XO_200M_ENA }]; #IO_L10P_T1_33
+set_property -dict { PACKAGE_PIN  N24  IOSTANDARD   LVCMOS33 } [get_ports { vddr_enable }]; #IO_L10P_T1_33
+set_property -dict { PACKAGE_PIN  R18  IOSTANDARD   LVCMOS33 } [get_ports { vddr_pgood }]; #IO_L10P_T1_33
 
 set_property -dict { PACKAGE_PIN  AD9  IOSTANDARD   LVDS } [get_ports { SYSCLK_N }]; #IO_L12N_T1_MRCC_33
 set_property -dict { PACKAGE_PIN  AC9  IOSTANDARD   LVDS } [get_ports { SYSCLK_P }]; #IO_L12P_T1_MRCC_33
