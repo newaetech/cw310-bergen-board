@@ -1,7 +1,7 @@
 # CW310 Bergen Board (Kintex FPGA Target)
 
 
-[ ![CW310 Bergen Board](Images/cw310-bergenk410t.jpeg "CW310 Bergen Board") ](Images/cw310-bergenk410t.jpeg)
+[ ![CW310 Bergen Board](Images/cw310-bergen-heatsink.jpeg "CW310 Bergen Board") ](Images/cw310-bergenk410t.jpeg)
 
 The ChipWhisperer CW310 "Bergen Board" is an advanced evaluation platform for FPGA-based security SoC, RoT, or HSM based designs. It is specifically designed to meet the needs of security evaluation purposes, while having the features you would expect in an easy-to-use FPGA development board.
 
