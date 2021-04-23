@@ -33,6 +33,13 @@
 #define FW_VER_MAJOR 0
 #define FW_VER_MINOR 40
 #define FW_VER_DEBUG 1
+twi_package_t USER_TWI_PACKET = {
+		.addr = {0x00, 0x00, 0x00},
+		.addr_length = 1,
+		.chip = 0x00,
+		.buffer = NULL,
+		.length = 0
+};
 
 volatile bool g_captureinprogress = true;
 
@@ -130,6 +137,37 @@ void main_vendor_disable(void)
 #define REQ_CDC_SETTINGS_EN 0x41
 
 #define REQ_FPGA_TEMP 0x42
+
+#define REQ_I2C_SETUP 0x43
+#define REQ_I2C_DATA 0x44
+
+void ctrl_i2c_send(void)
+{
+	//heartbleed
+	if (udd_g_ctrlreq.req.wLength > udd_g_ctrlreq.payload_size)
+		return;
+	
+	USER_TWI_PACKET.buffer = udd_g_ctrlreq.payload;
+	USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;
+	twi_master_write(TWI0, &USER_TWI_PACKET);
+}
+
+void ctrl_i2c_setup(void)
+{
+	if (udd_g_ctrlreq.req.wLength > udd_g_ctrlreq.payload_size)
+		return;
+	
+	uint8_t addr_len = udd_g_ctrlreq.req.wLength - 1;
+	if ((addr_len > 3) || (addr_len < 1)) {
+		return;
+	}
+	USER_TWI_PACKET.chip = udd_g_ctrlreq.payload[0];
+	for (uint8_t i = 0; i < addr_len; i++) {
+		USER_TWI_PACKET.addr[i] = udd_g_ctrlreq.payload[i+1];
+	}
+	
+}
+
 
 COMPILER_WORD_ALIGNED static uint8_t ctrlbuffer[64];
 #define CTRLBUFFER_WORDPTR ((uint32_t *) ((void *)ctrlbuffer))
@@ -678,7 +716,13 @@ bool main_setup_out_received(void)
 		case REQ_FPGA_TEMP:
 			udd_g_ctrlreq.callback = ctrl_fpga_temp_cb;
 			return true;
-
+ 
+		case REQ_I2C_SETUP:
+			udd_g_ctrlreq.callback = ctrl_i2c_setup;
+			return true;
+		case REQ_I2C_DATA:
+			udd_g_ctrlreq.callback = ctrl_i2c_send;
+			return true;
         default:
             return false;
     }					
@@ -815,6 +859,25 @@ bool main_setup_in_received(void)
 			max1617_register_read(addr, respbuf);
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = 1;
+			return true;
+			break;
+
+        case REQ_I2C_SETUP:
+			respbuf[0] = USER_TWI_PACKET.chip;
+			for (uint8_t i = 0; i < USER_TWI_PACKET.addr_length; i++) {
+				respbuf[i + 1] = USER_TWI_PACKET.addr[i];
+			}
+			udd_g_ctrlreq.payload = respbuf;
+			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.addr_length + 1;
+			return true;
+			break;
+			
+		case REQ_I2C_DATA:
+			USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;			     
+			USER_TWI_PACKET.buffer = respbuf;
+			twi_master_read(TWI0, &USER_TWI_PACKET);
+			udd_g_ctrlreq.payload = respbuf;
+			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length;
 			return true;
 			break;
 
