@@ -124,7 +124,7 @@ module cw310_top #(
 
     wire [7:0] reg_leds;
     wire hearbeats;
-    wire [7:0] top_address;
+    wire [7:0] sram_top_address;
     wire ddr3_pass;
     wire ddr3_fail;
     wire sram_pass;
@@ -198,6 +198,13 @@ module cw310_top #(
 
        .exttrigger_in           (usb_trigger),
 
+       .vauxp0                  (vauxp0),
+       .vauxn0                  (vauxn0),
+       .vauxp1                  (vauxp1),
+       .vauxn1                  (vauxn1),
+       .vauxp8                  (vauxp8),
+       .vauxn8                  (vauxn8),
+
        .I_textout               (128'b0),               // unused
        .I_cipherout             (crypt_cipherin),
        .I_ready                 (crypt_ready),
@@ -222,7 +229,8 @@ module cw310_top #(
        .I_vddr_pgood            (vddr_pgood),
        .O_leds                  (reg_leds),
        .O_hearbeats             (hearbeats),
-       .O_top_address           (top_address)
+       .O_sram_top_address      (sram_top_address),
+       .O_xadc_temp_out         (temp_out)
 
     );
 
@@ -282,7 +290,7 @@ module cw310_top #(
       .active           (sram_en),
       .pass             (sram_pass),
       .fail             (sram_fail),
-      .I_top_address    (top_address),
+      .I_top_address    (sram_top_address),
    
       .wen              (SRAM_WEn),
       .oen              (SRAM_OEn),
@@ -292,45 +300,6 @@ module cw310_top #(
       .data             (SRAM_DQ)
    );
 
-
-    `ifndef __ICARUS__
-        xadc_wiz_0 U_xadc (
-          .di_in                (0),                    // input wire [15 : 0] di_in
-          .daddr_in             (0),                    // input wire [6 : 0] daddr_in
-          .den_in               (0),                    // input wire den_in
-          .dwe_in               (0),                    // input wire dwe_in
-          .drdy_out             (),                     // output wire drdy_out
-          .do_out               (),                     // output wire [15 : 0] do_out
-          //.dclk_in              (usb_clk_buf),          // input wire dclk_in
-          //.reset_in             (reset),                // input wire reset_in
-          .vp_in                (),                     // input wire vp_in
-          .vn_in                (),                     // input wire vn_in
-          .vauxp0               (vauxp0),               // input wire vauxp0
-          .vauxn0               (vauxn0),               // input wire vauxn0
-          .vauxp1               (vauxp1),               // input wire vauxp1
-          .vauxn1               (vauxn1),               // input wire vauxn1
-          .vauxp8               (vauxp8),               // input wire vauxp8
-          .vauxn8               (vauxn8),               // input wire vauxn8
-          .user_temp_alarm_out  (),                     // output wire user_temp_alarm_out
-          .vccint_alarm_out     (),                     // output wire vccint_alarm_out
-          .vccaux_alarm_out     (),                     // output wire vccaux_alarm_out
-          .ot_out               (),                     // output wire ot_out
-          .channel_out          (),                     // output wire [4 : 0] channel_out
-          .eoc_out              (),                     // output wire eoc_out
-          .vbram_alarm_out      (),                     // output wire vbram_alarm_out
-          .alarm_out            (),                     // output wire alarm_out
-          .eos_out              (),                     // output wire eos_out
-          .busy_out             (),                     // output wire busy_out
-          .temp_out             (temp_out),             // output wire [11:0] temp_out
-          .m_axis_tvalid        (),                     // output wire m_axis_tvalid
-          .m_axis_tready        (1'b1),                 // input wire m_axis_tready
-          .m_axis_tdata         (),                     // output wire [15 : 0] m_axis_tdata
-          .m_axis_tid           (),                     // output wire [4 : 0] m_axis_tid
-          .m_axis_aclk          (usb_clk_buf),          // input wire m_axis_aclk
-          .s_axis_aclk          (usb_clk_buf),          // input wire s_axis_aclk
-          .m_axis_resetn        (resetn)                // input wire m_axis_resetn
-        );
-    `endif
 
    `ifdef __ICARUS__
       assign sysclk = SYSCLK_P;

@@ -59,6 +59,15 @@ module cw310_reg_aes #(
 // from top:
    input  wire                                  exttrigger_in,
 
+// XADC vaux:
+   input  wire                                  vauxp0,
+   input  wire                                  vauxn0,
+   input  wire                                  vauxp1,
+   input  wire                                  vauxn1,
+   input  wire                                  vauxp8,
+   input  wire                                  vauxn8,
+
+
 // register inputs:
    input  wire [pPT_WIDTH-1:0]                  I_textout,
    input  wire [pCT_WIDTH-1:0]                  I_cipherout,
@@ -86,7 +95,8 @@ module cw310_reg_aes #(
    input  wire                                  I_vddr_pgood,
    output reg  [7:0]                            O_leds,
    output reg                                   O_hearbeats,
-   output reg  [7:0]                            O_top_address
+   output reg  [7:0]                            O_sram_top_address,
+   output wire [11:0]                           O_xadc_temp_out
 
 );
 
@@ -106,6 +116,28 @@ module cw310_reg_aes #(
    reg                          go_r;
    reg                          go;
    wire [31:0]                  buildtime;
+
+   reg  [6:0]   drp_addr;
+   reg          drp_den;
+   reg  [15:0]  drp_din;
+   reg          drp_dwe;
+   wire [15:0]  drp_dout;
+   wire         drp_drdy;
+
+   wire user_temp_alarm_out;
+   wire vccint_alarm_out;
+   wire vccaux_alarm_out;
+   wire ot_out;
+   wire channel_out;
+   wire eoc_out;
+   wire vbram_alarm_out;
+   wire [4:0] xadc_stat;
+   assign xadc_stat[0] = ot_out;
+   assign xadc_stat[1] = user_temp_alarm_out;
+   assign xadc_stat[2] = vccint_alarm_out;
+   assign xadc_stat[3] = vccaux_alarm_out;
+   assign xadc_stat[4] = vbram_alarm_out;
+
 
    (* ASYNC_REG = "TRUE" *) reg  [pKEY_WIDTH-1:0] reg_crypt_key_crypt;
    (* ASYNC_REG = "TRUE" *) reg  [pPT_WIDTH-1:0] reg_crypt_textin_crypt;
@@ -166,8 +198,11 @@ module cw310_reg_aes #(
             `REG_XO_FREQ:               reg_read_data = I_sysclk_freq[reg_bytecnt*8 +: 8];
             `REG_LEDS:                  reg_read_data = O_leds;
             `REG_HEARTBEATS:            reg_read_data = O_hearbeats;
-            `REG_SRAM_MEM_BYTES:        reg_read_data = O_top_address;
+            `REG_SRAM_MEM_BYTES:        reg_read_data = O_sram_top_address;
             `REG_VDDR_PGOOD:            reg_read_data = I_vddr_pgood;
+            `REG_XADC_DRP_ADDR:         reg_read_data <= {1'b0, drp_addr};
+            `REG_XADC_DRP_DATA:         reg_read_data <= drp_dout[reg_bytecnt*8 +: 8];
+            `REG_XADC_STAT:             reg_read_data <= {3'b0, xadc_stat};
             default:                    reg_read_data = 0;
          endcase
       end
@@ -197,8 +232,10 @@ module cw310_reg_aes #(
          O_vddr_enable <= 0;
          O_leds <= 8'hFF;
          O_hearbeats <= 0;
-         O_top_address <= 0;
+         O_sram_top_address <= 0;
          reg_crypt_go_pulse <= 1'b0;
+         drp_dwe <= 1'b0;
+         drp_den <= 1'b0;
       end
 
       else begin
@@ -214,16 +251,46 @@ module cw310_reg_aes #(
                `REG_XO_EN:              {O_vddr_enable, O_xo_en} <= write_data[1:0];
                `REG_LEDS:               O_leds <= write_data;
                `REG_HEARTBEATS:         O_hearbeats <= write_data[0];
-               `REG_SRAM_MEM_BYTES:     O_top_address <= write_data;
+               `REG_SRAM_MEM_BYTES:     O_sram_top_address <= write_data;
             endcase
          end
+
          // REG_CRYPT_GO register is special: writing it creates a pulse. Reading it gives you the "busy" status.
          if ( (reg_addrvalid && reg_write && (reg_address == `REG_CRYPT_GO)) )
             reg_crypt_go_pulse <= 1'b1;
          else
             reg_crypt_go_pulse <= 1'b0;
+
+         // XADC DRP interface
+         // DRP usage notes:
+         // Writes: push write data to DRP data, then write DRP_ADDR with MSB set.
+         // Reads: write DRP_ADDR with MSB clear, then obtain read data from DRP_DATA.
+         if (reg_addrvalid && reg_write) begin
+            if (reg_address == `REG_XADC_DRP_ADDR) begin
+               drp_addr <= write_data[6:0];
+               drp_den <= 1'b1;
+               // DRP write:
+               if (write_data[7])
+                  drp_dwe <= 1'b1;
+               // DRP read:
+               else
+                  drp_dwe <= 1'b0;
+            end
+            else begin
+               drp_dwe <= 1'b0;
+               drp_den <= 1'b0;
+               if (reg_address == `REG_XADC_DRP_DATA)
+                  drp_din[reg_bytecnt*8 +: 8] <= write_data;
+            end
+         end
+         else begin
+            drp_dwe <= 1'b0;
+            drp_den <= 1'b0;
+         end
+
       end
    end
+
 
    always @(posedge crypto_clk) begin
       {go_r, go, go_pipe} <= {go, go_pipe, exttrigger_in};
@@ -279,6 +346,44 @@ module cw310_reg_aes #(
       );
    `else
       assign buildtime = 0;
+   `endif
+
+   `ifndef __ICARUS__
+        xadc_wiz_0 U_xadc (
+          .di_in                (drp_din),              // input wire [15 : 0] di_in
+          .daddr_in             (drp_addr),             // input wire [6 : 0] daddr_in
+          .den_in               (drp_den),              // input wire den_in
+          .dwe_in               (drp_dwe),              // input wire dwe_in
+          .drdy_out             (drp_drdy),             // output wire drdy_out
+          .do_out               (drp_dout),             // output wire [15 : 0] do_out
+          .vp_in                (),                     // input wire vp_in
+          .vn_in                (),                     // input wire vn_in
+          .vauxp0               (vauxp0),               // input wire vauxp0
+          .vauxn0               (vauxn0),               // input wire vauxn0
+          .vauxp1               (vauxp1),               // input wire vauxp1
+          .vauxn1               (vauxn1),               // input wire vauxn1
+          .vauxp8               (vauxp8),               // input wire vauxp8
+          .vauxn8               (vauxn8),               // input wire vauxn8
+          .user_temp_alarm_out  (user_temp_alarm_out),  // output wire user_temp_alarm_out
+          .vccint_alarm_out     (vccint_alarm_out),     // output wire vccint_alarm_out
+          .vccaux_alarm_out     (vccaux_alarm_out),     // output wire vccaux_alarm_out
+          .ot_out               (ot_out),               // output wire ot_out
+          .channel_out          (),                     // output wire [4 : 0] channel_out
+          .eoc_out              (),                     // output wire eoc_out
+          .vbram_alarm_out      (vbram_alarm_out),      // output wire vbram_alarm_out
+          .alarm_out            (),                     // output wire alarm_out
+          .eos_out              (),                     // output wire eos_out
+          .busy_out             (),                     // output wire busy_out
+          .temp_out             (O_xadc_temp_out),      // output wire [11:0] temp_out
+          .m_axis_tvalid        (),                     // output wire m_axis_tvalid
+          .m_axis_tready        (1'b1),                 // input wire m_axis_tready
+          .m_axis_tdata         (),                     // output wire [15 : 0] m_axis_tdata
+          .m_axis_tid           (),                     // output wire [4 : 0] m_axis_tid
+          .m_axis_aclk          (usb_clk),              // input wire m_axis_aclk
+          .s_axis_aclk          (usb_clk),              // input wire s_axis_aclk
+          .m_axis_resetn        (~reset_i)              // input wire m_axis_resetn
+        );
+
    `endif
 
 
