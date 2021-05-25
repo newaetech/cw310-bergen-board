@@ -362,6 +362,9 @@ static void ctrl_sam3ucfg_cb(void)
 
             /* Toggle trigger pin */
         case 0x06:
+            gpio_set_pin_high(FPGA_TRIGGER_GPIO);
+            delay_cycles(250);
+            gpio_set_pin_low(FPGA_TRIGGER_GPIO);
             break;
 			
 			/* Turn target power off */
@@ -374,6 +377,13 @@ static void ctrl_sam3ucfg_cb(void)
 			enable_fpga_power();
 			break;
 			
+
+		case 0x10:
+			udc_detach();
+			while (RSTC->RSTC_SR & RSTC_SR_SRCMP);
+			RSTC->RSTC_CR |= RSTC_CR_KEY(0xA5) | RSTC_CR_PERRST | RSTC_CR_PROCRST;
+			while(1);
+			break;
 
             /* Oh well, sucks to be you */
         default:
