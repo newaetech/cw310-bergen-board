@@ -28,6 +28,12 @@
 #define TWI_ERROR_TIMEOUT        9
 #endif
 
+/* Original fan PN (xxx) worked well across any PWM range.
+   Due to supply chain issues sub was needed - new fan PN (xxx)
+   seems picky and needs almost full on to do anything.
+*/
+#define MIN_FAN_PWM 95
+
 #define MAX1617_KILL_TEMP 65
 #define MAX1617_MAX_TEMP 55
 #define MAX1617_FULL_FAN_TEMP 50
@@ -175,6 +181,13 @@ int thermals_slow_tick(void)
 	unsigned int fan_pwm = fpga_temp - MAX1617_OFF_FAN_TEMP;
 	fan_pwm = (fan_pwm * 100) /  (MAX1617_FULL_FAN_TEMP-MAX1617_OFF_FAN_TEMP);
 	fan_pwm = min(99, fan_pwm);
+	
+	if (fan_pwm > 0){
+		if (fan_pwm < MIN_FAN_PWM){
+			fan_pwm = MIN_FAN_PWM;
+		}		
+	}	
+	
 	fan_pwm_set_duty_cycle(fan_pwm);
 	
 	return 0x00;

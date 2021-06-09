@@ -57,3 +57,6 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_HEARTBEATS                  'h14
 `define REG_SRAM_MEM_BYTES              'h15
 `define REG_VDDR_PGOOD                  'h16
+`define REG_XADC_DRP_ADDR               'h17
+`define REG_XADC_DRP_DATA               'h18
+`define REG_XADC_STAT                   'h19
