@@ -203,6 +203,9 @@ void usb_pwr_setup()
 			.buffer = status,
 			.length = 10
 	};
+	if (I2C_LOCK)
+		return;
+	I2C_LOCK = 1;
 	
 	if (twi_master_read(TWI0, &packet_begin) != TWI_SUCCESS) {
 		req_voltage = 0;

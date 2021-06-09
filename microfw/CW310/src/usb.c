@@ -146,10 +146,15 @@ void ctrl_i2c_send(void)
 	//heartbleed
 	if (udd_g_ctrlreq.req.wLength > udd_g_ctrlreq.payload_size)
 		return;
+		
+	if (I2C_LOCK)
+		return;
 	
 	USER_TWI_PACKET.buffer = udd_g_ctrlreq.payload;
 	USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;
+	I2C_LOCK = 1;
 	twi_master_write(TWI0, &USER_TWI_PACKET);
+	I2C_LOCK = 0;
 }
 
 void ctrl_i2c_setup(void)
@@ -876,7 +881,11 @@ bool main_setup_in_received(void)
 		case REQ_I2C_DATA:
 			USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;			     
 			USER_TWI_PACKET.buffer = respbuf;
+			if (I2C_LOCK)
+				return false;
+			I2C_LOCK = 1;
 			twi_master_read(TWI0, &USER_TWI_PACKET);
+			I2C_LOCK = 0;
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length;
 			return true;

@@ -21,6 +21,8 @@
 
 #define CDCE906_ADDR 0x69
 
+volatile uint8_t I2C_LOCK = 0;
+
 /* Init the CDCE906 chip, set offline */
 bool cdce906_init(void)
 {
@@ -51,6 +53,10 @@ bool cdce906_init(void)
 
 bool cdce906_write(uint8_t addr, uint8_t data)
 {
+	if (I2C_LOCK) {
+		return false;
+	}
+	I2C_LOCK = 1;
 	twi_package_t packet_write = {
 		.addr         = {0x80 | addr},      // TWI slave memory address data
 		.addr_length  = 1,    // TWI slave memory address data size
@@ -60,14 +66,20 @@ bool cdce906_write(uint8_t addr, uint8_t data)
 	};
 	
 	if (twi_master_write(TWI0, &packet_write) == TWI_SUCCESS){
+		I2C_LOCK = 0;
 		return true;
 	} else {
+		I2C_LOCK = 0;
 		return false;
 	}
 }
 
 bool cdce906_read(uint8_t addr, uint8_t * data)
 {
+	if (I2C_LOCK) {
+		return false;
+	}
+	I2C_LOCK = 1;
 	twi_package_t packet_read = {
 		.addr         = {0x80 | addr},      // TWI slave memory address data
 		.addr_length  = 1,    // TWI slave memory address data size
@@ -77,8 +89,10 @@ bool cdce906_read(uint8_t addr, uint8_t * data)
 	};
 	
 	if(twi_master_read(TWI0, &packet_read) == TWI_SUCCESS){
+		I2C_LOCK = 0;
 		return true;
 	} else {
+		I2C_LOCK = 0;
 		return false;
 	}	
 }

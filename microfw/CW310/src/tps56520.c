@@ -56,6 +56,8 @@ bool tps56520_init(void)
 /* Set voltage in mV for FPGA VCC_INT Voltage */
 bool tps56520_set(uint16_t mv_output)
 {
+	if (I2C_LOCK) return;
+	I2C_LOCK = 1;
 	/* Validate output voltage is in range */
 	if ((mv_output < 600) || (mv_output > 1800)){
 		return false;
@@ -94,12 +96,14 @@ bool tps56520_set(uint16_t mv_output)
 	};
 	
 	if(twi_master_read(TWI0, &packet_read) != TWI_SUCCESS){
+		I2C_LOCK = 0;
 		return false;
 	}
 	
 	if (volt_read == setting){
+		I2C_LOCK = 0;
 		return true;
 	}
-	
+	I2C_LOCK = 0;
 	return false;
 }

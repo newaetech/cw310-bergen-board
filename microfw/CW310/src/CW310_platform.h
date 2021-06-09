@@ -5,6 +5,8 @@
  *  Author: adewa
  */ 
 
+extern volatile uint8_t I2C_LOCK;
+
 
 #ifndef CW305_PLUS_PINS_H_
 #define CW305_PLUS_PINS_H_

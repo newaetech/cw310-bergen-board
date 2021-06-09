@@ -51,7 +51,13 @@ int max1617_register_read(uint8_t reg_addr, int8_t *result)
 		.buffer = result,
 		.length = 1	
 	};
-	return twi_master_read(MAX1617_I2C, &max_packet);
+	if (I2C_LOCK) {
+		return -1;
+	}
+	I2C_LOCK = 1;
+	int rtn = twi_master_read(MAX1617_I2C, &max_packet);
+	I2C_LOCK = 0;
+	return rtn;
 }
 
 int max1617_register_write(uint8_t reg_addr, int8_t data)
@@ -63,7 +69,15 @@ int max1617_register_write(uint8_t reg_addr, int8_t data)
 		.buffer = &data,
 		.length = 1
 	};
-	return twi_master_write(MAX1617_I2C, &max_packet);
+	
+	if (I2C_LOCK) {
+		return -1;
+	}
+	I2C_LOCK = 1;
+	
+	int rtn = twi_master_write(MAX1617_I2C, &max_packet);
+	I2C_LOCK = 0;
+	return rtn;
 }
 
 int power_init(void)
