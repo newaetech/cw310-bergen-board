@@ -41,6 +41,8 @@ twi_package_t USER_TWI_PACKET = {
 		.length = 0
 };
 
+volatile uint8_t I2C_STATUS = 0;
+
 volatile bool g_captureinprogress = true;
 
 static volatile bool main_b_vendor_enable = true;
@@ -147,13 +149,15 @@ void ctrl_i2c_send(void)
 	if (udd_g_ctrlreq.req.wLength > udd_g_ctrlreq.payload_size)
 		return;
 		
-	if (I2C_LOCK)
+	if (I2C_LOCK) {
+		I2C_STATUS = 1;
 		return;
+	}
 	
 	USER_TWI_PACKET.buffer = udd_g_ctrlreq.payload;
 	USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;
 	I2C_LOCK = 1;
-	twi_master_write(TWI0, &USER_TWI_PACKET);
+	I2C_STATUS = twi_master_write(TWI0, &USER_TWI_PACKET);
 	I2C_LOCK = 0;
 }
 
@@ -170,6 +174,7 @@ void ctrl_i2c_setup(void)
 	for (uint8_t i = 0; i < addr_len; i++) {
 		USER_TWI_PACKET.addr[i] = udd_g_ctrlreq.payload[i+1];
 	}
+	
 	
 }
 
@@ -647,7 +652,14 @@ static void ctrl_spi1util(void){
 
 void ctrl_fpga_temp_cb(void)
 {
+	if (I2C_LOCK) {
+		I2C_STATUS = 1;
+		return;
+	}
+	I2C_LOCK = 1;
 	max1617_register_write(udd_g_ctrlreq.req.wValue & 0xFF, udd_g_ctrlreq.payload[0]);
+	I2C_LOCK = 0;
+	I2C_STATUS = 0;
 }
 
 bool main_setup_out_received(void)
@@ -869,35 +881,50 @@ bool main_setup_in_received(void)
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = 1;
 			return true;
-			break;         
+			break;
 		case REQ_FPGA_TEMP:
 			addr = udd_g_ctrlreq.req.wValue & 0xFF;
-			max1617_register_read(addr, respbuf);
+			if (I2C_LOCK) {
+				respbuf[0] = 1;
+				udd_g_ctrlreq.payload = respbuf;
+				udd_g_ctrlreq.payload_size = 1;
+				return true;
+			}
+			max1617_register_read(addr, respbuf + 1);
+			respbuf[0] = 0;
 			udd_g_ctrlreq.payload = respbuf;
-			udd_g_ctrlreq.payload_size = 1;
+			udd_g_ctrlreq.payload_size = 2;
 			return true;
 			break;
 
         case REQ_I2C_SETUP:
-			respbuf[0] = USER_TWI_PACKET.chip;
+			respbuf[0] = I2C_STATUS;
+			respbuf[1] = USER_TWI_PACKET.chip;
 			for (uint8_t i = 0; i < USER_TWI_PACKET.addr_length; i++) {
-				respbuf[i + 1] = USER_TWI_PACKET.addr[i];
+				respbuf[i + 2] = USER_TWI_PACKET.addr[i];
 			}
 			udd_g_ctrlreq.payload = respbuf;
-			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.addr_length + 1;
+			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.addr_length + 2;
 			return true;
 			break;
 			
 		case REQ_I2C_DATA:
-			USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;			     
-			USER_TWI_PACKET.buffer = respbuf;
-			if (I2C_LOCK)
-				return false;
+			USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;     
+			USER_TWI_PACKET.buffer = respbuf + 1;
+			if (I2C_LOCK) {
+				respbuf[0] = 1;
+				I2C_STATUS = 1;
+				udd_g_ctrlreq.payload = respbuf;
+				udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length + 1;
+				return true;
+			}
+				
 			I2C_LOCK = 1;
 			twi_master_read(TWI0, &USER_TWI_PACKET);
+			respbuf[0] = 0;
 			I2C_LOCK = 0;
 			udd_g_ctrlreq.payload = respbuf;
-			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length;
+			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length + 1;
 			return true;
 			break;
 

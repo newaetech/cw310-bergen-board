@@ -90,9 +90,9 @@ bool cdce906_read(uint8_t addr, uint8_t * data)
 	
 	if(twi_master_read(TWI0, &packet_read) == TWI_SUCCESS){
 		I2C_LOCK = 0;
-		return true;
+		return 1;
 	} else {
 		I2C_LOCK = 0;
-		return false;
+		return 0;
 	}	
 }

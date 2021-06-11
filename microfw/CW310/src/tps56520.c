@@ -82,6 +82,7 @@ bool tps56520_set(uint16_t mv_output)
 	};
 	
 	if (twi_master_write(TWI0, &packet_write) != TWI_SUCCESS){
+		I2C_LOCK = 0;
 		return false;
 	}
 	

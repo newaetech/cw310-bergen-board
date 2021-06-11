@@ -232,6 +232,7 @@ void usb_pwr_setup()
 	if (twi_master_read(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
 		req_voltage = 0;
 	}
+	I2C_LOCK = 0;
 }
 
 /*
@@ -241,6 +242,9 @@ Must be done after setting new power settings
 */
 int usb_pd_soft_reset()
 {
+	if (I2C_LOCK)
+		return;
+	I2C_LOCK = 1;
 	uint8_t cmd = 0x0D;
 	twi_package_t packet_soft_reset = {
 		.addr = {0x51, 0, 0},
@@ -250,7 +254,9 @@ int usb_pd_soft_reset()
 		.length = 1
 	};
 	
+	
 	if (twi_master_write(TWI0, &packet_soft_reset) != TWI_SUCCESS) {
+		I2C_LOCK = 0;
 		return -1;
 	}
 	
@@ -266,6 +272,7 @@ int usb_pd_soft_reset()
 	uint32_t req_voltage = 1; //(12/0.05);
 	
 	if (twi_master_write(TWI0, &packet_send_cmd) != TWI_SUCCESS) {
+		I2C_LOCK = 0;
 		return -1;
 	}
 	
@@ -280,6 +287,8 @@ int usb_pd_soft_reset()
 	if (twi_master_read(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
 		req_voltage = 0;
 	}
+	I2C_LOCK = 0;
+	
 	return 5;
 }
 
@@ -289,6 +298,7 @@ int usb_pd_soft_reset()
 int main(void)
 {
 	volatile uint32_t reset_reason = 0;
+	I2C_LOCK = 0;
 	
 	// capture reset reason as watchdog on by default...
 	reset_reason = RSTC->RSTC_SR;
