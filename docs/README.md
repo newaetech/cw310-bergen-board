@@ -548,6 +548,6 @@ Press the "USB RST" button (SW5) on the board or power cycle it.
 
 ## Reference Material (Schematics)
 
-* [View schematics online](https://github.com/newaetech/cw310-bergen-board/blob/main/docs/BergenBoard_Rev06.pdf)
-* [Download PDF of Schematics](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06.pdf)
+* [View schematics online](https://github.com/newaetech/cw310-bergen-board/blob/main/docs/BergenBoard_Rev06C.PDF)
+* [Download PDF of Schematics](https://github.com/newaetech/cw310-bergen-board/raw/main/docs/BergenBoard_Rev06C.PDF)
 * [Vivado XDC Constraint File](https://github.com/newaetech/cw310-bergen-board/tree/main/pins)
