@@ -22,12 +22,17 @@
 #include "fpga_program.h"
 #include "usart_driver.h"
 #include "tasks.h"
-#include "fpga_xmem.h"
+#include "usb_xmem.h"
 #include "usb.h"
 #include "tps56520.h"
 #include "cdce906.h"
 #include "timers.h"
 #include "thermal_power.h"
+#include "naeusb_bergen.h"
+
+#include "naeusb/naeusb_default.h"
+#include "naeusb/naeusb_usart.h"
+#include "naeusb/naeusb_fpga_target.h"
 #include <string.h>
 
 
@@ -408,29 +413,13 @@ int main(void)
 	
 	gpio_configure_pin(PIO_PB27_IDX, PIO_OUTPUT_1 | PIO_DEFAULT);
 	enable_fpga_power();
-	extern volatile bool enable_cdc_transfer[2];
-	extern volatile tcirc_buf usb_usart_circ_buf0;
-	extern volatile tcirc_buf usb_usart_circ_buf1;
-	//while(true);
-	extern volatile bool usart_x_enabled[4];
-	
-	volatile uint32_t pin_status = PIOC->PIO_PDSR;
-	volatile Pio *x = PIOC;
+	naeusb_register_handlers();
+	naeusart_register_handlers();
+	fpga_target_register_handlers();
+	bergen_register_handlers();
 	
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
-		if (enable_cdc_transfer[0] && usart_x_enabled[0]) {
-			while (circ_buf_has_char(&usb_usart_circ_buf0)) {
-				udi_cdc_multi_putc(0, get_from_circ_buf(&usb_usart_circ_buf0));
-			}
-		}
-		
-		if (enable_cdc_transfer[1] && usart_x_enabled[1]) {
-			
-			while (circ_buf_has_char(&usb_usart_circ_buf1)) {
-				udi_cdc_multi_putc(1, get_from_circ_buf(&usb_usart_circ_buf1));
-			}
-		}	
 		
 		check_power_state(); //make sure power hasn't been killed		
 	}

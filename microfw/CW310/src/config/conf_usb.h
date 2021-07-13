@@ -72,6 +72,8 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_HS_SUPPORT
 //@}
 
+
+
 /**
  * USB Device Callbacks definitions (Optional)
  * @{

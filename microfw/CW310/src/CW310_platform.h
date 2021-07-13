@@ -7,6 +7,10 @@
 
 extern volatile uint8_t I2C_LOCK;
 
+#define FW_VER_MAJOR 0
+#define FW_VER_MINOR 40
+#define FW_VER_DEBUG 0
+
 
 #ifndef CW305_PLUS_PINS_H_
 #define CW305_PLUS_PINS_H_
@@ -15,6 +19,8 @@ extern volatile uint8_t I2C_LOCK;
 #define BOARD_FREQ_SLCK_BYPASS      (0U)
 #define BOARD_FREQ_MAINCK_XTAL      (12000000U)
 #define BOARD_FREQ_MAINCK_BYPASS    (12000000U)
+
+#define SPI SPI0
 
 /** Master clock frequency */
 #define BOARD_MCK                   CHIP_FREQ_CPU_MAX
