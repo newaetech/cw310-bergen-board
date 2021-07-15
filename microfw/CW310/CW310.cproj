@@ -813,9 +813,6 @@
     <None Include="src\ASF\common\services\usb\class\vendor\device\udi_vendor.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="src\ASF\common\services\usb\udc\udc.c">
-      <SubType>compile</SubType>
-    </Compile>
     <None Include="src\ASF\common\services\usb\udc\udc.h">
       <SubType>compile</SubType>
     </None>
@@ -900,6 +897,12 @@
     <None Include="src\ASF\sam\services\flash_efc\flash_efc.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\naeusb\naeusb_os_desc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\naeusb\udc.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\naeusb_bergen.c">
       <SubType>compile</SubType>
     </Compile>

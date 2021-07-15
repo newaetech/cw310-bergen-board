@@ -120,7 +120,6 @@ C_SRCS +=  \
 ../src/ASF/common/services/usb/class/cdc/device/udi_cdc.c \
 ../src/ASF/common/services/usb/class/composite/device/udi_composite_desc.c \
 ../src/ASF/common/services/usb/class/vendor/device/udi_vendor.c \
-../src/ASF/common/services/usb/udc/udc.c \
 ../src/ASF/sam/drivers/chipid/chipid.c \
 ../src/ASF/sam/drivers/ebi/smc/smc.c \
 ../src/ASF/sam/drivers/efc/efc.c \
@@ -132,6 +131,7 @@ C_SRCS +=  \
 ../src/ASF/sam/drivers/uotghs/uotghs_device.c \
 ../src/ASF/sam/drivers/usart/usart.c \
 ../src/ASF/sam/services/flash_efc/flash_efc.c \
+../src/naeusb/udc.c \
 ../src/naeusb_bergen.c \
 ../src/cdce906.c \
 ../src/fpgaspi_program.c \
@@ -174,7 +174,6 @@ src/ASF/common/services/sleepmgr/sam/sleepmgr.o \
 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o \
 src/ASF/common/services/usb/class/composite/device/udi_composite_desc.o \
 src/ASF/common/services/usb/class/vendor/device/udi_vendor.o \
-src/ASF/common/services/usb/udc/udc.o \
 src/ASF/sam/drivers/chipid/chipid.o \
 src/ASF/sam/drivers/ebi/smc/smc.o \
 src/ASF/sam/drivers/efc/efc.o \
@@ -186,6 +185,7 @@ src/ASF/sam/drivers/uart/uart.o \
 src/ASF/sam/drivers/uotghs/uotghs_device.o \
 src/ASF/sam/drivers/usart/usart.o \
 src/ASF/sam/services/flash_efc/flash_efc.o \
+src/naeusb/udc.o \
 src/naeusb_bergen.o \
 src/cdce906.o \
 src/fpgaspi_program.o \
@@ -221,7 +221,6 @@ src/ASF/common/services/sleepmgr/sam/sleepmgr.o \
 src/ASF/common/services/usb/class/cdc/device/udi_cdc.o \
 src/ASF/common/services/usb/class/composite/device/udi_composite_desc.o \
 src/ASF/common/services/usb/class/vendor/device/udi_vendor.o \
-src/ASF/common/services/usb/udc/udc.o \
 src/ASF/sam/drivers/chipid/chipid.o \
 src/ASF/sam/drivers/ebi/smc/smc.o \
 src/ASF/sam/drivers/efc/efc.o \
@@ -233,6 +232,7 @@ src/ASF/sam/drivers/uart/uart.o \
 src/ASF/sam/drivers/uotghs/uotghs_device.o \
 src/ASF/sam/drivers/usart/usart.o \
 src/ASF/sam/services/flash_efc/flash_efc.o \
+src/naeusb/udc.o \
 src/naeusb_bergen.o \
 src/cdce906.o \
 src/fpgaspi_program.o \
@@ -268,7 +268,6 @@ src/ASF/common/services/sleepmgr/sam/sleepmgr.d \
 src/ASF/common/services/usb/class/cdc/device/udi_cdc.d \
 src/ASF/common/services/usb/class/composite/device/udi_composite_desc.d \
 src/ASF/common/services/usb/class/vendor/device/udi_vendor.d \
-src/ASF/common/services/usb/udc/udc.d \
 src/ASF/sam/drivers/chipid/chipid.d \
 src/ASF/sam/drivers/ebi/smc/smc.d \
 src/ASF/sam/drivers/efc/efc.d \
@@ -280,6 +279,7 @@ src/ASF/sam/drivers/uart/uart.d \
 src/ASF/sam/drivers/uotghs/uotghs_device.d \
 src/ASF/sam/drivers/usart/usart.d \
 src/ASF/sam/services/flash_efc/flash_efc.d \
+src/naeusb/udc.d \
 src/naeusb_bergen.d \
 src/cdce906.d \
 src/fpgaspi_program.d \
@@ -315,7 +315,6 @@ src/ASF/common/services/sleepmgr/sam/sleepmgr.d \
 src/ASF/common/services/usb/class/cdc/device/udi_cdc.d \
 src/ASF/common/services/usb/class/composite/device/udi_composite_desc.d \
 src/ASF/common/services/usb/class/vendor/device/udi_vendor.d \
-src/ASF/common/services/usb/udc/udc.d \
 src/ASF/sam/drivers/chipid/chipid.d \
 src/ASF/sam/drivers/ebi/smc/smc.d \
 src/ASF/sam/drivers/efc/efc.d \
@@ -327,6 +326,7 @@ src/ASF/sam/drivers/uart/uart.d \
 src/ASF/sam/drivers/uotghs/uotghs_device.d \
 src/ASF/sam/drivers/usart/usart.d \
 src/ASF/sam/services/flash_efc/flash_efc.d \
+src/naeusb/udc.d \
 src/naeusb_bergen.d \
 src/cdce906.d \
 src/fpgaspi_program.d \
@@ -412,13 +412,6 @@ src/ASF/common/services/usb/class/vendor/device/udi_vendor.o: ../src/ASF/common/
 	@echo Finished building: $<
 	
 
-src/ASF/common/services/usb/udc/udc.o: ../src/ASF/common/services/usb/udc/udc.c
-	@echo Building file: $<
-	@echo Invoking: ARM/GNU C Compiler : 9.3.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -DDEBUG -DBOARD=ARDUINO_DUE_X -Dscanf=iscanf -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DUDD_ENABLE  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/sam/boards" -I"../src/ASF/sam/boards/arduino_due_x" -I"../src/ASF/common/services/gpio" -I"../src/ASF/sam/drivers/pio" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/clock" -I"../src/ASF/sam/drivers/pmc" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/ebi/smc" -I"../src/ASF/sam/drivers/efc" -I"../src/ASF/sam/services/flash_efc" -I"../src/ASF/common/services/delay" -I"../src/ASF/common/services/sleepmgr" -I"../src/ASF/common/services/usb" -I"../src/ASF/common/services/usb/class/vendor" -I"../src/ASF/common/services/usb/class/vendor/device" -I"../src/ASF/common/services/usb/udc" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/uotghs" -I"../src/ASF/sam/drivers/chipid" -I"../src/ASF/sam/drivers/uart" -I"../src/ASF/common/services/serial/sam_uart" -I"../src/ASF/common/services/serial" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/twi" -I"../src/ASF/common/services/usb/class/cdc" -I"../src/ASF/common/services/usb/class/cdc/device" -I"../src/ASF/common/services/usb/class/composite/device" -I"../src/ASF/sam/drivers/pwm"  -Og -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -I"../src/naeusb" -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 src/ASF/sam/drivers/chipid/chipid.o: ../src/ASF/sam/drivers/chipid/chipid.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 9.3.1
@@ -490,6 +483,13 @@ src/ASF/sam/drivers/usart/usart.o: ../src/ASF/sam/drivers/usart/usart.c
 	
 
 src/ASF/sam/services/flash_efc/flash_efc.o: ../src/ASF/sam/services/flash_efc/flash_efc.c
+	@echo Building file: $<
+	@echo Invoking: ARM/GNU C Compiler : 9.3.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -DDEBUG -DBOARD=ARDUINO_DUE_X -Dscanf=iscanf -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DUDD_ENABLE  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/sam/boards" -I"../src/ASF/sam/boards/arduino_due_x" -I"../src/ASF/common/services/gpio" -I"../src/ASF/sam/drivers/pio" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/clock" -I"../src/ASF/sam/drivers/pmc" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/ebi/smc" -I"../src/ASF/sam/drivers/efc" -I"../src/ASF/sam/services/flash_efc" -I"../src/ASF/common/services/delay" -I"../src/ASF/common/services/sleepmgr" -I"../src/ASF/common/services/usb" -I"../src/ASF/common/services/usb/class/vendor" -I"../src/ASF/common/services/usb/class/vendor/device" -I"../src/ASF/common/services/usb/udc" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/uotghs" -I"../src/ASF/sam/drivers/chipid" -I"../src/ASF/sam/drivers/uart" -I"../src/ASF/common/services/serial/sam_uart" -I"../src/ASF/common/services/serial" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/twi" -I"../src/ASF/common/services/usb/class/cdc" -I"../src/ASF/common/services/usb/class/cdc/device" -I"../src/ASF/common/services/usb/class/composite/device" -I"../src/ASF/sam/drivers/pwm"  -Og -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -I"../src/naeusb" -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/naeusb/udc.o: ../src/naeusb/udc.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 9.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -DDEBUG -DBOARD=ARDUINO_DUE_X -Dscanf=iscanf -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DUDD_ENABLE  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/sam/boards" -I"../src/ASF/sam/boards/arduino_due_x" -I"../src/ASF/common/services/gpio" -I"../src/ASF/sam/drivers/pio" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/clock" -I"../src/ASF/sam/drivers/pmc" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/ebi/smc" -I"../src/ASF/sam/drivers/efc" -I"../src/ASF/sam/services/flash_efc" -I"../src/ASF/common/services/delay" -I"../src/ASF/common/services/sleepmgr" -I"../src/ASF/common/services/usb" -I"../src/ASF/common/services/usb/class/vendor" -I"../src/ASF/common/services/usb/class/vendor/device" -I"../src/ASF/common/services/usb/udc" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/uotghs" -I"../src/ASF/sam/drivers/chipid" -I"../src/ASF/sam/drivers/uart" -I"../src/ASF/common/services/serial/sam_uart" -I"../src/ASF/common/services/serial" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/twi" -I"../src/ASF/common/services/usb/class/cdc" -I"../src/ASF/common/services/usb/class/cdc/device" -I"../src/ASF/common/services/usb/class/composite/device" -I"../src/ASF/sam/drivers/pwm"  -Og -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -I"../src/naeusb" -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

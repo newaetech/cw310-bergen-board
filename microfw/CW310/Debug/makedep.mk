@@ -14,8 +14,6 @@ src\ASF\common\services\usb\class\composite\device\udi_composite_desc.c
 
 src\ASF\common\services\usb\class\vendor\device\udi_vendor.c
 
-src\ASF\common\services\usb\udc\udc.c
-
 src\ASF\sam\drivers\chipid\chipid.c
 
 src\ASF\sam\drivers\ebi\smc\smc.c
@@ -37,6 +35,8 @@ src\ASF\sam\drivers\uotghs\uotghs_device.c
 src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\sam\services\flash_efc\flash_efc.c
+
+src\naeusb\udc.c
 
 src\naeusb_bergen.c
 
