@@ -61,6 +61,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_PCK1, PIN_PCK1_FLAGS);
 		#endif
 		
+		
 		gpio_configure_pin(PIN_USART0_RXD, PIN_USART0_RXD_FLAGS);
 		gpio_configure_pin(PIN_USART0_TXD, PIN_USART0_TXD_FLAGS);
 		gpio_configure_pin(PIN_USART1_RXD, PIN_USART1_RXD_FLAGS);

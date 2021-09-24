@@ -83,6 +83,9 @@ void ctrl_fpga_temp_cb(void)
 	I2C_STATUS = 0;
 }
 
+bool naeusb_cdc_settings_in(void);
+bool naeusb_cdc_settings_out(void);
+
 bool bergen_setup_out_received(void)
 {
 	switch (udd_g_ctrlreq.req.bRequest) {			
@@ -97,6 +100,11 @@ bool bergen_setup_out_received(void)
 		case REQ_I2C_DATA:
 			udd_g_ctrlreq.callback = ctrl_i2c_send;
 			return true;
+			
+		case REQ_FPGA_CDC:
+			udd_g_ctrlreq.callback = naeusb_cdc_settings_out;
+			return true;
+			break;
 	}
 	return false;
 }
@@ -150,7 +158,11 @@ bool bergen_setup_in_received(void)
 			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length + 1;
 			return true;
 			break;
+		case REQ_FPGA_CDC:
+			return naeusb_cdc_settings_in();
+			break;
 	}
+	return false;
 }
 
 void bergen_register_handlers(void)
