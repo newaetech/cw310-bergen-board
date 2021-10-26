@@ -8,6 +8,7 @@ all: compile run
 
 compile:
 	iverilog -ccmdfile \
+	tb.v \
 	-g2005-sv \
 	-Wportbind \
 	-Wselect-range \
@@ -19,6 +20,15 @@ compile:
 
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)
+
+lint:
+	verilator --lint-only -Wall \
+	-f cmdfile \
+	-I../hdl \
+	-I. \
+	-D__ICARUS__ \
+	--top-module cw310_top \
+	2>&1 | tee lint.out \
 
 clean:
 	rm -f a.out

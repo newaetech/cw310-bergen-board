@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
--- Date        : Thu Apr 22 23:46:16 2021
--- Host        : qed running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim
---               C:/Users/jp/GitHub/OpenTitan/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_7series_nosysclock_sim_netlist.vhdl
+-- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+-- Date        : Thu Oct 21 13:24:05 2021
+-- Host        : red running 64-bit Ubuntu 18.04.6 LTS
+-- Command     : write_vhdl -force -mode funcsim -rename_top mig_7series_nosysclock -prefix
+--               mig_7series_nosysclock_ mig_7series_nosysclock_sim_netlist.vhdl
 -- Design      : mig_7series_nosysclock
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -36,8 +36,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_arb_select is
     \read_fifo.fifo_out_data_r_reg[6]_0\ : in STD_LOGIC;
     \read_fifo.fifo_out_data_r_reg[6]_1\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_arb_select : entity is "mig_7series_v4_2_arb_select";
 end mig_7series_nosysclock_mig_7series_v4_2_arb_select;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_arb_select is
@@ -163,8 +161,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_common is
     \rfc_zq_xsdll_timer.rfc_zq_xsdll_timer_r_reg[5]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \rfc_zq_xsdll_timer.rfc_zq_xsdll_timer_r_reg[8]_1\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_common : entity is "mig_7series_v4_2_bank_common";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_common;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_common is
@@ -801,8 +797,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_compare is
     \req_bank_r_lcl_reg[2]_0\ : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \req_col_r_reg[9]_1\ : in STD_LOGIC_VECTOR ( 9 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_compare : entity is "mig_7series_v4_2_bank_compare";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_compare;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_compare is
@@ -3530,8 +3524,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_queue is
     set_order_q : in STD_LOGIC;
     \order_q_r_reg[0]_1\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_queue : entity is "mig_7series_v4_2_bank_queue";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_queue;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_queue is
@@ -7036,8 +7028,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_state is
     \rtp_timer_r_reg[0]_0\ : in STD_LOGIC;
     D : in STD_LOGIC_VECTOR ( 2 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_state : entity is "mig_7series_v4_2_bank_state";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_state;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_state is
@@ -9470,8 +9460,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf is
     mmcm_clk : out STD_LOGIC;
     sys_clk_i : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf : entity is "mig_7series_v4_2_clk_ibuf";
 end mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf is
@@ -9523,8 +9511,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_col_mach is
     \read_fifo.head_r_reg[4]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_col_mach : entity is "mig_7series_v4_2_col_mach";
 end mig_7series_nosysclock_mig_7series_v4_2_col_mach;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_col_mach is
@@ -10105,8 +10091,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_group_io is
     iserdes_clkdiv : in STD_LOGIC;
     of_dqbus : in STD_LOGIC_VECTOR ( 35 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_group_io : entity is "mig_7series_v4_2_ddr_byte_group_io";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_group_io;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_group_io is
@@ -13453,8 +13437,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_if_post_fifo is
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]\ : in STD_LOGIC_VECTOR ( 31 downto 0 );
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]_0\ : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_if_post_fifo : entity is "mig_7series_v4_2_ddr_if_post_fifo";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_if_post_fifo;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_if_post_fifo is
@@ -14213,8 +14195,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_of_pre_fifo is
     CLK : in STD_LOGIC;
     \wr_ptr_timing_reg[2]_0\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_of_pre_fifo : entity is "mig_7series_v4_2_ddr_of_pre_fifo";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_of_pre_fifo;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_of_pre_fifo is
@@ -18873,8 +18853,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay is
     SS : in STD_LOGIC_VECTOR ( 0 to 0 );
     \wait_cnt_r_reg[0]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay : entity is "mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay is
@@ -19411,8 +19389,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_dqs_found_cal is
     prech_done : in STD_LOGIC;
     \stable_pass_cnt_reg[0]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_dqs_found_cal : entity is "mig_7series_v4_2_ddr_phy_dqs_found_cal";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_dqs_found_cal;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_dqs_found_cal is
@@ -22871,8 +22847,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_init is
     phy_mc_ctl_full_r_reg_4 : in STD_LOGIC;
     phy_mc_ctl_full_r_reg_5 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_init : entity is "mig_7series_v4_2_ddr_phy_init";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_init;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_init is
@@ -37811,8 +37785,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_rdlvl is
     \tap_cnt_cpt_r_reg[5]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \wait_cnt_r_reg[0]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_rdlvl : entity is "mig_7series_v4_2_ddr_phy_rdlvl";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_rdlvl;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_rdlvl is
@@ -50540,8 +50512,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_tempmon is
     \one_inc_max_limit_reg[2]_0\ : in STD_LOGIC;
     \device_temp_101_reg[11]_0\ : in STD_LOGIC_VECTOR ( 11 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_tempmon : entity is "mig_7series_v4_2_ddr_phy_tempmon";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_tempmon;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_tempmon is
@@ -58221,8 +58191,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrcal is
     \cal2_state_r_reg[0]_0\ : in STD_LOGIC;
     cal2_if_reset_reg_1 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrcal : entity is "mig_7series_v4_2_ddr_phy_wrcal";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrcal;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrcal is
@@ -61598,8 +61566,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrlvl is
     \single_rank.done_dqs_dec_reg_0\ : in STD_LOGIC;
     \wait_cnt_reg[0]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrlvl : entity is "mig_7series_v4_2_ddr_phy_wrlvl";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrlvl;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_wrlvl is
@@ -65978,8 +65944,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_prbs_gen is
     \rd_addr_reg[7]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_prbs_gen : entity is "mig_7series_v4_2_ddr_prbs_gen";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_prbs_gen;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_prbs_gen is
@@ -67379,8 +67343,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_infrastructure is
     complex_ocal_reset_rd_addr : in STD_LOGIC;
     prbs_rdlvl_done_pulse : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_infrastructure : entity is "mig_7series_v4_2_infrastructure";
 end mig_7series_nosysclock_mig_7series_v4_2_infrastructure;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_infrastructure is
@@ -68284,8 +68246,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl is
     \rstdiv2_sync_r_reg[11]\ : in STD_LOGIC;
     ref_dll_lock : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl : entity is "mig_7series_v4_2_iodelay_ctrl";
 end mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl is
@@ -68491,8 +68451,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_poc_pd is
     in_dqs_lpbk_to_iddr : in STD_LOGIC;
     rst_sync_r1 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_poc_pd : entity is "mig_7series_v4_2_poc_pd";
 end mig_7series_nosysclock_mig_7series_v4_2_poc_pd;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_poc_pd is
@@ -68556,8 +68514,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_rank_cntrl is
     \inhbt_act_faw.inhbt_act_faw_r_reg_0\ : in STD_LOGIC;
     \grant_r[1]_i_2\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_rank_cntrl : entity is "mig_7series_v4_2_rank_cntrl";
 end mig_7series_nosysclock_mig_7series_v4_2_rank_cntrl;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_rank_cntrl is
@@ -68988,8 +68944,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_round_robin_arb is
     \refresh_generation.refresh_bank_r\ : in STD_LOGIC;
     CLK : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_round_robin_arb : entity is "mig_7series_v4_2_round_robin_arb";
 end mig_7series_nosysclock_mig_7series_v4_2_round_robin_arb;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_round_robin_arb is
@@ -71906,8 +71860,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_tempmon is
     \device_temp_sync_r5_reg[11]_0\ : in STD_LOGIC;
     SR : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_tempmon : entity is "mig_7series_v4_2_tempmon";
 end mig_7series_nosysclock_mig_7series_v4_2_tempmon;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_tempmon is
@@ -73103,8 +73055,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ui_cmd is
     app_addr : in STD_LOGIC_VECTOR ( 28 downto 0 );
     app_cmd : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ui_cmd : entity is "mig_7series_v4_2_ui_cmd";
 end mig_7series_nosysclock_mig_7series_v4_2_ui_cmd;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ui_cmd is
@@ -74592,8 +74542,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ui_rd_data is
     \not_strict_mode.status_ram.status_ram_wr_data_r_reg[1]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ui_rd_data : entity is "mig_7series_v4_2_ui_rd_data";
 end mig_7series_nosysclock_mig_7series_v4_2_ui_rd_data;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ui_rd_data is
@@ -76262,8 +76210,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ui_wr_data is
     app_wdf_mask : in STD_LOGIC_VECTOR ( 3 downto 0 );
     app_wdf_data : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ui_wr_data : entity is "mig_7series_v4_2_ui_wr_data";
 end mig_7series_nosysclock_mig_7series_v4_2_ui_wr_data;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ui_wr_data is
@@ -78544,8 +78490,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_arb_row_col is
     auto_pre_r_8 : in STD_LOGIC;
     auto_pre_r_9 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_arb_row_col : entity is "mig_7series_v4_2_arb_row_col";
 end mig_7series_nosysclock_mig_7series_v4_2_arb_row_col;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_arb_row_col is
@@ -78950,8 +78894,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_cntrl is
     \q_entry_r_reg[1]_0\ : in STD_LOGIC;
     \q_entry_r_reg[0]_2\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_cntrl : entity is "mig_7series_v4_2_bank_cntrl";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_cntrl;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_cntrl is
@@ -80609,8 +80551,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_lane is
     out_fifo_0 : in STD_LOGIC_VECTOR ( 35 downto 0 );
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]\ : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_lane : entity is "mig_7series_v4_2_ddr_byte_lane";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_lane;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_byte_lane is
@@ -82860,8 +82800,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_calib_top is
     phy_mc_ctl_full_r_reg_4 : in STD_LOGIC;
     mc_wrdata_en : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_calib_top : entity is "mig_7series_v4_2_ddr_calib_top";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_calib_top;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_calib_top is
@@ -84328,8 +84266,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_rank_common is
     cke_r : in STD_LOGIC;
     auto_pre_r_lcl_reg : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_rank_common : entity is "mig_7series_v4_2_rank_common";
 end mig_7series_nosysclock_mig_7series_v4_2_rank_common;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_rank_common is
@@ -85790,8 +85726,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ui_top is
     app_addr : in STD_LOGIC_VECTOR ( 28 downto 0 );
     app_cmd : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ui_top : entity is "mig_7series_v4_2_ui_top";
 end mig_7series_nosysclock_mig_7series_v4_2_ui_top;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ui_top is
@@ -86055,8 +85989,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_arb_mux is
     auto_pre_r_8 : in STD_LOGIC;
     auto_pre_r_9 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_arb_mux : entity is "mig_7series_v4_2_arb_mux";
 end mig_7series_nosysclock_mig_7series_v4_2_arb_mux;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_arb_mux is
@@ -86385,8 +86317,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_4lanes is
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]\ : in STD_LOGIC_VECTOR ( 31 downto 0 );
     calib_sel : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_4lanes : entity is "mig_7series_v4_2_ddr_phy_4lanes";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_4lanes;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_4lanes is
@@ -87101,8 +87031,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_rank_mach is
     \inhbt_act_faw.inhbt_act_faw_r_reg\ : in STD_LOGIC;
     \grant_r[1]_i_2\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_rank_mach : entity is "mig_7series_v4_2_rank_mach";
 end mig_7series_nosysclock_mig_7series_v4_2_rank_mach;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_rank_mach is
@@ -87332,8 +87260,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_bank_mach is
     \req_bank_r_lcl_reg[2]\ : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \req_col_r_reg[9]\ : in STD_LOGIC_VECTOR ( 9 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_bank_mach : entity is "mig_7series_v4_2_bank_mach";
 end mig_7series_nosysclock_mig_7series_v4_2_bank_mach;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_bank_mach is
@@ -88352,8 +88278,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy is
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]\ : in STD_LOGIC_VECTOR ( 31 downto 0 );
     calib_sel : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy : entity is "mig_7series_v4_2_ddr_mc_phy";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy is
@@ -88843,8 +88767,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy_wrapper is
     \gen_mux_rd_div2.gen_mux_rd[7].mux_rd_fall1_r_reg[7]\ : in STD_LOGIC_VECTOR ( 31 downto 0 );
     calib_sel : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy_wrapper : entity is "mig_7series_v4_2_ddr_mc_phy_wrapper";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy_wrapper;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_mc_phy_wrapper is
@@ -89582,8 +89504,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_mc is
     \cmd_pipe_plus.mc_data_offset_reg[1]_1\ : in STD_LOGIC;
     \cmd_pipe_plus.mc_data_offset_reg[0]_1\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_mc : entity is "mig_7series_v4_2_mc";
 end mig_7series_nosysclock_mig_7series_v4_2_mc;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_mc is
@@ -90780,8 +90700,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_top is
     phy_mc_ctl_full_r_reg_3 : in STD_LOGIC;
     phy_mc_ctl_full_r_reg_4 : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_top : entity is "mig_7series_v4_2_ddr_phy_top";
 end mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_top;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_ddr_phy_top is
@@ -91598,8 +91516,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_mem_intfc is
     \device_temp_101_reg[11]\ : in STD_LOGIC_VECTOR ( 11 downto 0 );
     \ddr_byte_lane_A.ddr_byte_lane_A/of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg_0_15_72_77\ : in STD_LOGIC_VECTOR ( 35 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_mem_intfc : entity is "mig_7series_v4_2_mem_intfc";
 end mig_7series_nosysclock_mig_7series_v4_2_mem_intfc;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_mem_intfc is
@@ -92041,8 +91957,6 @@ entity mig_7series_nosysclock_mig_7series_v4_2_memc_ui_top_std is
     \rd_addr_reg[7]\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     D : in STD_LOGIC_VECTOR ( 11 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_memc_ui_top_std : entity is "mig_7series_v4_2_memc_ui_top_std";
 end mig_7series_nosysclock_mig_7series_v4_2_memc_ui_top_std;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_memc_ui_top_std is
@@ -92495,8 +92409,6 @@ entity mig_7series_nosysclock_mig_7series_nosysclock_mig is
     \not_strict_mode.app_rd_data_reg[31]\ : in STD_LOGIC_VECTOR ( 31 downto 0 );
     app_ref_req : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_nosysclock_mig : entity is "mig_7series_nosysclock_mig";
 end mig_7series_nosysclock_mig_7series_nosysclock_mig;
 
 architecture STRUCTURE of mig_7series_nosysclock_mig_7series_nosysclock_mig is

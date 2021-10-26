@@ -117,6 +117,8 @@ module cw310_top #(
     wire reg_addrvalid;
     wire [7:0] write_data;
     wire [7:0] read_data;
+    wire [7:0] read_data_aes;
+    wire [7:0] read_data_xadc;
     wire reg_read;
     wire reg_write;
     wire [4:0] clk_settings;
@@ -152,6 +154,8 @@ module cw310_top #(
     always @(posedge crypt_clk) crypt_clk_heartbeat <= crypt_clk_heartbeat +  23'd1;
 
     assign USRLED = hearbeats? {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]} : reg_leds;
+
+    assign read_data = read_data_aes | read_data_xadc;
 
 
     cw310_usb_reg_fe #(
@@ -190,20 +194,13 @@ module cw310_top #(
        .usb_clk                 (usb_clk_buf), 
        .reg_address             (reg_address[pUSB_ADDR_WIDTH-pBYTECNT_SIZE-1:0]), 
        .reg_bytecnt             (reg_bytecnt), 
-       .read_data               (read_data), 
+       .read_data               (read_data_aes), 
        .write_data              (write_data),
        .reg_read                (reg_read), 
        .reg_write               (reg_write), 
        .reg_addrvalid           (reg_addrvalid),
 
        .exttrigger_in           (usb_trigger),
-
-       .vauxp0                  (vauxp0),
-       .vauxn0                  (vauxn0),
-       .vauxp1                  (vauxp1),
-       .vauxn1                  (vauxn1),
-       .vauxp8                  (vauxp8),
-       .vauxn8                  (vauxn8),
 
        .I_textout               (128'b0),               // unused
        .I_cipherout             (crypt_cipherin),
@@ -229,10 +226,32 @@ module cw310_top #(
        .I_vddr_pgood            (vddr_pgood),
        .O_leds                  (reg_leds),
        .O_hearbeats             (hearbeats),
-       .O_sram_top_address      (sram_top_address),
-       .O_xadc_temp_out         (temp_out)
-
+       .O_sram_top_address      (sram_top_address)
     );
+
+    xadc #(
+       .pBYTECNT_SIZE           (pBYTECNT_SIZE),
+       .pADDR_WIDTH             (pUSB_ADDR_WIDTH)
+    ) U_xadc (
+       .reset_i                 (reset),
+       .clk_usb                 (usb_clk_buf), 
+       .reg_address             (reg_address[pUSB_ADDR_WIDTH-pBYTECNT_SIZE-1:0]), 
+       .reg_bytecnt             (reg_bytecnt), 
+       .reg_datao               (read_data_xadc), 
+       .reg_datai               (write_data),
+       .reg_read                (reg_read), 
+       .reg_write               (reg_write), 
+
+       .vauxp0                  (vauxp0),
+       .vauxn0                  (vauxn0),
+       .vauxp1                  (vauxp1),
+       .vauxn1                  (vauxn1),
+       .vauxp8                  (vauxp8),
+       .vauxn8                  (vauxn8),
+       .O_xadc_temp_out         (temp_out),
+       .xadc_error              ()
+    ); 
+
 
     assign USB_D = isout? usb_dout : 8'bZ;
 

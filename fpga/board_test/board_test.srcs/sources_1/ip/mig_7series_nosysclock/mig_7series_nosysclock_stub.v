@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-// Date        : Thu Apr 22 23:46:16 2021
-// Host        : qed running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub
-//               C:/Users/jp/GitHub/OpenTitan/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_7series_nosysclock_stub.v
+// Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+// Date        : Thu Oct 21 13:24:04 2021
+// Host        : red running 64-bit Ubuntu 18.04.6 LTS
+// Command     : write_verilog -force -mode synth_stub -rename_top mig_7series_nosysclock -prefix
+//               mig_7series_nosysclock_ mig_7series_nosysclock_stub.v
 // Design      : mig_7series_nosysclock
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7k160tfbg676-2

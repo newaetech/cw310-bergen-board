@@ -1,4 +1,3 @@
-tb.v
 ../hdl/cw310_top.v
 ../hdl/aes_core.v
 ../hdl/aes_ks.v
@@ -11,4 +10,5 @@ tb.v
 ../hdl/simple_sram_rwtest.v
 ../hdl/simple_ddr3_rwtest.v
 ../hdl/lfsr.v
+../hdl/xadc.v
 
