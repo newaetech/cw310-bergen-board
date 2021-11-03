@@ -125,7 +125,7 @@ module cw310_top #(
     wire crypt_clk;
 
     wire [7:0] reg_leds;
-    wire hearbeats;
+    wire heartbeats;
     wire [7:0] sram_top_address;
     wire ddr3_pass;
     wire ddr3_fail;
@@ -133,7 +133,6 @@ module cw310_top #(
     wire sram_fail;
     wire ddr3_en;
     wire sram_en;
-    wire sysclk;
 
     wire init_calib_complete;
 
@@ -141,8 +140,6 @@ module cw310_top #(
 
     wire resetn = USRSW2;
     wire reset = !resetn;
-    reg [31:0] sysclk_frequency;
-
 
 
     // USB CLK Heartbeat
@@ -153,7 +150,17 @@ module cw310_top #(
     reg [22:0] crypt_clk_heartbeat;
     always @(posedge crypt_clk) crypt_clk_heartbeat <= crypt_clk_heartbeat +  23'd1;
 
-    assign USRLED = hearbeats? {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]} : reg_leds;
+    //assign USRLED = heartbeats? {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]} : reg_leds;
+    //TODO: temporary, for easier DDR debug
+    assign USRLED[0] = init_calib_complete;
+    assign USRLED[1] = ddr3_fail;
+    assign USRLED[2] = ddr3_pass;
+    assign USRLED[3] = ~ddr3_ila_basic_w[6];  //dbg_pi_phaselock_err;
+    assign USRLED[4] = ~ddr3_ila_basic_w[9];  //dbg_pi_dqsfound_err;
+    assign USRLED[5] = ~ddr3_ila_basic_w[3];  //dbg_wrlvl_err;
+    assign USRLED[6] = ~ddr3_ila_basic_w[15]; //dbg_rdlvl_err[1];
+    assign USRLED[7] = ~ddr3_ila_basic_w[21]; //dbg_wrcal_err;
+    //assign USRLED[7] = ~ddr3_ila_basic_w[14]; //dbg_rdlvl_err[0];
 
     assign read_data = read_data_aes | read_data_xadc;
 
@@ -211,7 +218,7 @@ module cw310_top #(
        .I_sram_pass             (sram_pass & ~sram_fail),
        .I_ddr3_calib_complete   (init_calib_complete),
        .I_dip                   (USRDIP),
-       .I_sysclk_freq           (sysclk_frequency),
+       .I_sysclk_freq           (), // TODO- cleanup
 
        .O_user_led              (),
        .O_key                   (crypt_key),
@@ -225,7 +232,7 @@ module cw310_top #(
        .O_vddr_enable           (vddr_enable),
        .I_vddr_pgood            (vddr_pgood),
        .O_leds                  (reg_leds),
-       .O_hearbeats             (hearbeats),
+       .O_heartbeats            (heartbeats),
        .O_sram_top_address      (sram_top_address)
     );
 
@@ -320,21 +327,6 @@ module cw310_top #(
    );
 
 
-   `ifdef __ICARUS__
-      assign sysclk = SYSCLK_P;
-
-   `else
-      IBUFDS #(
-         .DIFF_TERM        ("FALSE"),
-         .IBUF_LOW_PWR     ("FALSE"),
-         .IOSTANDARD       ("LVDS_25")
-      ) U_IBUFDS_adc_clk_fb (
-         .I                (SYSCLK_P),
-         .IB               (SYSCLK_N),
-         .O                (sysclk)
-      );
-   `endif
-
 
    //Divide clock by 2^24 for heartbeat LED
    //Divide clock by 2^23 for frequency measurement
@@ -356,29 +348,8 @@ module cw310_top #(
             freq_measure <= 1'b0;
       end
 
-   wire freq_measure_sysclk;
-   cdc_pulse U_freq_measure (
-      .reset_i       (reset),
-      .src_clk       (usb_clk_buf),
-      .src_pulse     (freq_measure),
-      .dst_clk       (sysclk),
-      .dst_pulse     (freq_measure_sysclk)
-   );
-
-   reg [31:0] sysclk_frequency_int;
-
-   always @(posedge sysclk) begin
-      if (freq_measure_sysclk) begin
-         sysclk_frequency_int <= 32'd1;
-         sysclk_frequency <= sysclk_frequency_int;
-      end 
-      else begin
-         sysclk_frequency_int <= sysclk_frequency_int + 32'd1;
-      end
-   end
-
    // application interface to DDR3:
-   wire [28:0]  app_addr;
+   wire [29:0]  app_addr;
    wire [2:0]   app_cmd;
    wire         app_en;
    wire [31:0]  app_wdf_data;
@@ -399,10 +370,11 @@ module cw310_top #(
    wire         app_rdy;
    wire         app_wdf_rdy;
 
+   wire [255:0] ddr3_ila_basic_w;
 
    simple_ddr3_rwtest #(
       .pDATA_WIDTH                         (32),
-      .pADDR_WIDTH                         (29),
+      .pADDR_WIDTH                         (30),
       .pMASK_WIDTH                         (4)
    ) U_simple_ddr3_rwtest (
       .clk                                 (ui_clk              ),
@@ -434,55 +406,95 @@ module cw310_top #(
    );
 
 
-  `ifndef __ICARUS__
-  mig_7series_nosysclock u_mig_7series_nosysclock (
-    // Memory interface ports
-    .ddr3_addr                      (ddr3_addr),                // output [15:0] ddr3_addr
-    .ddr3_ba                        (ddr3_ba),                  // output [2:0] ddr3_ba
-    .ddr3_cas_n                     (ddr3_cas_n),               // output ddr3_cas_n
-    .ddr3_ck_n                      (ddr3_ck_n),                // output [0:0] ddr3_ck_n
-    .ddr3_ck_p                      (ddr3_ck_p),                // output [0:0] ddr3_ck_p
-    .ddr3_cke                       (ddr3_cke),                 // output [0:0] ddr3_cke
-    .ddr3_ras_n                     (ddr3_ras_n),               // output ddr3_ras_n
-    .ddr3_reset_n                   (ddr3_reset_n),             // output ddr3_reset_n
-    .ddr3_we_n                      (ddr3_we_n),                // output ddr3_we_n
-    .ddr3_dq                        (ddr3_dq),                  // inout [7:0] ddr3_dq
-    .ddr3_dqs_n                     (ddr3_dqs_n),               // inout [0:0] ddr3_dqs_n
-    .ddr3_dqs_p                     (ddr3_dqs_p),               // inout [0:0] ddr3_dqs_p
-    .init_calib_complete            (init_calib_complete),      // output init_calib_complete
+`ifndef __ICARUS__
+  mig_7series_nosysclock u_mig_7series_nosysclock
+      (
+// Memory interface ports
+       .ddr3_addr                      (ddr3_addr),
+       .ddr3_ba                        (ddr3_ba),
+       .ddr3_cas_n                     (ddr3_cas_n),
+       .ddr3_ck_n                      (ddr3_ck_n),
+       .ddr3_ck_p                      (ddr3_ck_p),
+       .ddr3_cke                       (ddr3_cke),
+       .ddr3_ras_n                     (ddr3_ras_n),
+       .ddr3_we_n                      (ddr3_we_n),
+       .ddr3_dq                        (ddr3_dq),
+       .ddr3_dqs_n                     (ddr3_dqs_n),
+       .ddr3_dqs_p                     (ddr3_dqs_p),
+       .ddr3_reset_n                   (ddr3_reset_n),
+       .init_calib_complete            (init_calib_complete),
+       .ddr3_cs_n                      (ddr3_cs_n),
+       .ddr3_dm                        (ddr3_dm),
+       .ddr3_odt                       (ddr3_odt),
+// Application interface ports
+       .app_addr                       (app_addr),
+       .app_cmd                        (app_cmd),
+       .app_en                         (app_en),
+       .app_wdf_data                   (app_wdf_data),
+       .app_wdf_end                    (app_wdf_end),
+       .app_wdf_wren                   (app_wdf_wren),
+       .app_rd_data                    (app_rd_data),
+       .app_rd_data_end                (app_rd_data_end),
+       .app_rd_data_valid              (app_rd_data_valid),
+       .app_rdy                        (app_rdy),
+       .app_wdf_rdy                    (app_wdf_rdy),
+       .app_sr_req                     (1'b0),
+       .app_ref_req                    (1'b0),
+       .app_zq_req                     (1'b0),
+       .app_sr_active                  (app_sr_active),
+       .app_ref_ack                    (app_ref_ack),
+       .app_zq_ack                     (app_zq_ack),
+       .ui_clk                         (ui_clk),
+       .ui_clk_sync_rst                (ui_clk_sync_rst),
+       .app_wdf_mask                   (app_wdf_mask),
+// Debug Ports
+// these can be omitted if you wish -- regenerate the MIG with debug disabled
+       .ddr3_ila_basic                 (ddr3_ila_basic_w[119:0]),
+       .ddr3_ila_wrpath                (),
+       .ddr3_ila_rdpath                (),
+       .dbg_pi_counter_read_val        (),
+       .dbg_po_counter_read_val        (),
+       .dbg_prbs_final_dqs_tap_cnt_r   (),
+       .dbg_prbs_first_edge_taps       (),
+       .dbg_prbs_second_edge_taps      (),
+       // debug inputs, connect to rest of debug infrastructure if present:
+       /*
+       .dbg_pi_f_inc                   (dbg_pi_f_inc),
+       .dbg_pi_f_dec                   (dbg_pi_f_dec),
+       .dbg_po_f_inc                   (dbg_po_f_inc),
+       .dbg_po_f_stg23_sel             (dbg_po_f_stg23_sel),
+       .dbg_po_f_dec                   (dbg_po_f_dec),
+       .ddr3_vio_sync_out              ({dbg_dqs,dbg_bit}),
+       .dbg_sel_pi_incdec              (dbg_sel_pi_incdec),
+       .dbg_sel_po_incdec              (dbg_sel_po_incdec),
+       .dbg_byte_sel                   (dbg_byte_sel_r),
+       */
+       // otherwise:
+       .dbg_pi_f_inc                   (1'b0),
+       .dbg_pi_f_dec                   (1'b0),
+       .dbg_po_f_inc                   (1'b0),
+       .dbg_po_f_stg23_sel             (1'b0),
+       .dbg_po_f_dec                   (1'b0),
+       .ddr3_vio_sync_out              (14'b0),
+       .dbg_sel_pi_incdec              (1'b0),
+       .dbg_sel_po_incdec              (1'b0),
+       .dbg_byte_sel                   (2'b0),
 
-    .ddr3_cs_n                      (ddr3_cs_n),                // output [0:0] ddr3_cs_n
-    .ddr3_dm                        (ddr3_dm),                  // output [0:0] ddr3_dm
-    .ddr3_odt                       (ddr3_odt),                 // output [0:0] ddr3_odt
+// System Clock Ports
+       .sys_clk_p                      (SYSCLK_P),
+       .sys_clk_n                      (SYSCLK_N),
+       .device_temp_i                  (temp_out),
+       `ifdef SKIP_CALIB
+       .calib_tap_req                  (calib_tap_req),
+       .calib_tap_load                 (calib_tap_load),
+       .calib_tap_addr                 (calib_tap_addr),
+       .calib_tap_val                  (calib_tap_val),
+       .calib_tap_load_done            (calib_tap_load_done),
+       `endif
+       .sys_rst                        (resetn)
+       );
 
-    // Application interface ports
-    .app_addr                       (app_addr),                 // input [29:0] app_addr
-    .app_cmd                        (app_cmd),                  // input [2:0] app_cmd
-    .app_en                         (app_en),                   // input app_en
-    .app_wdf_data                   (app_wdf_data),             // input [31:0] app_wdf_data
-    .app_wdf_end                    (app_wdf_end),              // input app_wdf_end
-    .app_wdf_wren                   (app_wdf_wren),             // input app_wdf_wren
-    .app_rd_data                    (app_rd_data),              // output [31:0] app_rd_data
-    .app_rd_data_end                (app_rd_data_end),          // output app_rd_data_end
-    .app_rd_data_valid              (app_rd_data_valid),        // output app_rd_data_valid
-    .app_rdy                        (app_rdy),                  // output app_rdy
-    .app_wdf_rdy                    (app_wdf_rdy),              // output app_wdf_rdy
-    .app_sr_req                     (app_sr_req),               // input app_sr_req
-    .app_ref_req                    (app_ref_req),              // input app_ref_req
-    .app_zq_req                     (app_zq_req),               // input app_zq_req
-    .app_sr_active                  (app_sr_active),            // output app_sr_active
-    .app_ref_ack                    (app_ref_ack),              // output app_ref_ack
-    .app_zq_ack                     (app_zq_ack),               // output app_zq_ack
-    .ui_clk                         (ui_clk),                   // output ui_clk
-    .ui_clk_sync_rst                (ui_clk_sync_rst),          // output ui_clk_sync_rst
-    .app_wdf_mask                   (app_wdf_mask),             // input [3:0] app_wdf_mask
-
-    // System Clock Ports
-    .device_temp_i                  (temp_out),
-    .sys_clk_i                      (sysclk),                   // input sys_clk_i
-    .sys_rst                        (resetn)                    // input sys_rst
-    );
-    `endif
+`endif
 
 
 endmodule

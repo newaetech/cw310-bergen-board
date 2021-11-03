@@ -85,7 +85,7 @@ module cw310_reg_aes #(
    output reg                                   O_vddr_enable,
    input  wire                                  I_vddr_pgood,
    output reg  [7:0]                            O_leds,
-   output reg                                   O_hearbeats,
+   output reg                                   O_heartbeats,
    output reg  [7:0]                            O_sram_top_address
 
 );
@@ -166,7 +166,7 @@ module cw310_reg_aes #(
             `REG_XO_EN:                 reg_read_data = {6'b0, O_vddr_enable, O_xo_en};
             `REG_XO_FREQ:               reg_read_data = I_sysclk_freq[reg_bytecnt*8 +: 8];
             `REG_LEDS:                  reg_read_data = O_leds;
-            `REG_HEARTBEATS:            reg_read_data = O_hearbeats;
+            `REG_HEARTBEATS:            reg_read_data = O_heartbeats;
             `REG_SRAM_MEM_BYTES:        reg_read_data = O_sram_top_address;
             `REG_VDDR_PGOOD:            reg_read_data = I_vddr_pgood;
             default:                    reg_read_data = 0;
@@ -197,7 +197,7 @@ module cw310_reg_aes #(
          O_xo_en <= 1;
          O_vddr_enable <= 0;
          O_leds <= 8'hFF;
-         O_hearbeats <= 0;
+         O_heartbeats <= 0;
          O_sram_top_address <= 0;
          reg_crypt_go_pulse <= 1'b0;
       end
@@ -214,7 +214,7 @@ module cw310_reg_aes #(
                `REG_SRAM_EN:            O_sram_en <= write_data[0];
                `REG_XO_EN:              {O_vddr_enable, O_xo_en} <= write_data[1:0];
                `REG_LEDS:               O_leds <= write_data;
-               `REG_HEARTBEATS:         O_hearbeats <= write_data[0];
+               `REG_HEARTBEATS:         O_heartbeats <= write_data[0];
                `REG_SRAM_MEM_BYTES:     O_sram_top_address <= write_data;
             endcase
          end

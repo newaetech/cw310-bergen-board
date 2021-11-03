@@ -1,7 +1,7 @@
--- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Thu Oct 21 15:58:46 2021
+-- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+-- Date        : Tue Nov  2 13:15:29 2021
 -- Host        : red running 64-bit Ubuntu 18.04.6 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0_sim_netlist.vhdl
@@ -136,7 +136,6 @@ architecture STRUCTURE of xadc_wiz_0_drp_arbiter is
   signal \^overlap_b_reg_0\ : STD_LOGIC;
   signal \^state__0\ : STD_LOGIC_VECTOR ( 1 downto 0 );
   attribute SOFT_HLUTNM : string;
-  attribute SOFT_HLUTNM of FIFO18E1_inst_data_i_2 : label is "soft_lutpair9";
   attribute SOFT_HLUTNM of \FSM_sequential_state[1]_i_2\ : label is "soft_lutpair1";
   attribute SOFT_HLUTNM of \FSM_sequential_state[1]_i_4\ : label is "soft_lutpair2";
   attribute SOFT_HLUTNM of \FSM_sequential_state[2]_i_2\ : label is "soft_lutpair1";
@@ -144,52 +143,53 @@ architecture STRUCTURE of xadc_wiz_0_drp_arbiter is
   attribute FSM_ENCODED_STATES of \FSM_sequential_state_reg[0]\ : label is "grant_b:10,nogrant:00,grant_a:01";
   attribute FSM_ENCODED_STATES of \FSM_sequential_state_reg[1]\ : label is "grant_b:10,nogrant:00,grant_a:01";
   attribute SOFT_HLUTNM of \daddr_C_reg[6]_i_4\ : label is "soft_lutpair0";
-  attribute SOFT_HLUTNM of \daddr_C_reg[6]_i_5\ : label is "soft_lutpair3";
-  attribute SOFT_HLUTNM of \daddr_C_reg[6]_i_9\ : label is "soft_lutpair7";
-  attribute SOFT_HLUTNM of \daddr_reg[0]_i_1\ : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of \daddr_reg[1]_i_1\ : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of \daddr_reg[2]_i_1\ : label is "soft_lutpair3";
-  attribute SOFT_HLUTNM of \daddr_reg[3]_i_1\ : label is "soft_lutpair2";
-  attribute SOFT_HLUTNM of \daddr_reg[4]_i_1\ : label is "soft_lutpair6";
-  attribute SOFT_HLUTNM of \daddr_reg[5]_i_1\ : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of \daddr_C_reg[6]_i_5\ : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \daddr_C_reg[6]_i_9\ : label is "soft_lutpair3";
+  attribute SOFT_HLUTNM of \daddr_reg[0]_i_1\ : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \daddr_reg[1]_i_1\ : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of \daddr_reg[2]_i_1\ : label is "soft_lutpair7";
+  attribute SOFT_HLUTNM of \daddr_reg[3]_i_1\ : label is "soft_lutpair8";
+  attribute SOFT_HLUTNM of \daddr_reg[4]_i_1\ : label is "soft_lutpair9";
+  attribute SOFT_HLUTNM of \daddr_reg[5]_i_1\ : label is "soft_lutpair7";
   attribute SOFT_HLUTNM of \daddr_reg[6]_i_1\ : label is "soft_lutpair10";
-  attribute SOFT_HLUTNM of den_C_reg_i_4 : label is "soft_lutpair5";
-  attribute SOFT_HLUTNM of \di_reg[10]_i_1\ : label is "soft_lutpair29";
+  attribute SOFT_HLUTNM of den_C_reg_i_4 : label is "soft_lutpair2";
+  attribute SOFT_HLUTNM of \di_reg[0]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \di_reg[10]_i_1\ : label is "soft_lutpair28";
   attribute SOFT_HLUTNM of \di_reg[11]_i_1\ : label is "soft_lutpair28";
-  attribute SOFT_HLUTNM of \di_reg[12]_i_1\ : label is "soft_lutpair28";
+  attribute SOFT_HLUTNM of \di_reg[12]_i_1\ : label is "soft_lutpair27";
   attribute SOFT_HLUTNM of \di_reg[13]_i_1\ : label is "soft_lutpair27";
-  attribute SOFT_HLUTNM of \di_reg[14]_i_1\ : label is "soft_lutpair27";
-  attribute SOFT_HLUTNM of \di_reg[15]_i_1\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \di_reg[14]_i_1\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \di_reg[15]_i_1\ : label is "soft_lutpair9";
   attribute SOFT_HLUTNM of \di_reg[1]_i_1\ : label is "soft_lutpair33";
-  attribute SOFT_HLUTNM of \di_reg[2]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \di_reg[2]_i_1\ : label is "soft_lutpair32";
   attribute SOFT_HLUTNM of \di_reg[3]_i_1\ : label is "soft_lutpair32";
-  attribute SOFT_HLUTNM of \di_reg[4]_i_1\ : label is "soft_lutpair32";
+  attribute SOFT_HLUTNM of \di_reg[4]_i_1\ : label is "soft_lutpair31";
   attribute SOFT_HLUTNM of \di_reg[5]_i_1\ : label is "soft_lutpair31";
-  attribute SOFT_HLUTNM of \di_reg[6]_i_1\ : label is "soft_lutpair31";
+  attribute SOFT_HLUTNM of \di_reg[6]_i_1\ : label is "soft_lutpair30";
   attribute SOFT_HLUTNM of \di_reg[7]_i_1\ : label is "soft_lutpair30";
-  attribute SOFT_HLUTNM of \di_reg[8]_i_1\ : label is "soft_lutpair30";
+  attribute SOFT_HLUTNM of \di_reg[8]_i_1\ : label is "soft_lutpair29";
   attribute SOFT_HLUTNM of \di_reg[9]_i_1\ : label is "soft_lutpair29";
-  attribute SOFT_HLUTNM of \do_A_reg[10]_i_1\ : label is "soft_lutpair16";
-  attribute SOFT_HLUTNM of \do_A_reg[11]_i_1\ : label is "soft_lutpair15";
-  attribute SOFT_HLUTNM of \do_A_reg[12]_i_1\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \do_A_reg[13]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \do_A_reg[10]_i_1\ : label is "soft_lutpair14";
+  attribute SOFT_HLUTNM of \do_A_reg[11]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \do_A_reg[12]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \do_A_reg[13]_i_1\ : label is "soft_lutpair12";
   attribute SOFT_HLUTNM of \do_A_reg[14]_i_1\ : label is "soft_lutpair12";
   attribute SOFT_HLUTNM of \do_A_reg[15]_i_2\ : label is "soft_lutpair11";
   attribute SOFT_HLUTNM of \do_A_reg[1]_i_1\ : label is "soft_lutpair18";
   attribute SOFT_HLUTNM of \do_A_reg[2]_i_1\ : label is "soft_lutpair18";
   attribute SOFT_HLUTNM of \do_A_reg[3]_i_1\ : label is "soft_lutpair17";
-  attribute SOFT_HLUTNM of \do_A_reg[4]_i_1\ : label is "soft_lutpair16";
-  attribute SOFT_HLUTNM of \do_A_reg[5]_i_1\ : label is "soft_lutpair15";
-  attribute SOFT_HLUTNM of \do_A_reg[6]_i_1\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \do_A_reg[7]_i_1\ : label is "soft_lutpair13";
-  attribute SOFT_HLUTNM of \do_A_reg[8]_i_1\ : label is "soft_lutpair12";
-  attribute SOFT_HLUTNM of \do_A_reg[9]_i_1\ : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of \do_A_reg[4]_i_1\ : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of \do_A_reg[5]_i_1\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \do_A_reg[6]_i_1\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \do_A_reg[7]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \do_A_reg[8]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \do_A_reg[9]_i_1\ : label is "soft_lutpair14";
   attribute SOFT_HLUTNM of \do_B_reg[0]_i_1\ : label is "soft_lutpair26";
-  attribute SOFT_HLUTNM of \do_B_reg[10]_i_1\ : label is "soft_lutpair19";
-  attribute SOFT_HLUTNM of \do_B_reg[11]_i_1\ : label is "soft_lutpair23";
-  attribute SOFT_HLUTNM of \do_B_reg[12]_i_1\ : label is "soft_lutpair22";
-  attribute SOFT_HLUTNM of \do_B_reg[13]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \do_B_reg[14]_i_1\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \do_B_reg[10]_i_1\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \do_B_reg[11]_i_1\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \do_B_reg[12]_i_1\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \do_B_reg[13]_i_1\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \do_B_reg[14]_i_1\ : label is "soft_lutpair19";
   attribute SOFT_HLUTNM of \do_B_reg[15]_i_2\ : label is "soft_lutpair19";
   attribute SOFT_HLUTNM of \do_B_reg[1]_i_1\ : label is "soft_lutpair26";
   attribute SOFT_HLUTNM of \do_B_reg[2]_i_1\ : label is "soft_lutpair25";
@@ -197,14 +197,14 @@ architecture STRUCTURE of xadc_wiz_0_drp_arbiter is
   attribute SOFT_HLUTNM of \do_B_reg[4]_i_1\ : label is "soft_lutpair24";
   attribute SOFT_HLUTNM of \do_B_reg[5]_i_1\ : label is "soft_lutpair24";
   attribute SOFT_HLUTNM of \do_B_reg[6]_i_1\ : label is "soft_lutpair23";
-  attribute SOFT_HLUTNM of \do_B_reg[7]_i_1\ : label is "soft_lutpair22";
-  attribute SOFT_HLUTNM of \do_B_reg[8]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \do_B_reg[9]_i_1\ : label is "soft_lutpair20";
-  attribute SOFT_HLUTNM of drdy_A_reg_i_1 : label is "soft_lutpair9";
-  attribute SOFT_HLUTNM of drdy_B_reg_i_1 : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \do_B_reg[7]_i_1\ : label is "soft_lutpair23";
+  attribute SOFT_HLUTNM of \do_B_reg[8]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \do_B_reg[9]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of drdy_A_reg_i_1 : label is "soft_lutpair4";
+  attribute SOFT_HLUTNM of drdy_B_reg_i_1 : label is "soft_lutpair4";
   attribute SOFT_HLUTNM of dwe_reg_i_2 : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of dwe_reg_i_3 : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of dwe_reg_i_4 : label is "soft_lutpair7";
+  attribute SOFT_HLUTNM of dwe_reg_i_3 : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of dwe_reg_i_4 : label is "soft_lutpair3";
   attribute SOFT_HLUTNM of dwe_reg_i_5 : label is "soft_lutpair11";
   attribute SOFT_HLUTNM of dwe_reg_i_6 : label is "soft_lutpair0";
 begin
@@ -2345,7 +2345,7 @@ architecture STRUCTURE of xadc_wiz_0_drp_to_axi4stream is
   attribute FSM_ENCODED_STATES of \FSM_sequential_state_reg[1]\ : label is "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011";
   attribute FSM_ENCODED_STATES of \FSM_sequential_state_reg[2]\ : label is "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011";
   attribute FSM_ENCODED_STATES of \FSM_sequential_state_reg[3]\ : label is "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011";
-  attribute SOFT_HLUTNM of \channel_id[0]_i_1\ : label is "soft_lutpair35";
+  attribute SOFT_HLUTNM of \channel_id[1]_i_1\ : label is "soft_lutpair35";
   attribute SOFT_HLUTNM of \channel_id[2]_i_1\ : label is "soft_lutpair36";
   attribute SOFT_HLUTNM of \channel_id[3]_i_1\ : label is "soft_lutpair34";
   attribute SOFT_HLUTNM of \channel_id[6]_i_2\ : label is "soft_lutpair36";
@@ -2354,6 +2354,11 @@ architecture STRUCTURE of xadc_wiz_0_drp_to_axi4stream is
   attribute SOFT_HLUTNM of drp_rdwr_status_i_1 : label is "soft_lutpair38";
   attribute SOFT_HLUTNM of m_axis_tvalid_INST_0 : label is "soft_lutpair39";
   attribute SOFT_HLUTNM of overlap_A_i_2 : label is "soft_lutpair37";
+  attribute ADDER_THRESHOLD : integer;
+  attribute ADDER_THRESHOLD of \timer_cntr_reg[0]_i_1\ : label is 11;
+  attribute ADDER_THRESHOLD of \timer_cntr_reg[12]_i_1\ : label is 11;
+  attribute ADDER_THRESHOLD of \timer_cntr_reg[4]_i_1\ : label is 11;
+  attribute ADDER_THRESHOLD of \timer_cntr_reg[8]_i_1\ : label is 11;
 begin
   \FSM_sequential_state_reg[0]_0\(0) <= \^fsm_sequential_state_reg[0]_0\(0);
   \FSM_sequential_state_reg[1]_0\ <= \^fsm_sequential_state_reg[1]_0\;
@@ -3520,7 +3525,7 @@ entity xadc_wiz_0_xadc_wiz_0_xadc_core_drp is
     eos_out : out STD_LOGIC;
     ot_out : out STD_LOGIC;
     channel_out : out STD_LOGIC_VECTOR ( 4 downto 0 );
-    alarm_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    alarm_out : out STD_LOGIC_VECTOR ( 4 downto 0 );
     temp_out : out STD_LOGIC_VECTOR ( 11 downto 0 );
     do_out : out STD_LOGIC_VECTOR ( 15 downto 0 );
     m_axis_tvalid : out STD_LOGIC;
@@ -3547,6 +3552,9 @@ architecture STRUCTURE of xadc_wiz_0_xadc_wiz_0_xadc_core_drp is
   signal Inst_drp_arbiter_n_25 : STD_LOGIC;
   signal Inst_drp_arbiter_n_3 : STD_LOGIC;
   signal Inst_drp_arbiter_n_7 : STD_LOGIC;
+  signal XADC_INST_n_35 : STD_LOGIC;
+  signal XADC_INST_n_36 : STD_LOGIC;
+  signal XADC_INST_n_37 : STD_LOGIC;
   signal axi4_stream_inst_n_29 : STD_LOGIC;
   signal axi4_stream_inst_n_31 : STD_LOGIC;
   signal axi4_stream_inst_n_32 : STD_LOGIC;
@@ -3663,7 +3671,11 @@ XADC_INST: unisim.vcomponents.XADC
       SIM_MONITOR_FILE => "design.txt"
     )
         port map (
-      ALM(7 downto 0) => alarm_out(7 downto 0),
+      ALM(7) => alarm_out(4),
+      ALM(6) => XADC_INST_n_35,
+      ALM(5) => XADC_INST_n_36,
+      ALM(4) => XADC_INST_n_37,
+      ALM(3 downto 0) => alarm_out(3 downto 0),
       BUSY => busy_out,
       CHANNEL(4 downto 0) => \^channel_out\(4 downto 0),
       CONVST => '0',
@@ -3796,7 +3808,14 @@ entity xadc_wiz_0_xadc_wiz_0_axi_xadc is
 end xadc_wiz_0_xadc_wiz_0_axi_xadc;
 
 architecture STRUCTURE of xadc_wiz_0_xadc_wiz_0_axi_xadc is
+  signal \<const0>\ : STD_LOGIC;
+  signal \^alarm_out\ : STD_LOGIC_VECTOR ( 7 downto 0 );
 begin
+  alarm_out(7) <= \^alarm_out\(7);
+  alarm_out(6) <= \<const0>\;
+  alarm_out(5) <= \<const0>\;
+  alarm_out(4) <= \<const0>\;
+  alarm_out(3 downto 0) <= \^alarm_out\(3 downto 0);
 AXI_XADC_CORE_I: entity work.xadc_wiz_0_xadc_wiz_0_xadc_core_drp
      port map (
       VAUXN(2) => vauxn8,
@@ -3805,7 +3824,8 @@ AXI_XADC_CORE_I: entity work.xadc_wiz_0_xadc_wiz_0_xadc_core_drp
       VAUXP(2) => vauxp8,
       VAUXP(1) => vauxp1,
       VAUXP(0) => vauxp0,
-      alarm_out(7 downto 0) => alarm_out(7 downto 0),
+      alarm_out(4) => \^alarm_out\(7),
+      alarm_out(3 downto 0) => \^alarm_out\(3 downto 0),
       busy_out => busy_out,
       channel_out(4 downto 0) => channel_out(4 downto 0),
       daddr_in(6 downto 0) => daddr_in(6 downto 0),
@@ -3827,6 +3847,10 @@ AXI_XADC_CORE_I: entity work.xadc_wiz_0_xadc_wiz_0_xadc_core_drp
       temp_out(11 downto 0) => temp_out(11 downto 0),
       vn_in => vn_in,
       vp_in => vp_in
+    );
+GND: unisim.vcomponents.GND
+     port map (
+      G => \<const0>\
     );
 end STRUCTURE;
 library IEEE;

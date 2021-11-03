@@ -159,23 +159,23 @@ module example_top #
    // The following parameters are multiplier and divisor factors for PLLE2.
    // Based on the selected design frequency these parameters vary.
    //***************************************************************************
-   parameter CLKIN_PERIOD          = 5000,
+   parameter CLKIN_PERIOD          = 4999,
                                      // Input Clock Period
-   parameter CLKFBOUT_MULT         = 4,
+   parameter CLKFBOUT_MULT         = 13,
                                      // write PLL VCO multiplier
-   parameter DIVCLK_DIVIDE         = 1,
+   parameter DIVCLK_DIVIDE         = 2,
                                      // write PLL VCO divisor
    parameter CLKOUT0_PHASE         = 315.0,
                                      // Phase for PLL output clock (CLKOUT0)
-   parameter CLKOUT0_DIVIDE        = 1,
+   parameter CLKOUT0_DIVIDE        = 2,
                                      // VCO output divisor for PLL output clock (CLKOUT0)
-   parameter CLKOUT1_DIVIDE        = 2,
+   parameter CLKOUT1_DIVIDE        = 4,
                                      // VCO output divisor for PLL output clock (CLKOUT1)
-   parameter CLKOUT2_DIVIDE        = 32,
+   parameter CLKOUT2_DIVIDE        = 64,
                                      // VCO output divisor for PLL output clock (CLKOUT2)
-   parameter CLKOUT3_DIVIDE        = 4,
+   parameter CLKOUT3_DIVIDE        = 8,
                                      // VCO output divisor for PLL output clock (CLKOUT3)
-   parameter MMCM_VCO              = 800,
+   parameter MMCM_VCO              = 650,
                                      // Max Freq (MHz) of MMCM VCO
    parameter MMCM_MULT_F           = 4,
                                      // write MMCM VCO multiplier
@@ -208,7 +208,7 @@ module example_top #
    //***************************************************************************
    // Debug parameters
    //***************************************************************************
-   parameter DEBUG_PORT            = "OFF",
+   parameter DEBUG_PORT            = "ON",
                                      // # = "ON" Enable debug signals/controls.
                                      //   = "OFF" Disable debug signals/controls.
       
@@ -243,8 +243,9 @@ module example_top #
 
    // Inputs
    
-   // Single-ended system clock
-   input                                        sys_clk_i,
+   // Differential system clocks
+   input                                        sys_clk_p,
+   input                                        sys_clk_n,
    
 
    output                                       tg_compare_error,
@@ -342,25 +343,273 @@ function integer clogb2 (input integer size);
   wire                                  dbg_po_f_stg23_sel;
   wire                                  dbg_po_f_dec;
   
+    // Debug port wire declarations
+
+  wire [255:0]                            ddr3_ila_basic_w;
+  reg  [255:0]                            ddr3_ila_basic;
+  wire [390:0]                            ddr3_ila_wrpath_w;
+  reg  [390:0]                            ddr3_ila_wrpath;
+  wire [1023:0]                           ddr3_ila_rdpath_w;
+  reg  [1023:0]                           ddr3_ila_rdpath;
+
+  // Signals for creating rising edge pulses for VIO outputs
+  reg                                     vio_dbg_pi_f_inc_r1;
+  reg                                     vio_dbg_pi_f_dec_r1;
+  reg                                     vio_dbg_po_f_inc_r1;
+  reg                                     vio_dbg_po_f_dec_r1;
+  reg                                     vio_win_byte_select_inc_r1;
+  reg                                     vio_win_byte_select_dec_r1;
+
+  reg                                     vio_dbg_pi_f_inc_r2;
+  reg                                     vio_dbg_pi_f_dec_r2;
+  reg                                     vio_dbg_po_f_inc_r2;
+  reg                                     vio_dbg_po_f_dec_r2;
+  reg                                     vio_win_byte_select_inc_r2;
+  reg                                     vio_win_byte_select_dec_r2;
+
+  wire                                    vio_dbg_pi_f_inc_re;
+  wire                                    vio_dbg_pi_f_dec_re;
+  wire                                    vio_dbg_po_f_inc_re;
+  wire                                    vio_dbg_po_f_dec_re;
+  wire                                    vio_win_byte_select_inc_re;
+  wire                                    vio_win_byte_select_dec_re;
+
+  (* mark_debug = "TRUE" *) wire          dbg_mem_pattern_init_done;
+  (* mark_debug = "TRUE" *) wire          dbg_tg_compare_error;
+  (* mark_debug = "TRUE" *) wire [47:0]   dbg_tg_wr_data_counts;
+  (* mark_debug = "TRUE" *) wire [47:0]   dbg_tg_rd_data_counts;
+
+  (* mark_debug = "TRUE" *) wire [4:0]    dbg_dqs;
+  (* mark_debug = "TRUE" *) wire [8:0]    dbg_bit;
+
+  reg  [7:0]                              dbg_extn_trig_out_ack_r;
+  (* mark_debug = "TRUE" *) wire          vio_modify_enable;
+  (* mark_debug = "TRUE" *) wire [3:0]    vio_data_mode_value;
+  (* mark_debug = "TRUE" *) wire          vio_pause_traffic;
+  (* mark_debug = "TRUE" *) wire [2:0]    vio_addr_mode_value;
+  (* mark_debug = "TRUE" *) wire [3:0]    vio_instr_mode_value;
+  (* mark_debug = "TRUE" *) wire [1:0]    vio_bl_mode_value;
+  (* mark_debug = "TRUE" *) wire [9:0]    vio_fixed_bl_value;
+  (* mark_debug = "TRUE" *) wire [2:0]    vio_fixed_instr_value;
+  (* mark_debug = "TRUE" *) wire          vio_data_mask_gen;
+  (* mark_debug = "TRUE" *) wire          vio_tg_rst;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_sel_pi_incdec;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_pi_f_inc;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_pi_f_dec;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_sel_po_incdec;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_po_f_inc;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_po_f_stg23_sel;
+  (* mark_debug = "TRUE" *) wire          vio_dbg_po_f_dec;
+  (* mark_debug = "TRUE" *) wire          dbg_extn_trig_out;
+  (* mark_debug = "TRUE" *) wire          dbg_extn_trig_out_ack;
+  (* mark_debug = "TRUE" *) wire          dbg_init_calib_complete;
+  (* mark_debug = "TRUE" *) wire          dbg_wrlvl_start;
+  (* mark_debug = "TRUE" *) wire          dbg_wrlvl_done;
+  (* mark_debug = "TRUE" *) wire          dbg_wrlvl_err;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_phaselock_start;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_phaselocked_done;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_phaselock_err;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_dqsfound_start;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_dqsfound_done;
+  (* mark_debug = "TRUE" *) wire          dbg_pi_dqsfound_err;
+  (* mark_debug = "TRUE" *) wire [1:0]    dbg_rdlvl_start;
+  (* mark_debug = "TRUE" *) wire [1:0]    dbg_rdlvl_done;
+  (* mark_debug = "TRUE" *) wire [1:0]    dbg_rdlvl_err;
+  (* mark_debug = "TRUE" *) wire          dbg_oclkdelay_calib_start;
+  (* mark_debug = "TRUE" *) wire          dbg_oclkdelay_calib_done;
+  (* mark_debug = "TRUE" *) wire          dbg_wrcal_start;
+  (* mark_debug = "TRUE" *) wire          dbg_wrcal_done;
+  (* mark_debug = "TRUE" *) wire          dbg_wrcal_err;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_phy_init_5_0;
+  (* mark_debug = "TRUE" *) wire          dbg_rddata_valid_r;
+  (* mark_debug = "TRUE" *) wire [63:0]   dbg_rddata_r;
+  (* mark_debug = "TRUE" *) wire          dbg_fine_adjust_done_r;
+  (* mark_debug = "TRUE" *) wire          dbg_cmd_wdt_err_w;
+  (* mark_debug = "TRUE" *) wire          dbg_rd_wdt_err_w;
+  (* mark_debug = "TRUE" *) wire          dbg_wr_wdt_err_w;
+  (* mark_debug = "TRUE" *) wire          dbg_cmp_data_valid;
+  (* mark_debug = "TRUE" *) wire          dbg_cmp_error;
+  (* mark_debug = "TRUE" *) wire [63:0]   dbg_cmp_data_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_dq_error_bytelane_cmp;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_cumlative_dq_lane_error;
+  (* mark_debug = "TRUE" *) wire [31:0]   dbg_cmp_addr_i;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_cmp_bl_i;
+  (* mark_debug = "TRUE" *) wire          dbg_mcb_cmd_full_i;
+  (* mark_debug = "TRUE" *) wire          dbg_mcb_wr_full_i;
+  (* mark_debug = "TRUE" *) wire          dbg_mcb_rd_empty_i;
+  (* mark_debug = "TRUE" *) wire [1:0]    dbg_ddrx_ila_rdpath_765_764;
+  (* mark_debug = "TRUE" *) wire [31:0]   dbg_axi_cmp_data;
+  (* mark_debug = "TRUE" *) wire [31:0]   dbg_axi_rdata_cmp;
+
+  // Write path debug signals
+  (* mark_debug = "TRUE" *) wire [4:0]    dbg_wl_state_r;
+  (* mark_debug = "TRUE" *) wire [3:0]    dbg_dqs_cnt_r;
+  (* mark_debug = "TRUE" *) wire          dbg_wl_edge_detect_valid_r;
+  (* mark_debug = "TRUE" *) wire          dbg_rd_data_edge_detect_r_by_dqs;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_wl_po_fine_cnt_by_dqs;
+  (* mark_debug = "TRUE" *) wire [2:0]    dbg_wl_po_coarse_cnt_by_dqs;
+
+  (* mark_debug = "TRUE" *) wire [3:0]    dbg_phy_oclkdelay_zfo;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_fuzz2oneeighty;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_fuzz2zero;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_oneeighty2fuzz;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_zero2fuzz;
+  (* mark_debug = "TRUE" *) wire [2:0]    dbg_ocal_oclkdelay_calib_cnt;
+  (* mark_debug = "TRUE" *) wire          dbg_ocal_scan_win_not_found;
+  (* mark_debug = "TRUE" *) wire          dbg_ocal_lim_done;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_stg3_lim_left;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_stg3_lim_right;
+  (* mark_debug = "TRUE" *) wire          dbg_ocal_center_calib_start;
+  (* mark_debug = "TRUE" *) wire          dbg_ocal_center_calib_done;
+  (* mark_debug = "TRUE" *) wire [53:0]   dbg_phy_oclkdelay_cal_taps;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_ocal_tap_cnt;
+
+  (* mark_debug = "TRUE" *) wire          dbg_wrcal_pat_data_match_r;
+  (* mark_debug = "TRUE" *) wire          dbg_wrcal_pat_data_match_valid_r;
+  (* mark_debug = "TRUE" *) wire [3:0]    dbg_wrcal_dqs_cnt_r;
+  (* mark_debug = "TRUE" *) wire [4:0]    cal2_state_r;
+  (* mark_debug = "TRUE" *) wire [4:0]    not_empty_wait_cnt;
+  (* mark_debug = "TRUE" *) wire          dbg_early1_data;
+  (* mark_debug = "TRUE" *) wire          dbg_early2_data;
+  (* mark_debug = "TRUE" *) wire          dbg_early1_data_match_r;
+  (* mark_debug = "TRUE" *) wire          dbg_early2_data_match_r;
+  (* mark_debug = "TRUE" *) wire          dbg_wcal_sanity_pat_data_match_valid_r;
+  (* mark_debug = "TRUE" *) wire          dbg_wcal_sanity_chk_start;
+  (* mark_debug = "TRUE" *) wire          dbg_wcal_sanity_chk_done;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_rise0_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_fall0_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_rise1_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_fall1_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_rise2_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_fall2_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_rise3_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_wcal_mux_rd_fall3_r;
+  (* mark_debug = "TRUE" *) wire [3:0]    dbg_phy_oclkdelay_cal_57_54;
+  (* mark_debug = "TRUE" *) wire [26:0]   dbg_phy_wrcal_po_coarse_cnt;
+  (* mark_debug = "TRUE" *) wire [53:0]   dbg_phy_wrcal_po_fine_cnt;
+  (* mark_debug = "TRUE" *) wire [53:0]   dbg_phy_wrlvl_128_75;
+  (* mark_debug = "TRUE" *) wire [26:0]   dbg_phy_wrlvl_155_129;
+  // Read path debug signals
+
+  (* mark_debug = "TRUE" *) wire [11:0]   dbg_pi_phase_locked_phy4lanes;
+  (* mark_debug = "TRUE" *) wire [11:0]   dbg_pi_dqs_found_lanes_phy4lanes;
+  (* mark_debug = "TRUE" *) wire [11:0]   dbg_rd_data_offset;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_cal1_state_r;
+  (* mark_debug = "TRUE" *) wire [3:0]    dbg_cal1_cnt_cpt_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_rise0_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_fall0_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_rise1_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_fall1_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_rise2_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_fall2_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_rise3_r;
+  (* mark_debug = "TRUE" *) wire [7:0]    dbg_mux_rd_fall3_r;
+  (* mark_debug = "TRUE" *) wire          dbg_rdlvl_pat_data_match_r;
+  (* mark_debug = "TRUE" *) wire          dbg_mux_rd_valid_r;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_cpt_first_edge_cnt_by_dqs;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_cpt_second_edge_cnt_by_dqs;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_cpt_tap_cnt_by_dqs;
+  (* mark_debug = "TRUE" *) wire [4:0]    dbg_dq_idelay_tap_cnt_by_dqs;
+  (* mark_debug = "TRUE" *) wire [11:0]   dbg_dbg_calib_rd_data_offset_1;
+  (* mark_debug = "TRUE" *) wire [11:0]   dbg_dbg_calib_rd_data_offset_2;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_data_offset;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_data_offset_1;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_data_offset_2;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_cpt_first_edge_cnt;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_cpt_second_edge_cnt;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_cpt_tap_cnt;
+  (* mark_debug = "TRUE" *) wire [89:0]   dbg_dq_idelay_tap_cnt;
+
+                            wire [254:0]  dbg_prbs_rdlvl;
+
+  (* mark_debug = "TRUE" *) wire [ 47:0]  dbg_prbs_rdlvl_left_edge_pb;
+  (* mark_debug = "TRUE" *) wire [ 15:0]  dbg_prbs_rdlvl_left_loss_pb;
+  (* mark_debug = "TRUE" *) wire [ 47:0]  dbg_prbs_rdlvl_right_edge_pb;
+  (* mark_debug = "TRUE" *) wire [ 15:0]  dbg_prbs_rdlvl_right_gain_pb;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_pi_counter_read_val;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_prbs_dqs_tap_cnt_r;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_prbs_found_1st_edge_r;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_prbs_found_2nd_edge_r;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_phy_if_empty;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_prbs_rdlvl_start;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_prbs_rdlvl_done;
+  (* mark_debug = "TRUE" *) wire [  4:0]  dbg_prbs_rdlvl_prbs_dqs_cnt_r;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_left_edge_pb_dqs_cnt;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_right_edge_pb_dqs_cnt;
+  (* mark_debug = "TRUE" *) wire [  2:0]  dbg_prbs_rdlvl_rd_victim_sel;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_complex_victim_inc;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_right_gain_pb_dqs_cnt;
+  (* mark_debug = "TRUE" *) wire [  2:0]  dbg_prbs_rdlvl_ref_bit;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_prbs_state_r1;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_rd_valid_r2;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_r0;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_f0;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_r1;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_f1;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_r2;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_f2;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_r3;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_f3;
+  (* mark_debug = "TRUE" *) wire [  7:0]  dbg_prbs_rdlvl_left_edge_found_pb;
+  (* mark_debug = "TRUE" *) wire [  7:0]  dbg_prbs_rdlvl_right_edge_found_pb;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_largest_left_edge;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_smallest_right_edge;
+  (* mark_debug = "TRUE" *) wire [  7:0]  dbg_prbs_rdlvl_fine_delay_incdec_pb;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_fine_delay_sel;
+  (* mark_debug = "TRUE" *) wire [  7:0]  dbg_prbs_rdlvl_compare_err_pb_latch_r;
+  (* mark_debug = "TRUE" *) wire [  5:0]  dbg_prbs_rdlvl_fine_pi_dec_cnt;
+  (* mark_debug = "TRUE" *) wire [  4:0]  dbg_prbs_rdlvl_match_flag_and;
+  (* mark_debug = "TRUE" *) wire [  1:0]  dbg_prbs_rdlvl_stage_cnt;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_fine_inc_stage;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_compare_err_pb_and;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_right_edge_found;
+  (* mark_debug = "TRUE" *) wire          dbg_prbs_rdlvl_fine_dly_error;
+
+  (* mark_debug = "TRUE" *) wire          win_start;
+  (* mark_debug = "TRUE" *) wire          win_sel_pi_pon;
+  (* mark_debug = "TRUE" *) wire          vio_win_byte_select_inc;
+  (* mark_debug = "TRUE" *) wire          vio_win_byte_select_dec;
+  (* mark_debug = "TRUE" *) wire [5:0]    dbg_pi_counter_read_val;
+  (* mark_debug = "TRUE" *) wire [8:0]    dbg_po_counter_read_val;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_prbs_final_dqs_tap_cnt_r;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_prbs_first_edge_taps;
+  (* mark_debug = "TRUE" *) wire [107:0]  dbg_prbs_second_edge_taps;
+  (* mark_debug = "TRUE" *) wire [5:0]    pi_win_left_ram_out;
+  (* mark_debug = "TRUE" *) wire [5:0]    pi_win_right_ram_out;
+  (* mark_debug = "TRUE" *) wire [8:0]    po_win_left_ram_out;
+  (* mark_debug = "TRUE" *) wire [8:0]    po_win_right_ram_out;
+  (* mark_debug = "TRUE" *) wire          win_clr_error;
+  (* mark_debug = "TRUE" *) wire          manual_clear_error;
+
+  (* mark_debug = "TRUE" *) wire          win_active;
+  (* mark_debug = "TRUE" *) wire [4:0]    vio_sel_mux_rdd;
+  (* mark_debug = "TRUE" *) wire [6:0]    win_current_bit;
+  (* mark_debug = "TRUE" *) wire [4:0]    win_current_byte;
+  (* mark_debug = "TRUE" *) wire [164:0]  dbg_win_chk;
+  wire                                    pi_win_up;
+  wire                                    pi_win_down;
+  wire                                    po_win_up;
+  wire                                    po_stg23_sel;
+  wire                                    po_win_down;
+  wire                                    po_win_tg_rst;
+
+  reg                                     app_rd_data_valid_r1;
+  reg                                     app_rd_data_valid_r2;
+  reg                                     app_rd_data_valid_r3;
+  (* mark_debug = "TRUE" *) reg [6:0]     win_byte_select;
+  reg [(2*nCK_PER_CLK*PAYLOAD_WIDTH)-1:0]    app_rd_data_r1;
+  reg [(2*nCK_PER_CLK*PAYLOAD_WIDTH)-1:0]    app_rd_data_r2;
+  reg [(2*nCK_PER_CLK*PAYLOAD_WIDTH)-1:0]    app_rd_data_r3;
+  reg [DQS_CNT_WIDTH:0]                       dbg_byte_sel_r;
+  reg [255:0]                             tg_simple_data;
+  (* mark_debug = "TRUE" *) wire [1:0]    vio_tg_simple_data_sel;
+  (* mark_debug = "TRUE" *) wire          wdt_en_w;
+  wire                                    cmd_wdt_err_w;
+  wire                                    wr_wdt_err_w;
+  wire                                    rd_wdt_err_w;
+  (* mark_debug = "TRUE" *) wire          dbg_clear_error;
   
-  wire                                  vio_modify_enable;
-  wire [3:0]                            vio_data_mode_value;
-  wire                                  vio_pause_traffic;
-  wire [2:0]                            vio_addr_mode_value;
-  wire [3:0]                            vio_instr_mode_value;
-  wire [1:0]                            vio_bl_mode_value;
-  wire [9:0]                            vio_fixed_bl_value;
-  wire [2:0]                            vio_fixed_instr_value;
-  wire                                  vio_data_mask_gen;
-  wire                                  vio_tg_rst;
-  wire                                  vio_dbg_sel_pi_incdec;
-  wire                                  vio_dbg_pi_f_inc;
-  wire                                  vio_dbg_pi_f_dec;
-  wire                                  vio_dbg_sel_po_incdec;
-  wire                                  vio_dbg_po_f_inc;
-  wire                                  vio_dbg_po_f_stg23_sel;
-  wire                                  vio_dbg_po_f_dec;
-     
   wire [11:0]                           device_temp;
   
 `ifdef SKIP_CALIB
@@ -435,9 +684,30 @@ function integer clogb2 (input integer size);
       
        .app_wdf_mask                   (app_wdf_mask),
       
+// Debug Ports
+       .ddr3_ila_basic                           (ddr3_ila_basic_w[119:0]),
+       .ddr3_ila_wrpath                          (ddr3_ila_wrpath_w),
+       .ddr3_ila_rdpath                          (ddr3_ila_rdpath_w),
+
+       .ddr3_vio_sync_out                        ({dbg_dqs,dbg_bit}),
+
+       .dbg_pi_counter_read_val        (dbg_pi_counter_read_val),
+       .dbg_sel_pi_incdec              (dbg_sel_pi_incdec),
+       .dbg_po_counter_read_val        (dbg_po_counter_read_val),
+       .dbg_prbs_final_dqs_tap_cnt_r   (dbg_prbs_final_dqs_tap_cnt_r),
+       .dbg_prbs_first_edge_taps       (dbg_prbs_first_edge_taps),
+       .dbg_prbs_second_edge_taps      (dbg_prbs_second_edge_taps),
+       .dbg_sel_po_incdec              (dbg_sel_po_incdec),
+       .dbg_byte_sel                   (dbg_byte_sel_r),
+       .dbg_pi_f_inc                   (dbg_pi_f_inc),
+       .dbg_pi_f_dec                   (dbg_pi_f_dec),
+       .dbg_po_f_inc                   (dbg_po_f_inc),
+       .dbg_po_f_stg23_sel             (dbg_po_f_stg23_sel),
+       .dbg_po_f_dec                   (dbg_po_f_dec),
        
 // System Clock Ports
-       .sys_clk_i                       (sys_clk_i),
+       .sys_clk_p                       (sys_clk_p),
+       .sys_clk_n                       (sys_clk_n),
        .device_temp_i                  (device_temp_i),
        .device_temp            (device_temp),
        `ifdef SKIP_CALIB
@@ -547,33 +817,627 @@ function integer clogb2 (input integer size);
        );
 
 
-   //*****************************************************************
-   // Default values are assigned to the debug inputs of the traffic
-   // generator
-   //*****************************************************************
-   assign vio_modify_enable     = 1'b0;
-   assign vio_data_mode_value   = 4'b0010;
-   assign vio_addr_mode_value   = 3'b011;
-   assign vio_instr_mode_value  = 4'b0010;
-   assign vio_bl_mode_value     = 2'b10;
-   assign vio_fixed_bl_value    = 8'd16;
-   assign vio_data_mask_gen     = 1'b0;
-   assign vio_pause_traffic     = 1'b0;
-   assign vio_fixed_instr_value = 3'b001;
-   assign dbg_clear_error       = 1'b0;
-   assign po_win_tg_rst         = 1'b0;
-   assign vio_tg_rst            = 1'b0;
-   assign wdt_en_w              = 1'b1;
+ generate
+    if (DEBUG_PORT=="ON") begin: CHIPSCOPE_INST
 
-   assign dbg_sel_pi_incdec       = 'b0;
-   assign dbg_sel_po_incdec       = 'b0;
-   assign dbg_pi_f_inc            = 'b0;
-   assign dbg_pi_f_dec            = 'b0;
-   assign dbg_po_f_inc            = 'b0;
-   assign dbg_po_f_dec            = 'b0;
-   assign dbg_po_f_stg23_sel      = 'b0;
 
-      
+       always @(posedge clk) begin
+         cmp_data_valid_r  <= #TCQ cmp_data_valid;
+         if (cmp_data_valid_r) begin
+           cmp_data_r[7:0]   <= #TCQ cmp_data[(8*dbg_dqs)+:8];
+           cmp_data_r[15:8]  <= #TCQ cmp_data[(8*dbg_dqs)+PAYLOAD_WIDTH+:8];
+           cmp_data_r[23:16] <= #TCQ cmp_data[(8*dbg_dqs)+2*PAYLOAD_WIDTH+:8];
+           cmp_data_r[31:24] <= #TCQ cmp_data[(8*dbg_dqs)+3*PAYLOAD_WIDTH+:8];
+           cmp_data_r[39:32] <= #TCQ (nCK_PER_CLK == 2 && DQ_WIDTH == 8) ? 8'h0 :
+                                      cmp_data[(8*dbg_dqs)+4*PAYLOAD_WIDTH+:8];
+           cmp_data_r[47:40] <= #TCQ (nCK_PER_CLK == 2 && DQ_WIDTH == 8) ? 8'h0 :
+                                      cmp_data[(8*dbg_dqs)+5*PAYLOAD_WIDTH+:8];
+           cmp_data_r[55:48] <= #TCQ (nCK_PER_CLK == 2 && DQ_WIDTH == 8) ? 8'h0 :
+                                      cmp_data[(8*dbg_dqs)+6*PAYLOAD_WIDTH+:8];
+           cmp_data_r[63:56] <= #TCQ (nCK_PER_CLK == 2 && DQ_WIDTH == 8) ? 8'h0 :
+                                      cmp_data[(8*dbg_dqs)+7*PAYLOAD_WIDTH+:8];
+         end else begin
+            cmp_data_r <= #TCQ 'b0;
+         end
+       end
+
+
+
+       assign ddr3_ila_basic_w[124:120]   = 'b0;
+       assign ddr3_ila_basic_w[125]       = cmd_wdt_err_w;
+       assign ddr3_ila_basic_w[126]       = rd_wdt_err_w;
+       assign ddr3_ila_basic_w[127]       = wr_wdt_err_w;
+       assign ddr3_ila_basic_w[128]       = tg_compare_error;
+       assign ddr3_ila_basic_w[129]       = cmp_data_valid_r;
+       assign ddr3_ila_basic_w[130]       = cmp_error;
+       assign ddr3_ila_basic_w[131+:64]   = cmp_data_r;
+       assign ddr3_ila_basic_w[195+:9]    = dq_error_bytelane_cmp;
+       assign ddr3_ila_basic_w[212:204]   = cumlative_dq_lane_error;
+       assign ddr3_ila_basic_w[244:213]   = error_status[31:0];  // cmp_addr_i
+       assign ddr3_ila_basic_w[250:245]   = error_status[37:32]; // cmp_bl_i
+       assign ddr3_ila_basic_w[251]       = error_status[40];    // mcb_cmd_full_i
+       assign ddr3_ila_basic_w[252]       = error_status[41];    // mcb_wr_full_i
+       assign ddr3_ila_basic_w[253]       = error_status[42];    // mcb_rd_empty_i
+       assign ddr3_ila_basic_w[255:254]   = ddr3_ila_rdpath[765:764];
+
+        vio_twm_ddrx u_vio_twm_ddrx (
+            .clk         (clk),
+            .probe_in0   (win_start),//1
+            .probe_in1   (dbg_pi_counter_read_val),//6
+            .probe_in2   (pi_win_left_ram_out),//6
+            .probe_in3   (pi_win_right_ram_out),//6
+            .probe_in4   (win_active),//1
+            .probe_in5   (dbg_win_chk),//165
+            .probe_in6   (win_current_bit),//7
+            .probe_in7   (win_current_byte[3:0]),//4
+            .probe_in8   (win_byte_select),//7
+            .probe_in9   (po_win_left_ram_out),//9
+            .probe_in10  (po_win_right_ram_out),//9
+            .probe_in11  (dbg_po_counter_read_val),//9
+            .probe_in12  (dbg_mem_pattern_init_done),//1
+            .probe_in13  (dbg_tg_compare_error),//1
+            .probe_in14  (dbg_tg_wr_data_counts),//48
+            .probe_in15  (dbg_tg_rd_data_counts),//48
+            .probe_out0  (dbg_bit),//9
+            .probe_out1  (dbg_dqs),//5
+            .probe_out2  (vio_modify_enable),//1
+            .probe_out3  (vio_data_mode_value),//4
+            .probe_out4  (vio_addr_mode_value),//3
+            .probe_out5  (vio_instr_mode_value),//4
+            .probe_out6  (vio_bl_mode_value),//2
+            .probe_out7  (vio_fixed_bl_value),//10
+            .probe_out8  (vio_data_mask_gen),//1
+            .probe_out9  (vio_pause_traffic),//1
+            .probe_out10 (vio_fixed_instr_value),//3
+            .probe_out11 (dbg_clear_error),//1
+            .probe_out12 (vio_tg_rst),//1
+            .probe_out13 (wdt_en_w),//1
+            .probe_out14 (win_start),//1
+            .probe_out15 (win_sel_pi_pon),//1
+            .probe_out16 (vio_dbg_sel_pi_incdec),//1
+            .probe_out17 (vio_dbg_sel_po_incdec),//1
+            .probe_out18 (vio_dbg_pi_f_inc),//1
+            .probe_out19 (vio_dbg_pi_f_dec),//1
+            .probe_out20 (vio_dbg_po_f_inc),//1
+            .probe_out21 (vio_dbg_po_f_dec),//1
+            .probe_out22 (vio_dbg_po_f_stg23_sel),//1
+            .probe_out23 (vio_win_byte_select_inc),//1
+            .probe_out24 (vio_win_byte_select_dec),//1
+            .probe_out25 (vio_sel_mux_rdd[3:0]),//4
+            .probe_out26 (vio_tg_simple_data_sel)//2
+        );
+
+          always @ (posedge clk)
+          begin
+            if (rst)
+            begin
+              ddr3_ila_basic    <= 'b0;
+              ddr3_ila_rdpath   <= 'b0;
+              ddr3_ila_wrpath   <= 'b0;
+            end
+            else
+            begin
+              ddr3_ila_basic    <= ddr3_ila_basic_w;
+              ddr3_ila_rdpath   <= ddr3_ila_rdpath_w;
+              ddr3_ila_wrpath   <= ddr3_ila_wrpath_w;
+            end
+          end
+
+       assign dbg_mem_pattern_init_done = mem_pattern_init_done;
+       assign dbg_tg_wr_data_counts     = tg_wr_data_counts;
+       assign dbg_tg_rd_data_counts     = tg_rd_data_counts;
+
+       // Code for creating rising edge pulse for VIO outputs
+       always @(posedge clk)
+       begin
+         vio_dbg_pi_f_inc_r1            <= #TCQ  vio_dbg_pi_f_inc        ;
+         vio_dbg_pi_f_dec_r1            <= #TCQ  vio_dbg_pi_f_dec        ;
+         vio_dbg_po_f_inc_r1            <= #TCQ  vio_dbg_po_f_inc        ;
+         vio_dbg_po_f_dec_r1            <= #TCQ  vio_dbg_po_f_dec        ;
+         vio_win_byte_select_inc_r1     <= #TCQ  vio_win_byte_select_inc ;
+         vio_win_byte_select_dec_r1     <= #TCQ  vio_win_byte_select_dec ;
+
+         vio_dbg_pi_f_inc_r2            <= #TCQ  vio_dbg_pi_f_inc_r1        ;
+         vio_dbg_pi_f_dec_r2            <= #TCQ  vio_dbg_pi_f_dec_r1        ;
+         vio_dbg_po_f_inc_r2            <= #TCQ  vio_dbg_po_f_inc_r1        ;
+         vio_dbg_po_f_dec_r2            <= #TCQ  vio_dbg_po_f_dec_r1        ;
+         vio_win_byte_select_inc_r2     <= #TCQ  vio_win_byte_select_inc_r1 ;
+         vio_win_byte_select_dec_r2     <= #TCQ  vio_win_byte_select_dec_r1 ;
+       end
+
+       assign vio_dbg_pi_f_inc_re        = vio_dbg_pi_f_inc_r1        & ~vio_dbg_pi_f_inc_r2        ;
+       assign vio_dbg_pi_f_dec_re        = vio_dbg_pi_f_dec_r1        & ~vio_dbg_pi_f_dec_r2        ;
+       assign vio_dbg_po_f_inc_re        = vio_dbg_po_f_inc_r1        & ~vio_dbg_po_f_inc_r2        ;
+       assign vio_dbg_po_f_dec_re        = vio_dbg_po_f_dec_r1        & ~vio_dbg_po_f_dec_r2        ;
+       assign vio_win_byte_select_inc_re = vio_win_byte_select_inc_r1 & ~vio_win_byte_select_inc_r2 ;
+       assign vio_win_byte_select_dec_re = vio_win_byte_select_dec_r1 & ~vio_win_byte_select_dec_r2 ;
+
+       assign manual_clear_error = (!win_active) ? dbg_clear_error : win_clr_error;
+       assign dbg_sel_pi_incdec  = (!win_active) ? vio_dbg_sel_pi_incdec : 1'b1;
+       assign dbg_sel_po_incdec  = (!win_active) ? vio_dbg_sel_po_incdec : 1'b1;
+       assign dbg_pi_f_inc       = (!win_active) ? vio_dbg_pi_f_inc_re : pi_win_up;
+       assign dbg_pi_f_dec       = (!win_active) ? vio_dbg_pi_f_dec_re : pi_win_down;
+       assign dbg_po_f_inc       = (!win_active) ? vio_dbg_po_f_inc_re : po_win_up;
+       assign dbg_po_f_dec       = (!win_active) ? vio_dbg_po_f_dec_re : po_win_down;
+       assign dbg_po_f_stg23_sel = (!win_active) ? vio_dbg_po_f_stg23_sel : po_stg23_sel;
+
+        assign dbg_init_calib_complete          = ddr3_ila_basic[0];
+        assign dbg_wrlvl_start                  = ddr3_ila_basic[1];
+        assign dbg_wrlvl_done                   = ddr3_ila_basic[2];
+        assign dbg_wrlvl_err                    = ddr3_ila_basic[3];
+        assign dbg_pi_phaselock_start           = ddr3_ila_basic[4];
+        assign dbg_pi_phaselocked_done          = ddr3_ila_basic[5];
+        assign dbg_pi_phaselock_err             = ddr3_ila_basic[6];
+        assign dbg_pi_dqsfound_start            = ddr3_ila_basic[7];
+        assign dbg_pi_dqsfound_done             = ddr3_ila_basic[8];
+        assign dbg_pi_dqsfound_err              = ddr3_ila_basic[9];
+        assign dbg_rdlvl_start                  = ddr3_ila_basic[11:10];    // 2
+        assign dbg_rdlvl_done                   = ddr3_ila_basic[13:12];    // 2
+        assign dbg_rdlvl_err                    = ddr3_ila_basic[15:14];    // 2
+        assign dbg_oclkdelay_calib_start        = ddr3_ila_basic[16];
+        assign dbg_oclkdelay_calib_done         = ddr3_ila_basic[17];
+        assign dbg_wrcal_start                  = ddr3_ila_basic[19];
+        assign dbg_wrcal_done                   = ddr3_ila_basic[20];
+        assign dbg_wrcal_err                    = ddr3_ila_basic[21];
+        assign dbg_phy_init_5_0                 = ddr3_ila_basic[27:22];    // 6
+        assign dbg_rddata_valid_r               = ddr3_ila_basic[28];
+        assign dbg_rddata_r                     = ddr3_ila_basic[92:29];    // 64
+        assign dbg_fine_adjust_done_r           = ddr3_ila_basic[93];
+        assign dbg_cmd_wdt_err_w                = ddr3_ila_basic[125];
+        assign dbg_rd_wdt_err_w                 = ddr3_ila_basic[126];
+        assign dbg_wr_wdt_err_w                 = ddr3_ila_basic[127];
+        assign dbg_tg_compare_error             = ddr3_ila_basic[128];
+        assign dbg_cmp_data_valid               = ddr3_ila_basic[129];
+        assign dbg_cmp_error                    = ddr3_ila_basic[130];
+        assign dbg_cmp_data_r                   = ddr3_ila_basic[194:131];  // 64
+        assign dbg_dq_error_bytelane_cmp        = ddr3_ila_basic[202:195];  // this is only 8 bits, not 9
+        assign dbg_cumlative_dq_lane_error      = ddr3_ila_basic[211:204];  // this is only 8 bits, not 9
+        assign dbg_cmp_addr_i                   = ddr3_ila_basic[244:213];
+        assign dbg_cmp_bl_i                     = ddr3_ila_basic[250:245];
+        assign dbg_mcb_cmd_full_i               = ddr3_ila_basic[251];
+        assign dbg_mcb_wr_full_i                = ddr3_ila_basic[252];
+        assign dbg_mcb_rd_empty_i               = ddr3_ila_basic[253];
+        assign dbg_ddrx_ila_rdpath_765_764      = ddr3_ila_basic[255:254];
+
+        assign dbg_wl_state_r                   = ddr3_ila_wrpath[4:0];     // 5
+        assign dbg_dqs_cnt_r                    = ddr3_ila_wrpath[9:6];     // 4
+        assign dbg_wl_edge_detect_valid_r       = ddr3_ila_wrpath[10];
+        assign dbg_rd_data_edge_detect_r_by_dqs = ddr3_ila_wrpath[11];
+        assign dbg_wl_po_fine_cnt_by_dqs        = ddr3_ila_wrpath[17:12];   // 6
+        assign dbg_wl_po_coarse_cnt_by_dqs      = ddr3_ila_wrpath[20:18];   // 3
+
+        assign dbg_phy_oclkdelay_zfo            = ddr3_ila_wrpath[ 30+: 4];   // 4
+        assign dbg_ocal_fuzz2oneeighty          = ddr3_ila_wrpath[ 34+: 6];   // 6
+        assign dbg_ocal_fuzz2zero               = ddr3_ila_wrpath[ 40+: 6];   // 6
+        assign dbg_ocal_oneeighty2fuzz          = ddr3_ila_wrpath[ 46+: 6];   // 6
+        assign dbg_ocal_zero2fuzz               = ddr3_ila_wrpath[ 52+: 6];   // 6
+        assign dbg_ocal_oclkdelay_calib_cnt     = ddr3_ila_wrpath[ 58+: 3];   // 3
+        assign dbg_ocal_scan_win_not_found      = ddr3_ila_wrpath[ 61+: 1];   // 1
+        assign dbg_ocal_lim_done                = ddr3_ila_wrpath[ 62+: 1];   // 1
+        assign dbg_ocal_stg3_lim_left           = ddr3_ila_wrpath[241+: 6];   // 6
+        assign dbg_ocal_stg3_lim_right          = ddr3_ila_wrpath[247+: 6];   // 6
+        assign dbg_ocal_center_calib_start      = ddr3_ila_wrpath[253+: 1];   // 1
+        assign dbg_ocal_center_calib_done       = ddr3_ila_wrpath[254+: 1];   // 1
+        assign dbg_phy_oclkdelay_cal_taps       = ddr3_ila_wrpath[255+:54];   // 54
+        assign dbg_ocal_tap_cnt                 = ddr3_ila_wrpath[ 87+: 6];   // 6
+
+        assign dbg_wrcal_pat_data_match_r       = ddr3_ila_wrpath[64];
+        assign dbg_wrcal_pat_data_match_valid_r = ddr3_ila_wrpath[65];
+        assign dbg_wrcal_dqs_cnt_r              = ddr3_ila_wrpath[69:66];   // 4
+        assign cal2_state_r                     = ddr3_ila_wrpath[74:70];   // 5
+        assign not_empty_wait_cnt               = ddr3_ila_wrpath[79:75];   // 5
+        assign dbg_early1_data                  = ddr3_ila_wrpath[80];
+        assign dbg_early2_data                  = ddr3_ila_wrpath[81];
+        assign dbg_early1_data_match_r          = ddr3_ila_wrpath[82];
+        assign dbg_early2_data_match_r          = ddr3_ila_wrpath[83];
+        assign dbg_wcal_sanity_pat_data_match_valid_r = ddr3_ila_wrpath[84];
+        assign dbg_wcal_sanity_chk_start        = ddr3_ila_wrpath[85];
+        assign dbg_wcal_sanity_chk_done         = ddr3_ila_wrpath[86];
+        assign dbg_wcal_mux_rd_rise0_r          = ddr3_ila_wrpath[184:177]; // 8
+        assign dbg_wcal_mux_rd_fall0_r          = ddr3_ila_wrpath[192:185]; // 8
+        assign dbg_wcal_mux_rd_rise1_r          = ddr3_ila_wrpath[200:193]; // 8
+        assign dbg_wcal_mux_rd_fall1_r          = ddr3_ila_wrpath[208:201]; // 8
+        assign dbg_wcal_mux_rd_rise2_r          = ddr3_ila_wrpath[216:209]; // 8
+        assign dbg_wcal_mux_rd_fall2_r          = ddr3_ila_wrpath[224:217]; // 8
+        assign dbg_wcal_mux_rd_rise3_r          = ddr3_ila_wrpath[232:225]; // 8
+        assign dbg_wcal_mux_rd_fall3_r          = ddr3_ila_wrpath[240:233]; // 8
+        assign dbg_phy_oclkdelay_cal_57_54      = ddr3_ila_wrpath[91:88];   // 4
+        assign dbg_phy_wrlvl_128_75             = ddr3_ila_wrpath[149:96];  // 54
+        assign dbg_phy_wrlvl_155_129            = ddr3_ila_wrpath[176:150]; // 27
+        assign dbg_phy_wrcal_po_coarse_cnt      = ddr3_ila_wrpath[336:310]; // 27
+        assign dbg_phy_wrcal_po_fine_cnt        = ddr3_ila_wrpath[390:337]; // 54
+
+        assign dbg_pi_phase_locked_phy4lanes    = ddr3_ila_rdpath[11:0];    // 12
+        assign dbg_pi_dqs_found_lanes_phy4lanes = ddr3_ila_rdpath[23:12];   // 12
+        assign dbg_rd_data_offset               = ddr3_ila_rdpath[35:24];   // 12
+        assign dbg_cal1_state_r                 = ddr3_ila_rdpath[45:40];   // 6
+        assign dbg_cal1_cnt_cpt_r               = ddr3_ila_rdpath[49:46];   // 4
+        assign dbg_mux_rd_rise0_r               = ddr3_ila_rdpath[57:50];   // 8
+        assign dbg_mux_rd_fall0_r               = ddr3_ila_rdpath[65:58];   // 8
+        assign dbg_mux_rd_rise1_r               = ddr3_ila_rdpath[73:66];   // 8
+        assign dbg_mux_rd_fall1_r               = ddr3_ila_rdpath[81:74];   // 8
+        assign dbg_mux_rd_rise2_r               = ddr3_ila_rdpath[89:82];   // 8
+        assign dbg_mux_rd_fall2_r               = ddr3_ila_rdpath[97:90];   // 8
+        assign dbg_mux_rd_rise3_r               = ddr3_ila_rdpath[105:98];  // 8
+        assign dbg_mux_rd_fall3_r               = ddr3_ila_rdpath[113:106]; // 8
+        assign dbg_rdlvl_pat_data_match_r       = ddr3_ila_rdpath[114];
+        assign dbg_mux_rd_valid_r               = ddr3_ila_rdpath[115];
+        assign dbg_cpt_first_edge_cnt_by_dqs    = ddr3_ila_rdpath[121:116]; // 6
+        assign dbg_cpt_second_edge_cnt_by_dqs   = ddr3_ila_rdpath[127:122]; // 6
+        assign dbg_cpt_tap_cnt_by_dqs           = ddr3_ila_rdpath[133:128]; // 6
+        assign dbg_dq_idelay_tap_cnt_by_dqs     = ddr3_ila_rdpath[138:134]; // 5
+        assign dbg_dbg_calib_rd_data_offset_1   = ddr3_ila_rdpath[175:164]; // 12
+        assign dbg_dbg_calib_rd_data_offset_2   = ddr3_ila_rdpath[187:176]; // 12
+        assign dbg_data_offset                  = ddr3_ila_rdpath[193:188]; // 6
+        assign dbg_data_offset_1                = ddr3_ila_rdpath[199:194]; // 6
+        assign dbg_data_offset_2                = ddr3_ila_rdpath[205:200]; // 6
+        assign dbg_cpt_first_edge_cnt           = ddr3_ila_rdpath[313:206]; // 108
+        assign dbg_cpt_second_edge_cnt          = ddr3_ila_rdpath[421:314]; // 108
+        assign dbg_cpt_tap_cnt                  = ddr3_ila_rdpath[529:422]; // 108
+        assign dbg_dq_idelay_tap_cnt            = ddr3_ila_rdpath[619:530]; // 90
+        assign dbg_prbs_rdlvl                   = ddr3_ila_rdpath[874:620]; // 255
+
+
+        assign dbg_prbs_rdlvl_left_edge_pb[ 0+:6]       = dbg_prbs_rdlvl [0+:6] ;
+        assign dbg_prbs_rdlvl_left_loss_pb[ 0+:2]       = dbg_prbs_rdlvl [7:6]  ;
+        assign dbg_prbs_rdlvl_left_edge_pb[ 6+:6]       = dbg_prbs_rdlvl [8+:6] ;
+        assign dbg_prbs_rdlvl_left_loss_pb[ 2+:2]       = dbg_prbs_rdlvl [15:14];
+        assign dbg_prbs_rdlvl_left_edge_pb[12+:6]       = dbg_prbs_rdlvl [16+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[ 4+:2]       = dbg_prbs_rdlvl [23:22];
+        assign dbg_prbs_rdlvl_left_edge_pb[18+:6]       = dbg_prbs_rdlvl [24+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[ 6+:2]       = dbg_prbs_rdlvl [31:30];
+        assign dbg_prbs_rdlvl_left_edge_pb[24+:6]       = dbg_prbs_rdlvl [32+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[ 8+:2]       = dbg_prbs_rdlvl [39:38];
+        assign dbg_prbs_rdlvl_left_edge_pb[30+:6]       = dbg_prbs_rdlvl [40+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[10+:2]       = dbg_prbs_rdlvl [47:46];
+        assign dbg_prbs_rdlvl_left_edge_pb[36+:6]       = dbg_prbs_rdlvl [48+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[12+:2]       = dbg_prbs_rdlvl [55:54];
+        assign dbg_prbs_rdlvl_left_edge_pb[42+:6]       = dbg_prbs_rdlvl [56+:6];
+        assign dbg_prbs_rdlvl_left_loss_pb[14+:2]       = dbg_prbs_rdlvl [63:62];
+        assign dbg_prbs_rdlvl_right_edge_pb[ 0+:6]      = dbg_prbs_rdlvl [64+:6]  ;
+        assign dbg_prbs_rdlvl_right_gain_pb[ 0+:2]      = dbg_prbs_rdlvl [71:70]  ;
+        assign dbg_prbs_rdlvl_right_edge_pb[ 6+:6]      = dbg_prbs_rdlvl [72+:6]  ;
+        assign dbg_prbs_rdlvl_right_gain_pb[ 2+:2]      = dbg_prbs_rdlvl [79:78]  ;
+        assign dbg_prbs_rdlvl_right_edge_pb[12+:6]      = dbg_prbs_rdlvl [80+:6]  ;
+        assign dbg_prbs_rdlvl_right_gain_pb[ 4+:2]      = dbg_prbs_rdlvl [87:86]  ;
+        assign dbg_prbs_rdlvl_right_edge_pb[18+:6]      = dbg_prbs_rdlvl [88+:6]  ;
+        assign dbg_prbs_rdlvl_right_gain_pb[ 6+:2]      = dbg_prbs_rdlvl [95:94]  ;
+        assign dbg_prbs_rdlvl_right_edge_pb[24+:6]      = dbg_prbs_rdlvl [96+:6]  ;
+        assign dbg_prbs_rdlvl_right_gain_pb[ 8+:2]      = dbg_prbs_rdlvl [103:102];
+        assign dbg_prbs_rdlvl_right_edge_pb[30+:6]      = dbg_prbs_rdlvl [104+:6] ;
+        assign dbg_prbs_rdlvl_right_gain_pb[10+:2]      = dbg_prbs_rdlvl [111:110];
+        assign dbg_prbs_rdlvl_right_edge_pb[36+:6]      = dbg_prbs_rdlvl [112+:6] ;
+        assign dbg_prbs_rdlvl_right_gain_pb[12+:2]      = dbg_prbs_rdlvl [119:118];
+        assign dbg_prbs_rdlvl_right_edge_pb[42+:6]      = dbg_prbs_rdlvl [120+:6] ;
+        assign dbg_prbs_rdlvl_right_gain_pb[14+:2]      = dbg_prbs_rdlvl [127:126];
+        assign dbg_prbs_rdlvl_pi_counter_read_val       = dbg_prbs_rdlvl [128+:6];
+        assign dbg_prbs_rdlvl_prbs_dqs_tap_cnt_r        = dbg_prbs_rdlvl [134+:6];
+        assign dbg_prbs_rdlvl_prbs_found_1st_edge_r     = dbg_prbs_rdlvl [140]    ;
+        assign dbg_prbs_rdlvl_prbs_found_2nd_edge_r     = dbg_prbs_rdlvl [141]    ;
+        assign dbg_prbs_rdlvl_compare_err               = dbg_prbs_rdlvl [142]    ;
+        assign dbg_prbs_rdlvl_phy_if_empty              = dbg_prbs_rdlvl [143]    ;
+        assign dbg_prbs_rdlvl_prbs_rdlvl_start          = dbg_prbs_rdlvl [144]    ;
+        assign dbg_prbs_rdlvl_prbs_rdlvl_done           = dbg_prbs_rdlvl [145]    ;
+        assign dbg_prbs_rdlvl_prbs_dqs_cnt_r            = dbg_prbs_rdlvl [146+:5] ;
+        assign dbg_prbs_rdlvl_left_edge_pb_dqs_cnt      = dbg_prbs_rdlvl [151+:6] ;
+        assign dbg_prbs_rdlvl_right_edge_pb_dqs_cnt     = dbg_prbs_rdlvl [157+:6] ;
+        assign dbg_prbs_rdlvl_rd_victim_sel             = dbg_prbs_rdlvl [163+:3] ;
+        assign dbg_prbs_rdlvl_complex_victim_inc        = dbg_prbs_rdlvl [166]    ;
+        assign dbg_prbs_rdlvl_right_gain_pb_dqs_cnt     = dbg_prbs_rdlvl [169+:6] ;
+        assign dbg_prbs_rdlvl_ref_bit                   = dbg_prbs_rdlvl [177:175];
+        assign dbg_prbs_rdlvl_prbs_state_r1             = dbg_prbs_rdlvl [178+:6];
+        assign dbg_prbs_rdlvl_rd_valid_r2               = dbg_prbs_rdlvl [184];
+        assign dbg_prbs_rdlvl_compare_err_r0            = dbg_prbs_rdlvl [185];
+        assign dbg_prbs_rdlvl_compare_err_f0            = dbg_prbs_rdlvl [186];
+        assign dbg_prbs_rdlvl_compare_err_r1            = dbg_prbs_rdlvl [187];
+        assign dbg_prbs_rdlvl_compare_err_f1            = dbg_prbs_rdlvl [188];
+        assign dbg_prbs_rdlvl_compare_err_r2            = dbg_prbs_rdlvl [189];
+        assign dbg_prbs_rdlvl_compare_err_f2            = dbg_prbs_rdlvl [190];
+        assign dbg_prbs_rdlvl_compare_err_r3            = dbg_prbs_rdlvl [191];
+        assign dbg_prbs_rdlvl_compare_err_f3            = dbg_prbs_rdlvl [192];
+        assign dbg_prbs_rdlvl_left_edge_found_pb        = dbg_prbs_rdlvl [193+:8];
+        assign dbg_prbs_rdlvl_right_edge_found_pb       = dbg_prbs_rdlvl [201+:8];
+        assign dbg_prbs_rdlvl_largest_left_edge         = dbg_prbs_rdlvl [209+:6];
+        assign dbg_prbs_rdlvl_smallest_right_edge       = dbg_prbs_rdlvl [215+:6];
+        assign dbg_prbs_rdlvl_fine_delay_incdec_pb      = dbg_prbs_rdlvl [221+:8];
+        assign dbg_prbs_rdlvl_fine_delay_sel            = dbg_prbs_rdlvl [229];
+        assign dbg_prbs_rdlvl_compare_err_pb_latch_r    = dbg_prbs_rdlvl [230+:8];
+        assign dbg_prbs_rdlvl_fine_pi_dec_cnt           = dbg_prbs_rdlvl [238+:6];
+        assign dbg_prbs_rdlvl_match_flag_and            = dbg_prbs_rdlvl [244+:5];
+        assign dbg_prbs_rdlvl_stage_cnt                 = dbg_prbs_rdlvl [249+:2];
+        assign dbg_prbs_rdlvl_fine_inc_stage            = dbg_prbs_rdlvl [251];
+        assign dbg_prbs_rdlvl_compare_err_pb_and        = dbg_prbs_rdlvl [252];
+        assign dbg_prbs_rdlvl_right_edge_found          = dbg_prbs_rdlvl [253];
+        assign dbg_prbs_rdlvl_fine_dly_error            = dbg_prbs_rdlvl [254];
+
+
+        always @(posedge clk)
+        begin
+            dbg_extn_trig_out_ack_r[0]    <= dbg_extn_trig_out;
+            dbg_extn_trig_out_ack_r[7:1]  <= dbg_extn_trig_out_ack_r[6:0];
+        end
+        assign dbg_extn_trig_out_ack            = dbg_extn_trig_out_ack_r[7];
+
+        ila_ddr3_native u_ila_ddr3_native (
+          .clk          (clk),
+          .trig_out     (dbg_extn_trig_out),
+          .trig_out_ack (dbg_extn_trig_out_ack),
+          .probe0       (dbg_init_calib_complete),
+          .probe1       (dbg_wrlvl_start),
+          .probe2       (dbg_wrlvl_done),
+          .probe3       (dbg_wrlvl_err),
+          .probe4       (dbg_pi_phaselock_start),
+          .probe5       (dbg_pi_phaselocked_done),
+          .probe6       (dbg_pi_phaselock_err),
+          .probe7       (dbg_pi_dqsfound_start),
+          .probe8       (dbg_pi_dqsfound_done),
+          .probe9       (dbg_pi_dqsfound_err),
+          .probe10      (dbg_rdlvl_start),
+          .probe11      (dbg_rdlvl_done),
+          .probe12      (dbg_rdlvl_err),
+          .probe13      (dbg_oclkdelay_calib_start),
+          .probe14      (dbg_oclkdelay_calib_done),
+          .probe15      (dbg_wrcal_start),
+          .probe16      (dbg_wrcal_done),
+          .probe17      (dbg_wrcal_err),
+          .probe18      (dbg_phy_init_5_0),
+          .probe19      (dbg_rddata_valid_r),
+          .probe20      (dbg_rddata_r),
+          .probe21      (dbg_fine_adjust_done_r),
+          .probe22      (dbg_cmd_wdt_err_w),
+          .probe23      (dbg_rd_wdt_err_w),
+          .probe24      (dbg_wr_wdt_err_w),
+          .probe25      (dbg_tg_compare_error),
+          .probe26      (dbg_cmp_data_valid),
+          .probe27      (dbg_cmp_error),
+          .probe28      (dbg_cmp_data_r),
+          .probe29      (dbg_dq_error_bytelane_cmp),
+          .probe30      (dbg_cumlative_dq_lane_error),
+          .probe31      (dbg_cmp_addr_i),
+          .probe32      (dbg_cmp_bl_i),
+          .probe33      (dbg_mcb_cmd_full_i),
+          .probe34      (dbg_mcb_wr_full_i),
+          .probe35      (dbg_mcb_rd_empty_i),
+          .probe36      (dbg_ddrx_ila_rdpath_765_764),
+          .probe37      (dbg_wl_state_r),
+          .probe38      (dbg_dqs_cnt_r),
+          .probe39      (dbg_wl_edge_detect_valid_r),
+          .probe40      (dbg_rd_data_edge_detect_r_by_dqs),
+          .probe41      (dbg_wl_po_fine_cnt_by_dqs),
+          .probe42      (dbg_wl_po_coarse_cnt_by_dqs),
+
+          .probe43      (dbg_phy_oclkdelay_zfo),
+          .probe44      (dbg_ocal_fuzz2oneeighty),
+          .probe45      (dbg_ocal_fuzz2zero),
+          .probe46      (dbg_ocal_oneeighty2fuzz),
+          .probe47      (dbg_ocal_zero2fuzz),
+          .probe48      (dbg_ocal_oclkdelay_calib_cnt),
+          .probe49      (dbg_ocal_scan_win_not_found),
+
+          .probe50      (dbg_wrcal_pat_data_match_r),
+          .probe51      (dbg_wrcal_pat_data_match_valid_r),
+          .probe52      (dbg_wrcal_dqs_cnt_r),
+          .probe53      (cal2_state_r),
+          .probe54      (not_empty_wait_cnt),
+          .probe55      (dbg_early1_data),
+          .probe56      (dbg_early2_data),
+          .probe57      (dbg_phy_oclkdelay_cal_57_54),
+          .probe58      (dbg_phy_wrlvl_128_75),
+          .probe59      (dbg_phy_wrlvl_155_129),
+          .probe60      (dbg_pi_phase_locked_phy4lanes),
+          .probe61      (dbg_pi_dqs_found_lanes_phy4lanes),
+          .probe62      (dbg_rd_data_offset),
+          .probe63      (dbg_cal1_state_r),
+          .probe64      (dbg_cal1_cnt_cpt_r),
+          .probe65      (dbg_mux_rd_rise0_r),
+          .probe66      (dbg_mux_rd_fall0_r),
+          .probe67      (dbg_mux_rd_rise1_r),
+          .probe68      (dbg_mux_rd_fall1_r),
+          .probe69      (dbg_mux_rd_rise2_r),
+          .probe70      (dbg_mux_rd_fall2_r),
+          .probe71      (dbg_mux_rd_rise3_r),
+          .probe72      (dbg_mux_rd_fall3_r),
+          .probe73      (dbg_rdlvl_pat_data_match_r),
+          .probe74      (dbg_mux_rd_valid_r),
+          .probe75      (dbg_cpt_first_edge_cnt_by_dqs),
+          .probe76      (dbg_cpt_second_edge_cnt_by_dqs),
+          .probe77      (dbg_cpt_tap_cnt_by_dqs),
+          .probe78      (dbg_dq_idelay_tap_cnt_by_dqs),
+          .probe79      (dbg_dbg_calib_rd_data_offset_1),
+          .probe80      (dbg_dbg_calib_rd_data_offset_2),
+          .probe81      (dbg_data_offset),
+          .probe82      (dbg_data_offset_1),
+          .probe83      (dbg_data_offset_2),
+          .probe84      (dbg_cpt_first_edge_cnt),
+          .probe85      (dbg_cpt_second_edge_cnt),
+          .probe86      (dbg_cpt_tap_cnt),
+          .probe87      (dbg_dq_idelay_tap_cnt),
+
+          .probe88      (dbg_prbs_rdlvl_left_edge_pb),
+          .probe89      (dbg_prbs_rdlvl_left_loss_pb),
+          .probe90      (dbg_prbs_rdlvl_right_edge_pb),
+          .probe91      (dbg_prbs_rdlvl_right_gain_pb),
+          .probe92      (dbg_prbs_rdlvl_pi_counter_read_val),
+          .probe93      (dbg_prbs_rdlvl_prbs_dqs_tap_cnt_r),
+          .probe94      (dbg_prbs_rdlvl_prbs_found_1st_edge_r),
+          .probe95      (dbg_prbs_rdlvl_prbs_found_2nd_edge_r),
+          .probe96      (dbg_prbs_rdlvl_compare_err),
+          .probe97      (dbg_prbs_rdlvl_phy_if_empty),
+          .probe98      (dbg_prbs_rdlvl_prbs_rdlvl_start),
+          .probe99      (dbg_prbs_rdlvl_prbs_rdlvl_done),
+          .probe100     (dbg_prbs_rdlvl_prbs_dqs_cnt_r),
+          .probe101     (dbg_prbs_rdlvl_left_edge_pb_dqs_cnt),
+          .probe102     (dbg_prbs_rdlvl_right_edge_pb_dqs_cnt),
+          .probe103     (dbg_prbs_rdlvl_rd_victim_sel),
+          .probe104     (dbg_prbs_rdlvl_complex_victim_inc),
+          .probe105     (dbg_prbs_rdlvl_right_gain_pb_dqs_cnt),
+          .probe106     (dbg_prbs_rdlvl_ref_bit),
+          .probe107     (dbg_prbs_rdlvl_prbs_state_r1),
+          .probe108     (dbg_prbs_rdlvl_rd_valid_r2),
+          .probe109     (dbg_prbs_rdlvl_compare_err_r0),
+          .probe110     (dbg_prbs_rdlvl_compare_err_f0),
+          .probe111     (dbg_prbs_rdlvl_compare_err_r1),
+          .probe112     (dbg_prbs_rdlvl_compare_err_f1),
+          .probe113     (dbg_prbs_rdlvl_compare_err_r2),
+          .probe114     (dbg_prbs_rdlvl_compare_err_f2),
+          .probe115     (dbg_prbs_rdlvl_compare_err_r3),
+          .probe116     (dbg_prbs_rdlvl_compare_err_f3),
+          .probe117     (dbg_prbs_rdlvl_left_edge_found_pb),
+          .probe118     (dbg_prbs_rdlvl_right_edge_found_pb),
+          .probe119     (dbg_prbs_rdlvl_largest_left_edge),
+          .probe120     (dbg_prbs_rdlvl_smallest_right_edge),
+          .probe121     (dbg_prbs_rdlvl_fine_delay_incdec_pb),
+          .probe122     (dbg_prbs_rdlvl_fine_delay_sel),
+          .probe123     (dbg_prbs_rdlvl_compare_err_pb_latch_r),
+          .probe124     (dbg_prbs_rdlvl_fine_pi_dec_cnt),
+          .probe125     (dbg_prbs_rdlvl_match_flag_and),
+          .probe126     (dbg_prbs_rdlvl_stage_cnt),
+          .probe127     (dbg_prbs_rdlvl_fine_inc_stage),
+          .probe128     (dbg_prbs_rdlvl_compare_err_pb_and),
+          .probe129     (dbg_prbs_rdlvl_right_edge_found),
+          .probe130     (dbg_prbs_rdlvl_fine_dly_error),
+
+          .probe131     (dbg_ocal_lim_done),
+          .probe132     (dbg_ocal_stg3_lim_left),
+          .probe133     (dbg_ocal_stg3_lim_right),
+          .probe134     (dbg_ocal_center_calib_start),
+
+          .probe135     (dbg_wcal_mux_rd_rise0_r),
+          .probe136     (dbg_wcal_mux_rd_fall0_r),
+          .probe137     (dbg_wcal_mux_rd_rise1_r),
+          .probe138     (dbg_wcal_mux_rd_fall1_r),
+          .probe139     (dbg_wcal_mux_rd_rise2_r),
+          .probe140     (dbg_wcal_mux_rd_fall2_r),
+          .probe141     (dbg_wcal_mux_rd_rise3_r),
+          .probe142     (dbg_wcal_mux_rd_fall3_r),
+          .probe143     (dbg_early1_data_match_r),
+          .probe144     (dbg_early2_data_match_r),
+          .probe145     (dbg_wcal_sanity_pat_data_match_valid_r),
+          .probe146     (dbg_prbs_final_dqs_tap_cnt_r),//108
+          .probe147     (dbg_prbs_first_edge_taps),//108
+          .probe148     (dbg_prbs_second_edge_taps),//108
+          .probe149     (dbg_ocal_center_calib_done),
+          .probe150     (dbg_phy_oclkdelay_cal_taps),
+          .probe151     (dbg_ocal_tap_cnt),
+          .probe152     (device_temp)
+
+        );
+
+       always @(posedge clk)
+       begin
+         app_rd_data_valid_r1  <= #TCQ app_rd_data_valid;
+         app_rd_data_valid_r2  <= #TCQ app_rd_data_valid_r1;
+         app_rd_data_valid_r3  <= #TCQ app_rd_data_valid_r2;
+         app_rd_data_r1        <= app_rd_data;
+         app_rd_data_r2        <= app_rd_data_r1;
+         app_rd_data_r3        <= app_rd_data_r2;
+       end
+
+       always @(posedge clk)
+         if (rst)
+           win_byte_select <= #TCQ 'b0;
+         else if (vio_win_byte_select_inc_re) begin
+           if (win_byte_select == (DQ_WIDTH/DRAM_WIDTH))
+             win_byte_select <= #TCQ 'b0;
+           else
+             win_byte_select <= #TCQ win_byte_select + 1;
+         end else if (vio_win_byte_select_dec_re) begin
+           if (win_byte_select == 0)
+             win_byte_select <= #TCQ (DQ_WIDTH/DRAM_WIDTH)-1;
+           else
+             win_byte_select <= #TCQ win_byte_select - 1;
+         end
+
+       always @(posedge clk) begin
+         if (rst)
+           dbg_byte_sel_r <= #TCQ 'd0;
+         else begin
+           if (!win_active)
+             dbg_byte_sel_r <= #TCQ vio_sel_mux_rdd;
+           else
+             dbg_byte_sel_r <= #TCQ win_current_byte;
+         end
+       end
+
+       mig_7series_v4_2_chk_win #
+         (
+          .TCQ         (TCQ),
+          .nCK_PER_CLK (nCK_PER_CLK),
+          .DLY_WIDTH   (26),
+          .DQ_PER_DQS  (DRAM_WIDTH),
+          .DQ_WIDTH    (PAYLOAD_WIDTH),
+          .SC_WIDTH    (3),
+          .SDC_WIDTH   (5),
+          .WIN_SIZE    (6),
+          .SIM_OPTION  (SIMULATION)
+          )
+         u_chk_win
+           (
+            .clk                   (clk),
+            .rst                   (rst),
+            .mem_pattern_init_done (mem_pattern_init_done),
+            .win_start             (win_start),
+            .read_valid            (app_rd_data_valid_r2),
+            .win_byte_select       (win_byte_select),
+            .cmp_data              (cmp_data),
+            .rd_data               (app_rd_data_r2),
+            .win_sel_pi_pon        (win_sel_pi_pon),
+            .pi_curr_tap_cnt       (dbg_pi_counter_read_val),
+            .po_curr_tap_cnt       (dbg_po_counter_read_val),
+            .pi_left_ram_out       (pi_win_left_ram_out),
+            .pi_right_ram_out      (pi_win_right_ram_out),
+            .po_left_ram_out       (po_win_left_ram_out),
+            .po_right_ram_out      (po_win_right_ram_out),
+            .win_active            (win_active),
+            .win_clr_error         (win_clr_error),
+            .pi_win_up             (pi_win_up),
+            .pi_win_down           (pi_win_down),
+            .po_win_up             (po_win_up),
+            .po_stg23_sel          (po_stg23_sel),
+            .po_win_down           (po_win_down),
+            .po_win_tg_rst         (po_win_tg_rst),
+            .win_current_bit       (win_current_bit),
+            .win_current_byte      (win_current_byte[3:0]),
+            .dbg_clear_error       (dbg_clear_error),
+            .dbg_win_chk           (dbg_win_chk)
+            );
+
+    end
+    else begin: NO_CHIPSCOPE
+       assign vio_modify_enable     = 1'b0;
+       assign vio_data_mode_value   = 4'b0010;
+       assign vio_addr_mode_value   = 3'b011;
+       assign vio_instr_mode_value  = 4'b0010;
+       assign vio_bl_mode_value     = 2'b10;
+       assign vio_fixed_bl_value    = 'd16;
+       assign vio_data_mask_gen     = 1'b0;
+       assign vio_pause_traffic     = 1'b0;
+       assign vio_fixed_instr_value = 3'b001;
+       assign dbg_clear_error       = 1'b0;
+
+       assign dbg_sel_pi_incdec       = 'b0;
+       assign dbg_sel_po_incdec       = 'b0;
+       assign manual_clear_error      = 'b0;
+       assign dbg_pi_f_inc            = 'b0;
+       assign dbg_pi_f_dec            = 'b0;
+       assign dbg_po_f_inc            = 'b0;
+       assign dbg_po_f_dec            = 'b0;
+       assign dbg_po_f_stg23_sel      = 'b0;
+       assign win_start               = 'b0;
+       assign win_sel_pi_pon          = 'b0;
+
+       assign vio_win_byte_select_inc = 'b0;
+       assign vio_win_byte_select_dec = 'b0;
+       assign vio_sel_mux_rdd         = 'b0;
+       assign vio_tg_simple_data_sel  = 'b0;
+       assign po_win_tg_rst           = 'b0;
+       assign vio_tg_rst              = 'b0;
+       assign wdt_en_w                = 'b1;
+
+    end
+ endgenerate
+
+       
 `ifdef SKIP_CALIB
   //***************************************************************************
   // Skip calib test logic

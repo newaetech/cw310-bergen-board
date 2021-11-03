@@ -147,7 +147,7 @@ module sim_tb_top;
    // The following parameters are multiplier and divisor factors for PLLE2.
    // Based on the selected design frequency these parameters vary.
    //***************************************************************************
-   parameter CLKIN_PERIOD          = 5000;
+   parameter CLKIN_PERIOD          = 4999;
                                      // Input Clock Period
 
 
@@ -181,7 +181,7 @@ module sim_tb_top;
    //***************************************************************************
    // System clock frequency parameters
    //***************************************************************************
-   parameter tCK                   = 2500;
+   parameter tCK                   = 3076;
                                      // memory tCK paramter.
                      // # = Clock Period in pS.
    parameter nCK_PER_CLK           = 2;
@@ -237,6 +237,9 @@ module sim_tb_top;
 
 
   reg                     sys_clk_i;
+  wire                               sys_clk_p;
+  wire                               sys_clk_n;
+    
 
   reg clk_ref_i;
 
@@ -311,6 +314,8 @@ module sim_tb_top;
   always
     sys_clk_i = #(CLKIN_PERIOD/2.0) ~sys_clk_i;
 
+  assign sys_clk_p = sys_clk_i;
+  assign sys_clk_n = ~sys_clk_i;
 
   initial
     clk_ref_i = 1'b0;
@@ -495,7 +500,8 @@ module sim_tb_top;
      .ddr3_odt             (ddr3_odt_fpga),
     
      
-     .sys_clk_i            (sys_clk_i),
+     .sys_clk_p            (sys_clk_p),
+     .sys_clk_n            (sys_clk_n),
     
      .device_temp_i        (12'b0),
     

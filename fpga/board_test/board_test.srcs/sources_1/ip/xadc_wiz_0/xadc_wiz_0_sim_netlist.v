@@ -1,7 +1,7 @@
-// Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+// Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Thu Oct 21 15:58:46 2021
+// Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+// Date        : Tue Nov  2 13:15:29 2021
 // Host        : red running 64-bit Ubuntu 18.04.6 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0_sim_netlist.v
@@ -329,7 +329,6 @@ module xadc_wiz_0_drp_arbiter
   wire [1:0]state__0;
   wire wren_fifo;
 
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT2 #(
     .INIT(4'h8)) 
     FIFO18E1_inst_data_i_2
@@ -544,7 +543,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[0]),
         .I3(jtaglocked_i),
         .O(\daddr_C_reg[6]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \daddr_C_reg[6]_i_5 
@@ -581,7 +580,7 @@ module xadc_wiz_0_drp_arbiter
         .I4(overlap_B_reg_0),
         .I5(bbusy_A),
         .O(\daddr_C_reg[6]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT4 #(
     .INIT(16'h0004)) 
     \daddr_C_reg[6]_i_9 
@@ -632,7 +631,7 @@ module xadc_wiz_0_drp_arbiter
         .CLR(m_axis_reset),
         .D(daddr_C_reg0_in[6]),
         .Q(\daddr_C_reg_reg[6]_0 [6]));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[0]_i_1 
@@ -641,7 +640,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[1]),
         .I3(daddr_in[0]),
         .O(daddr_reg[0]));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[1]_i_1 
@@ -650,7 +649,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[1]),
         .I3(daddr_in[1]),
         .O(daddr_reg[1]));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[2]_i_1 
@@ -659,7 +658,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[1]),
         .I3(daddr_in[2]),
         .O(daddr_reg[2]));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[3]_i_1 
@@ -668,7 +667,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[1]),
         .I3(daddr_in[3]),
         .O(daddr_reg[3]));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[4]_i_1 
@@ -677,7 +676,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(state__0[1]),
         .I3(daddr_in[4]),
         .O(daddr_reg[4]));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \daddr_reg[5]_i_1 
@@ -765,7 +764,7 @@ module xadc_wiz_0_drp_arbiter
         .I4(bbusy_A),
         .I5(den_A),
         .O(den_C_reg_i_3_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
   LUT4 #(
     .INIT(16'h0400)) 
     den_C_reg_i_4
@@ -1020,13 +1019,14 @@ module xadc_wiz_0_drp_arbiter
         .CLR(m_axis_reset),
         .D(di_C_reg[9]),
         .Q(\di_C_reg_reg[15]_0 [9]));
+  (* SOFT_HLUTNM = "soft_lutpair33" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[0]_i_1 
        (.I0(di_in[0]),
         .I1(state__0[1]),
         .O(di_reg[0]));
-  (* SOFT_HLUTNM = "soft_lutpair29" *) 
+  (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[10]_i_1 
@@ -1040,7 +1040,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[11]),
         .I1(state__0[1]),
         .O(di_reg[11]));
-  (* SOFT_HLUTNM = "soft_lutpair28" *) 
+  (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[12]_i_1 
@@ -1054,14 +1054,14 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[13]),
         .I1(state__0[1]),
         .O(di_reg[13]));
-  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[14]_i_1 
        (.I0(di_in[14]),
         .I1(state__0[1]),
         .O(di_reg[14]));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[15]_i_1 
@@ -1075,7 +1075,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[1]),
         .I1(state__0[1]),
         .O(di_reg[1]));
-  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[2]_i_1 
@@ -1089,7 +1089,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[3]),
         .I1(state__0[1]),
         .O(di_reg[3]));
-  (* SOFT_HLUTNM = "soft_lutpair32" *) 
+  (* SOFT_HLUTNM = "soft_lutpair31" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[4]_i_1 
@@ -1103,7 +1103,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[5]),
         .I1(state__0[1]),
         .O(di_reg[5]));
-  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[6]_i_1 
@@ -1117,7 +1117,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(di_in[7]),
         .I1(state__0[1]),
         .O(di_reg[7]));
-  (* SOFT_HLUTNM = "soft_lutpair30" *) 
+  (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[8]_i_1 
@@ -1233,28 +1233,28 @@ module xadc_wiz_0_drp_arbiter
        (.I0(state__0[0]),
         .I1(DO[0]),
         .O(do_A_reg0_in[0]));
-  (* SOFT_HLUTNM = "soft_lutpair16" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[10]_i_1 
        (.I0(state__0[0]),
         .I1(DO[10]),
         .O(do_A_reg0_in[10]));
-  (* SOFT_HLUTNM = "soft_lutpair15" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[11]_i_1 
        (.I0(state__0[0]),
         .I1(DO[11]),
         .O(do_A_reg0_in[11]));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[12]_i_1 
        (.I0(state__0[0]),
         .I1(DO[12]),
         .O(do_A_reg0_in[12]));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
+  (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[13]_i_1 
@@ -1303,42 +1303,42 @@ module xadc_wiz_0_drp_arbiter
        (.I0(state__0[0]),
         .I1(DO[3]),
         .O(do_A_reg0_in[3]));
-  (* SOFT_HLUTNM = "soft_lutpair16" *) 
+  (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[4]_i_1 
        (.I0(state__0[0]),
         .I1(DO[4]),
         .O(do_A_reg0_in[4]));
-  (* SOFT_HLUTNM = "soft_lutpair15" *) 
+  (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[5]_i_1 
        (.I0(state__0[0]),
         .I1(DO[5]),
         .O(do_A_reg0_in[5]));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
+  (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[6]_i_1 
        (.I0(state__0[0]),
         .I1(DO[6]),
         .O(do_A_reg0_in[6]));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
+  (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[7]_i_1 
        (.I0(state__0[0]),
         .I1(DO[7]),
         .O(do_A_reg0_in[7]));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
+  (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[8]_i_1 
        (.I0(state__0[0]),
         .I1(DO[8]),
         .O(do_A_reg0_in[8]));
-  (* SOFT_HLUTNM = "soft_lutpair17" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[9]_i_1 
@@ -1448,35 +1448,35 @@ module xadc_wiz_0_drp_arbiter
        (.I0(state__0[1]),
         .I1(DO[0]),
         .O(do_B_reg0_in[0]));
-  (* SOFT_HLUTNM = "soft_lutpair19" *) 
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[10]_i_1 
        (.I0(state__0[1]),
         .I1(DO[10]),
         .O(do_B_reg0_in[10]));
-  (* SOFT_HLUTNM = "soft_lutpair23" *) 
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[11]_i_1 
        (.I0(state__0[1]),
         .I1(DO[11]),
         .O(do_B_reg0_in[11]));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
+  (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[12]_i_1 
        (.I0(state__0[1]),
         .I1(DO[12]),
         .O(do_B_reg0_in[12]));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[13]_i_1 
        (.I0(state__0[1]),
         .I1(DO[13]),
         .O(do_B_reg0_in[13]));
-  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[14]_i_1 
@@ -1544,21 +1544,21 @@ module xadc_wiz_0_drp_arbiter
        (.I0(state__0[1]),
         .I1(DO[6]),
         .O(do_B_reg0_in[6]));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
+  (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[7]_i_1 
        (.I0(state__0[1]),
         .I1(DO[7]),
         .O(do_B_reg0_in[7]));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[8]_i_1 
        (.I0(state__0[1]),
         .I1(DO[8]),
         .O(do_B_reg0_in[8]));
-  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[9]_i_1 
@@ -1661,7 +1661,7 @@ module xadc_wiz_0_drp_arbiter
         .CLR(m_axis_reset),
         .D(do_B_reg0_in[9]),
         .Q(do_out[9]));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT4 #(
     .INIT(16'hC808)) 
     drdy_A_reg_i_1
@@ -1676,7 +1676,7 @@ module xadc_wiz_0_drp_arbiter
         .CLR(m_axis_reset),
         .D(drdy_A_reg_i_1_n_0),
         .Q(drdy_i));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT4 #(
     .INIT(16'hE020)) 
     drdy_B_reg_i_1
@@ -1722,14 +1722,14 @@ module xadc_wiz_0_drp_arbiter
        (.I0(state__0[1]),
         .I1(dwe_in),
         .O(dwe_reg));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT2 #(
     .INIT(4'h2)) 
     dwe_reg_i_3
        (.I0(state__0[1]),
         .I1(state__0[0]),
         .O(dwe_reg_i_3_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT2 #(
     .INIT(4'h2)) 
     dwe_reg_i_4
@@ -2298,7 +2298,6 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(busy_o_i_1_n_0),
         .Q(bbusy_A));
-  (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT5 #(
     .INIT(32'h01FF0003)) 
     \channel_id[0]_i_1 
@@ -2308,6 +2307,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .I3(state[3]),
         .I4(channel_out[0]),
         .O(channel_id[0]));
+  (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT5 #(
     .INIT(32'h222022AA)) 
     \channel_id[1]_i_1 
@@ -2746,6 +2746,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[0]_i_1_n_7 ),
         .Q(timer_cntr_reg[0]));
+  (* ADDER_THRESHOLD = "11" *) 
   CARRY4 \timer_cntr_reg[0]_i_1 
        (.CI(1'b0),
         .CO({\timer_cntr_reg[0]_i_1_n_0 ,\timer_cntr_reg[0]_i_1_n_1 ,\timer_cntr_reg[0]_i_1_n_2 ,\timer_cntr_reg[0]_i_1_n_3 }),
@@ -2771,6 +2772,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[12]_i_1_n_7 ),
         .Q(timer_cntr_reg[12]));
+  (* ADDER_THRESHOLD = "11" *) 
   CARRY4 \timer_cntr_reg[12]_i_1 
        (.CI(\timer_cntr_reg[8]_i_1_n_0 ),
         .CO({\NLW_timer_cntr_reg[12]_i_1_CO_UNCONNECTED [3],\timer_cntr_reg[12]_i_1_n_1 ,\timer_cntr_reg[12]_i_1_n_2 ,\timer_cntr_reg[12]_i_1_n_3 }),
@@ -2820,6 +2822,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[4]_i_1_n_7 ),
         .Q(timer_cntr_reg[4]));
+  (* ADDER_THRESHOLD = "11" *) 
   CARRY4 \timer_cntr_reg[4]_i_1 
        (.CI(\timer_cntr_reg[0]_i_1_n_0 ),
         .CO({\timer_cntr_reg[4]_i_1_n_0 ,\timer_cntr_reg[4]_i_1_n_1 ,\timer_cntr_reg[4]_i_1_n_2 ,\timer_cntr_reg[4]_i_1_n_3 }),
@@ -2851,6 +2854,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[8]_i_1_n_7 ),
         .Q(timer_cntr_reg[8]));
+  (* ADDER_THRESHOLD = "11" *) 
   CARRY4 \timer_cntr_reg[8]_i_1 
        (.CI(\timer_cntr_reg[4]_i_1_n_0 ),
         .CO({\timer_cntr_reg[8]_i_1_n_0 ,\timer_cntr_reg[8]_i_1_n_1 ,\timer_cntr_reg[8]_i_1_n_2 ,\timer_cntr_reg[8]_i_1_n_3 }),
@@ -2943,7 +2947,8 @@ module xadc_wiz_0_xadc_wiz_0_axi_xadc
   input vp_in;
   input vn_in;
 
-  wire [7:0]alarm_out;
+  wire \<const0> ;
+  wire [7:0]\^alarm_out ;
   wire busy_out;
   wire [4:0]channel_out;
   wire [6:0]daddr_in;
@@ -2972,10 +2977,15 @@ module xadc_wiz_0_xadc_wiz_0_axi_xadc
   wire vn_in;
   wire vp_in;
 
+  assign alarm_out[7] = \^alarm_out [7];
+  assign alarm_out[6] = \<const0> ;
+  assign alarm_out[5] = \<const0> ;
+  assign alarm_out[4] = \<const0> ;
+  assign alarm_out[3:0] = \^alarm_out [3:0];
   xadc_wiz_0_xadc_wiz_0_xadc_core_drp AXI_XADC_CORE_I
        (.VAUXN({vauxn8,vauxn1,vauxn0}),
         .VAUXP({vauxp8,vauxp1,vauxp0}),
-        .alarm_out(alarm_out),
+        .alarm_out({\^alarm_out [7],\^alarm_out [3:0]}),
         .busy_out(busy_out),
         .channel_out(channel_out),
         .daddr_in(daddr_in),
@@ -2997,6 +3007,8 @@ module xadc_wiz_0_xadc_wiz_0_axi_xadc
         .temp_out(temp_out),
         .vn_in(vn_in),
         .vp_in(vp_in));
+  GND GND
+       (.G(\<const0> ));
 endmodule
 
 (* ORIG_REF_NAME = "xadc_wiz_0_xadc_core_drp" *) 
@@ -3032,7 +3044,7 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
   output eos_out;
   output ot_out;
   output [4:0]channel_out;
-  output [7:0]alarm_out;
+  output [4:0]alarm_out;
   output [11:0]temp_out;
   output [15:0]do_out;
   output m_axis_tvalid;
@@ -3056,7 +3068,10 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
   wire Inst_drp_arbiter_n_7;
   wire [2:0]VAUXN;
   wire [2:0]VAUXP;
-  wire [7:0]alarm_out;
+  wire XADC_INST_n_35;
+  wire XADC_INST_n_36;
+  wire XADC_INST_n_37;
+  wire [4:0]alarm_out;
   wire axi4_stream_inst_n_29;
   wire axi4_stream_inst_n_31;
   wire axi4_stream_inst_n_32;
@@ -3184,7 +3199,7 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
     .SIM_DEVICE("7SERIES"),
     .SIM_MONITOR_FILE("design.txt")) 
     XADC_INST
-       (.ALM(alarm_out),
+       (.ALM({alarm_out[4],XADC_INST_n_35,XADC_INST_n_36,XADC_INST_n_37,alarm_out[3:0]}),
         .BUSY(busy_out),
         .CHANNEL(channel_out),
         .CONVST(1'b0),
@@ -3269,12 +3284,15 @@ module glbl ();
 
     parameter ROC_WIDTH = 100000;
     parameter TOC_WIDTH = 0;
+    parameter GRES_WIDTH = 10000;
+    parameter GRES_START = 10000;
 
 //--------   STARTUP Globals --------------
     wire GSR;
     wire GTS;
     wire GWE;
     wire PRLD;
+    wire GRESTORE;
     tri1 p_up_tmp;
     tri (weak1, strong0) PLL_LOCKG = p_up_tmp;
 
@@ -3287,6 +3305,7 @@ module glbl ();
     reg GSR_int;
     reg GTS_int;
     reg PRLD_int;
+    reg GRESTORE_int;
 
 //--------   JTAG Globals --------------
     wire JTAG_TDO_GLBL;
@@ -3314,6 +3333,7 @@ module glbl ();
     assign (strong1, weak0) GSR = GSR_int;
     assign (strong1, weak0) GTS = GTS_int;
     assign (weak1, weak0) PRLD = PRLD_int;
+    assign (strong1, weak0) GRESTORE = GRESTORE_int;
 
     initial begin
 	GSR_int = 1'b1;
@@ -3327,6 +3347,14 @@ module glbl ();
 	GTS_int = 1'b1;
 	#(TOC_WIDTH)
 	GTS_int = 1'b0;
+    end
+
+    initial begin 
+	GRESTORE_int = 1'b0;
+	#(GRES_START);
+	GRESTORE_int = 1'b1;
+	#(GRES_WIDTH);
+	GRESTORE_int = 1'b0;
     end
 
 endmodule

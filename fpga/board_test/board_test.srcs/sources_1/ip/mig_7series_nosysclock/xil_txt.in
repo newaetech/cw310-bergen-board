@@ -15,10 +15,10 @@ SET_PREFERENCE flowvendor Other
 SET_PREFERENCE tool vivado
 SET_PREFERENCE compnamestatus 0
 SET_PARAMETER component_name mig_7series_nosysclock
-SET_PARAMETER xml_input_file /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_a.prj
-SET_PARAMETER data_dir_path /tools/Xilinx/Vivado/2019.2/data/ip/xilinx/mig_7series_v4_2
+SET_PARAMETER xml_input_file /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_b.prj
+SET_PARAMETER data_dir_path /tools/Xilinx/Vivado/2020.2/data/ip/xilinx/mig_7series_v4_2
 SET_CORE_NAME Memory Interface Generator (MIG 7 Series)
 SET_CORE_VERSION 4.2
 SET_CORE_VLNV xilinx.com:ip:mig_7series:4.2
-SET_CORE_PATH /tools/Xilinx/Vivado/2019.2/data/ip/xilinx/mig_7series_v4_2
-SET_CORE_DATASHEET /tools/Xilinx/Vivado/2019.2/data/ip/xilinx/mig_7series_v4_2/data/docs/ds176_7series_MIS.pdf
+SET_CORE_PATH /tools/Xilinx/Vivado/2020.2/data/ip/xilinx/mig_7series_v4_2
+SET_CORE_DATASHEET /tools/Xilinx/Vivado/2020.2/data/ip/xilinx/mig_7series_v4_2/data/docs/ds176_7series_MIS.pdf

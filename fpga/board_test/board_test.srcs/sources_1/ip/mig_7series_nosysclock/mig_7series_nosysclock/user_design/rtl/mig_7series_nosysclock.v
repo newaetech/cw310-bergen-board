@@ -86,8 +86,9 @@ module mig_7series_nosysclock (
   output [0:0]     ddr3_dm,
   output [0:0]       ddr3_odt,
   // Inputs
-  // Single-ended system clock
-  input             sys_clk_i,
+  // Differential system clocks
+  input             sys_clk_p,
+  input             sys_clk_n,
   // user interface signals
   input [29:0]       app_addr,
   input [2:0]       app_cmd,
@@ -109,6 +110,24 @@ module mig_7series_nosysclock (
   output            app_zq_ack,
   output            ui_clk,
   output            ui_clk_sync_rst,
+  // debug signals
+  output [390:0]                               ddr3_ila_wrpath,
+  output [1023:0]                              ddr3_ila_rdpath,
+  output [119:0]                               ddr3_ila_basic,
+  input [13:0]                                 ddr3_vio_sync_out, // input from VIO
+  input [1:0]          dbg_byte_sel,
+  input         dbg_sel_pi_incdec,
+  input         dbg_pi_f_inc,
+  input         dbg_pi_f_dec,
+  input         dbg_sel_po_incdec,
+  input         dbg_po_f_inc,
+  input         dbg_po_f_dec,
+  input         dbg_po_f_stg23_sel,
+  output [5:0]          dbg_pi_counter_read_val,
+  output [8:0]          dbg_po_counter_read_val,
+  output [107:0]                    dbg_prbs_final_dqs_tap_cnt_r,
+  output [107:0]                    dbg_prbs_first_edge_taps,
+  output [107:0]                    dbg_prbs_second_edge_taps,
   output            init_calib_complete,
   input [11:0]          device_temp_i,
                       // The 12 MSB bits of the temperature sensor transfer
@@ -168,8 +187,27 @@ module mig_7series_nosysclock (
     .ui_clk                         (ui_clk),
     .ui_clk_sync_rst                (ui_clk_sync_rst),
     .app_wdf_mask                   (app_wdf_mask),
+    // Debug Ports
+    .ddr3_ila_basic                 (ddr3_ila_basic),
+    .ddr3_ila_wrpath                (ddr3_ila_wrpath),
+    .ddr3_ila_rdpath                (ddr3_ila_rdpath),
+    .ddr3_vio_sync_out              (ddr3_vio_sync_out),
+    .dbg_pi_counter_read_val        (dbg_pi_counter_read_val),
+    .dbg_sel_pi_incdec              (dbg_sel_pi_incdec),
+    .dbg_po_counter_read_val        (dbg_po_counter_read_val),
+    .dbg_sel_po_incdec              (dbg_sel_po_incdec),
+    .dbg_byte_sel                   (dbg_byte_sel),
+    .dbg_pi_f_inc                   (dbg_pi_f_inc),
+    .dbg_pi_f_dec                   (dbg_pi_f_dec),
+    .dbg_po_f_inc                   (dbg_po_f_inc),
+    .dbg_po_f_stg23_sel             (dbg_po_f_stg23_sel),
+    .dbg_po_f_dec                   (dbg_po_f_dec),
+    .dbg_prbs_final_dqs_tap_cnt_r   (dbg_prbs_final_dqs_tap_cnt_r),
+    .dbg_prbs_first_edge_taps       (dbg_prbs_first_edge_taps),
+    .dbg_prbs_second_edge_taps      (dbg_prbs_second_edge_taps),
     // System Clock Ports
-    .sys_clk_i                       (sys_clk_i),
+    .sys_clk_p                       (sys_clk_p),
+    .sys_clk_n                       (sys_clk_n),
     .device_temp_i                  (device_temp_i),
        .device_temp            (device_temp),
        `ifdef SKIP_CALIB
