@@ -110,7 +110,7 @@
       <Pin Bank="33" PADName="AC9/AD9(CC_P/N)" name="sys_clk_p/n"/>
     </System_Clock>
     <System_Control>
-      <Pin Bank="33" PADName="Y7" name="sys_rst"/>
+      <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>
       <Pin Bank="Select Bank" PADName="No connect" name="init_calib_complete"/>
       <Pin Bank="Select Bank" PADName="No connect" name="tg_compare_error"/>
     </System_Control>

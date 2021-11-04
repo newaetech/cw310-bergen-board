@@ -428,7 +428,7 @@ module mig_7series_nosysclock_mig #
    parameter REFCLK_TYPE           = "USE_SYSTEM_CLOCK",
                                      // Reference clock type DIFFERENTIAL, SINGLE_ENDED,
                                      // NO_BUFFER, USE_SYSTEM_CLOCK
-   parameter SYS_RST_PORT          = "TRUE",
+   parameter SYS_RST_PORT          = "FALSE",
                                      // "TRUE" - if pin is selected for sys_rst
                                      //          and IBUF will be instantiated.
                                      // "FALSE" - if pin is not selected for sys_rst

@@ -1,7 +1,7 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Tue Nov  2 13:46:19 2021
+-- Date        : Thu Nov  4 09:35:30 2021
 -- Host        : red running 64-bit Ubuntu 18.04.6 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_7series_nosysclock_sim_netlist.vhdl
@@ -9476,7 +9476,7 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf is
   port (
-    clk_ref_i : out STD_LOGIC;
+    \out\ : out STD_LOGIC;
     sys_clk_p : in STD_LOGIC;
     sys_clk_n : in STD_LOGIC
   );
@@ -9499,7 +9499,7 @@ architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf is
   attribute XILINX_LEGACY_PRIM : string;
   attribute XILINX_LEGACY_PRIM of \diff_input_clk.u_ibufg_sys_clk\ : label is "IBUFGDS";
 begin
-  clk_ref_i <= sys_clk_ibufg;
+  \out\ <= sys_clk_ibufg;
 \diff_input_clk.u_ibufg_sys_clk\: unisim.vcomponents.IBUFDS
     generic map(
       IOSTANDARD => "DEFAULT"
@@ -67825,7 +67825,7 @@ entity mig_7series_nosysclock_mig_7series_v4_2_infrastructure is
     \rstdiv0_sync_r1_reg_rep__15_2\ : out STD_LOGIC;
     \rstdiv0_sync_r1_reg_rep__15_3\ : out STD_LOGIC_VECTOR ( 0 to 0 );
     \rstdiv0_sync_r1_reg_rep__16_1\ : out STD_LOGIC;
-    clk_ref_i : in STD_LOGIC;
+    \out\ : in STD_LOGIC;
     AS : in STD_LOGIC_VECTOR ( 0 to 0 );
     rst_tmp : in STD_LOGIC;
     device_temp_sync_r4_neq_r3 : in STD_LOGIC;
@@ -68147,7 +68147,7 @@ plle2_i: unisim.vcomponents.PLLE2_ADV
         port map (
       CLKFBIN => pll_clkfbout,
       CLKFBOUT => pll_clkfbout,
-      CLKIN1 => clk_ref_i,
+      CLKIN1 => \out\,
       CLKIN2 => '0',
       CLKINSEL => '1',
       CLKOUT0 => freq_refclk,
@@ -68732,10 +68732,10 @@ entity mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl is
   port (
     rst_tmp : out STD_LOGIC;
     AS : out STD_LOGIC_VECTOR ( 0 to 0 );
-    \rstdiv2_sync_r_reg[11]\ : in STD_LOGIC;
-    ref_dll_lock : in STD_LOGIC;
+    \out\ : in STD_LOGIC;
     sys_rst : in STD_LOGIC;
-    clk_ref_i : in STD_LOGIC
+    \rstdiv2_sync_r_reg[11]\ : in STD_LOGIC;
+    ref_dll_lock : in STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl : entity is "mig_7series_v4_2_iodelay_ctrl";
@@ -68745,8 +68745,21 @@ architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl i
   signal \^as\ : STD_LOGIC_VECTOR ( 0 to 0 );
   signal \clk_ref_200.u_bufg_clk_ref_n_0\ : STD_LOGIC;
   signal iodelay_ctrl_rdy : STD_LOGIC_VECTOR ( 0 to 0 );
-  signal p_0_in : STD_LOGIC_VECTOR ( 14 downto 1 );
   signal rst_ref : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal \rst_ref_sync_r_reg_n_0_[0][0]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][10]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][11]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][12]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][13]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][1]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][2]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][3]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][4]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][5]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][6]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][7]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][8]\ : STD_LOGIC;
+  signal \rst_ref_sync_r_reg_n_0_[0][9]\ : STD_LOGIC;
   signal sys_rst_i : STD_LOGIC;
   attribute RTL_KEEP : string;
   attribute RTL_KEEP of sys_rst_i : signal is "true";
@@ -68771,21 +68784,15 @@ architecture STRUCTURE of mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl i
   attribute BOX_TYPE of u_idelayctrl_200 : label is "PRIMITIVE";
   attribute IODELAY_GROUP : string;
   attribute IODELAY_GROUP of u_idelayctrl_200 : label is "MIG_7SERIES_NOSYSCLOCK_IODELAY_MIG0";
-  attribute BOX_TYPE of u_sys_rst_ibuf : label is "PRIMITIVE";
-  attribute CAPACITANCE : string;
-  attribute CAPACITANCE of u_sys_rst_ibuf : label is "DONT_CARE";
-  attribute IBUF_DELAY_VALUE : string;
-  attribute IBUF_DELAY_VALUE of u_sys_rst_ibuf : label is "0";
-  attribute IFD_DELAY_VALUE : string;
-  attribute IFD_DELAY_VALUE of u_sys_rst_ibuf : label is "AUTO";
 begin
   AS(0) <= \^as\(0);
+  sys_rst_i <= sys_rst;
 \clk_ref_200.u_bufg_clk_ref\: unisim.vcomponents.BUFG
      port map (
-      I => clk_ref_i,
+      I => \out\,
       O => \clk_ref_200.u_bufg_clk_ref_n_0\
     );
-\rst_ref_sync_r[0][14]_i_1\: unisim.vcomponents.LUT1
+plle2_i_i_1: unisim.vcomponents.LUT1
     generic map(
       INIT => X"1"
     )
@@ -68799,45 +68806,45 @@ begin
       CE => '1',
       D => '0',
       PRE => \^as\(0),
-      Q => p_0_in(1)
+      Q => \rst_ref_sync_r_reg_n_0_[0][0]\
     );
 \rst_ref_sync_r_reg[0][10]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(10),
+      D => \rst_ref_sync_r_reg_n_0_[0][9]\,
       PRE => \^as\(0),
-      Q => p_0_in(11)
+      Q => \rst_ref_sync_r_reg_n_0_[0][10]\
     );
 \rst_ref_sync_r_reg[0][11]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(11),
+      D => \rst_ref_sync_r_reg_n_0_[0][10]\,
       PRE => \^as\(0),
-      Q => p_0_in(12)
+      Q => \rst_ref_sync_r_reg_n_0_[0][11]\
     );
 \rst_ref_sync_r_reg[0][12]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(12),
+      D => \rst_ref_sync_r_reg_n_0_[0][11]\,
       PRE => \^as\(0),
-      Q => p_0_in(13)
+      Q => \rst_ref_sync_r_reg_n_0_[0][12]\
     );
 \rst_ref_sync_r_reg[0][13]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(13),
+      D => \rst_ref_sync_r_reg_n_0_[0][12]\,
       PRE => \^as\(0),
-      Q => p_0_in(14)
+      Q => \rst_ref_sync_r_reg_n_0_[0][13]\
     );
 \rst_ref_sync_r_reg[0][14]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(14),
+      D => \rst_ref_sync_r_reg_n_0_[0][13]\,
       PRE => \^as\(0),
       Q => rst_ref(0)
     );
@@ -68845,73 +68852,73 @@ begin
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(1),
+      D => \rst_ref_sync_r_reg_n_0_[0][0]\,
       PRE => \^as\(0),
-      Q => p_0_in(2)
+      Q => \rst_ref_sync_r_reg_n_0_[0][1]\
     );
 \rst_ref_sync_r_reg[0][2]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(2),
+      D => \rst_ref_sync_r_reg_n_0_[0][1]\,
       PRE => \^as\(0),
-      Q => p_0_in(3)
+      Q => \rst_ref_sync_r_reg_n_0_[0][2]\
     );
 \rst_ref_sync_r_reg[0][3]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(3),
+      D => \rst_ref_sync_r_reg_n_0_[0][2]\,
       PRE => \^as\(0),
-      Q => p_0_in(4)
+      Q => \rst_ref_sync_r_reg_n_0_[0][3]\
     );
 \rst_ref_sync_r_reg[0][4]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(4),
+      D => \rst_ref_sync_r_reg_n_0_[0][3]\,
       PRE => \^as\(0),
-      Q => p_0_in(5)
+      Q => \rst_ref_sync_r_reg_n_0_[0][4]\
     );
 \rst_ref_sync_r_reg[0][5]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(5),
+      D => \rst_ref_sync_r_reg_n_0_[0][4]\,
       PRE => \^as\(0),
-      Q => p_0_in(6)
+      Q => \rst_ref_sync_r_reg_n_0_[0][5]\
     );
 \rst_ref_sync_r_reg[0][6]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(6),
+      D => \rst_ref_sync_r_reg_n_0_[0][5]\,
       PRE => \^as\(0),
-      Q => p_0_in(7)
+      Q => \rst_ref_sync_r_reg_n_0_[0][6]\
     );
 \rst_ref_sync_r_reg[0][7]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(7),
+      D => \rst_ref_sync_r_reg_n_0_[0][6]\,
       PRE => \^as\(0),
-      Q => p_0_in(8)
+      Q => \rst_ref_sync_r_reg_n_0_[0][7]\
     );
 \rst_ref_sync_r_reg[0][8]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(8),
+      D => \rst_ref_sync_r_reg_n_0_[0][7]\,
       PRE => \^as\(0),
-      Q => p_0_in(9)
+      Q => \rst_ref_sync_r_reg_n_0_[0][8]\
     );
 \rst_ref_sync_r_reg[0][9]\: unisim.vcomponents.FDPE
      port map (
       C => \clk_ref_200.u_bufg_clk_ref_n_0\,
       CE => '1',
-      D => p_0_in(9),
+      D => \rst_ref_sync_r_reg_n_0_[0][8]\,
       PRE => \^as\(0),
-      Q => p_0_in(10)
+      Q => \rst_ref_sync_r_reg_n_0_[0][9]\
     );
 \rstdiv2_sync_r[11]_i_1\: unisim.vcomponents.LUT4
     generic map(
@@ -68932,14 +68939,6 @@ u_idelayctrl_200: unisim.vcomponents.IDELAYCTRL
       RDY => iodelay_ctrl_rdy(0),
       REFCLK => \clk_ref_200.u_bufg_clk_ref_n_0\,
       RST => rst_ref(0)
-    );
-u_sys_rst_ibuf: unisim.vcomponents.IBUF
-    generic map(
-      IOSTANDARD => "DEFAULT"
-    )
-        port map (
-      I => sys_rst,
-      O => sys_rst_i
     );
 end STRUCTURE;
 library IEEE;
@@ -92818,6 +92817,7 @@ entity mig_7series_nosysclock_mig_7series_nosysclock_mig is
     sys_clk_p : in STD_LOGIC;
     sys_clk_n : in STD_LOGIC;
     device_temp_i : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    sys_rst : in STD_LOGIC;
     CLKB0 : in STD_LOGIC;
     app_en : in STD_LOGIC;
     ddr3_ila_wrpath_14_sp_1 : in STD_LOGIC;
@@ -92832,7 +92832,6 @@ entity mig_7series_nosysclock_mig_7series_nosysclock_mig is
     app_wdf_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
     app_wdf_mask : in STD_LOGIC_VECTOR ( 3 downto 0 );
     app_ref_req : in STD_LOGIC;
-    sys_rst : in STD_LOGIC;
     dbg_sel_po_incdec : in STD_LOGIC;
     dbg_sel_pi_incdec : in STD_LOGIC;
     dbg_pi_f_inc : in STD_LOGIC;
@@ -93301,7 +93300,7 @@ dbg_rddata_valid_r_reg: unisim.vcomponents.FDRE
     );
 u_ddr3_clk_ibuf: entity work.mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf
      port map (
-      clk_ref_i => clk_ref_in,
+      \out\ => clk_ref_in,
       sys_clk_n => sys_clk_n,
       sys_clk_p => sys_clk_p
     );
@@ -93316,12 +93315,12 @@ u_ddr3_infrastructure: entity work.mig_7series_nosysclock_mig_7series_v4_2_infra
       bm_end_r1_0 => \mem_intfc0/mc0/bank_mach0/bank_cntrl[1].bank0/bank_state0/bm_end_r1\,
       bm_end_r1_1 => \mem_intfc0/mc0/bank_mach0/bank_cntrl[2].bank0/bank_state0/bm_end_r1\,
       bm_end_r1_2 => \mem_intfc0/mc0/bank_mach0/bank_cntrl[3].bank0/bank_state0/bm_end_r1\,
-      clk_ref_i => clk_ref_in,
       device_temp_sync_r4_neq_r3 => device_temp_sync_r4_neq_r3,
       freq_refclk => freq_refclk,
       \gen_mmcm.mmcm_i_i_1_0\ => u_ddr3_infrastructure_n_0,
       insert_maint_r => \mem_intfc0/mc0/bank_mach0/insert_maint_r\,
       mem_refclk => mem_refclk,
+      \out\ => clk_ref_in,
       pi_cnt_dec => \mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl/pi_cnt_dec\,
       pll_locked => pll_locked,
       po_cnt_dec => \mem_intfc0/ddr_phy_top0/u_ddr_calib_top/mb_wrlvl_inst.u_ddr_phy_wrlvl/po_cnt_dec\,
@@ -93363,7 +93362,7 @@ u_ddr3_infrastructure: entity work.mig_7series_nosysclock_mig_7series_v4_2_infra
 u_iodelay_ctrl: entity work.mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl
      port map (
       AS(0) => sys_rst_act_hi,
-      clk_ref_i => clk_ref_in,
+      \out\ => clk_ref_in,
       ref_dll_lock => ref_dll_lock,
       rst_tmp => rst_tmp,
       \rstdiv2_sync_r_reg[11]\ => u_ddr3_infrastructure_n_0,

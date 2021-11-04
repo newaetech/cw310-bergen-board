@@ -153,9 +153,7 @@ always @(*) begin
         end
 
         pS_WRITE0: begin
-            /*if (~active)
-                next_state = pS_IDLE;
-            else*/ if (app_rdy && app_wdf_rdy)
+            if (app_rdy && app_wdf_rdy)
                 next_state = pS_WRITE1;
             else
                 next_state = pS_WRITE0;
@@ -165,13 +163,10 @@ always @(*) begin
             app_en = 1'b1;
             app_wdf_wren = 1'b1;
             app_wdf_end = 1'b0;
+            // note: going to IDLE now if !active seems to mess up the controller, presumably because it doesn't get app_wdf_end
             if (app_rdy && app_wdf_rdy) begin
-                /*if (~active)
-                    next_state = pS_IDLE;
-                else begin*/
-                    write_valid = 1'b1;
-                    next_state = pS_WRITE2;
-                //end
+                write_valid = 1'b1;
+                next_state = pS_WRITE2;
             end
             else
                 next_state = pS_WRITE1;
@@ -183,9 +178,9 @@ always @(*) begin
             app_wdf_end = 1'b1;
             if (app_wdf_rdy) begin
                 write_valid = 1'b1;
-                /*if (~active)
+                if (~active)
                     next_state = pS_IDLE;
-                else*/ if (app_addr == ddrtest_stop) begin
+                else if (app_addr == ddrtest_stop) begin
                     reset_address = 1'b1;
                     next_state = pS_READ0;
                 end
@@ -203,9 +198,7 @@ always @(*) begin
 
         pS_READ0: begin
             app_en = 1'b0;
-            /*if (~active)
-                next_state = pS_IDLE;
-            else*/ if (app_rdy) begin
+            if (app_rdy) begin
                 load_lfsr = 1'b1;
                 next_state = pS_READ1;
             end
@@ -216,19 +209,16 @@ always @(*) begin
         pS_READ1: begin
             app_en = 1'b1;
             if (app_rdy)
-                /*if (~active)
-                    next_state = pS_IDLE;
-                else*/
-                    next_state = pS_READ2;
+                next_state = pS_READ2;
             else
                 next_state = pS_READ1;
         end
 
         pS_READ2: begin
             app_en = 1'b0;
-            /*if (~active)
+            if (~active)
                 next_state = pS_IDLE;
-            else*/ if (app_rdy) begin
+            else if (app_rdy) begin
                 if (app_addr == ddrtest_stop) begin
                     next_state = pS_WAIT_READS_DONE;
                 end
@@ -242,16 +232,12 @@ always @(*) begin
         end
 
         pS_WAIT_READS_DONE: begin
-            /*if (~active)
+            if (~active)
                 next_state = pS_IDLE;
-            else*/ if (verify_addr == ddrtest_stop) begin
-                if (~active)
-                    next_state = pS_IDLE;
-                else begin
-                    reset_address = 1'b1;
-                    incr_iteration = 1'b1;
-                    next_state = pS_LOAD_LFSR;
-                end
+            else if (verify_addr == ddrtest_stop) begin
+                reset_address = 1'b1;
+                incr_iteration = 1'b1;
+                next_state = pS_LOAD_LFSR;
             end
             else
                 next_state = pS_WAIT_READS_DONE;
@@ -343,7 +329,6 @@ always @ (posedge clk) begin
 end
 
 assign read_valid = reading && app_rd_data_valid;
-//assign write_valid = writing && app_wdf_wren && app_wdf_rdy;
 
 always @ (posedge clk) begin
     if (reset) begin

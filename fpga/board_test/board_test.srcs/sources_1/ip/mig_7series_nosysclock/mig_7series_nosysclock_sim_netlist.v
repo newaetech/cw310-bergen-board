@@ -1,7 +1,7 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-// Date        : Tue Nov  2 13:46:19 2021
+// Date        : Thu Nov  4 09:35:30 2021
 // Host        : red running 64-bit Ubuntu 18.04.6 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/mig_7series_nosysclock/mig_7series_nosysclock_sim_netlist.v
@@ -249,7 +249,7 @@ module mig_7series_nosysclock
   (* MAX_FANOUT = "50" *) (* RTL_MAX_FANOUT = "found" *) (* syn_maxfan = "10" *) wire init_calib_complete;
   (* DIFF_TERM *) (* IBUF_LOW_PWR = 0 *) wire sys_clk_n;
   (* DIFF_TERM *) (* IBUF_LOW_PWR = 0 *) wire sys_clk_p;
-  (* IBUF_LOW_PWR *) wire sys_rst;
+  wire sys_rst;
   wire [22:0]\u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/mux_address__0 ;
   wire [5:0]\u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/mux_bank ;
   wire [1:1]\u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/mux_cas_n ;
@@ -3095,6 +3095,7 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
     sys_clk_p,
     sys_clk_n,
     device_temp_i,
+    sys_rst,
     CLKB0,
     app_en,
     ddr3_ila_wrpath_14_sp_1,
@@ -3109,7 +3110,6 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
     app_wdf_data,
     app_wdf_mask,
     app_ref_req,
-    sys_rst,
     dbg_sel_po_incdec,
     dbg_sel_pi_incdec,
     dbg_pi_f_inc,
@@ -3178,6 +3178,7 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
   input sys_clk_p;
   input sys_clk_n;
   input [11:0]device_temp_i;
+  input sys_rst;
   input CLKB0;
   input app_en;
   input ddr3_ila_wrpath_14_sp_1;
@@ -3192,7 +3193,6 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
   input [31:0]app_wdf_data;
   input [3:0]app_wdf_mask;
   input app_ref_req;
-  input sys_rst;
   input dbg_sel_po_incdec;
   input dbg_sel_pi_incdec;
   input dbg_pi_f_inc;
@@ -3596,7 +3596,7 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
         .device_temp_sync_r4_neq_r3(device_temp_sync_r4_neq_r3),
         .out(out));
   mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf u_ddr3_clk_ibuf
-       (.clk_ref_i(clk_ref_in),
+       (.out(clk_ref_in),
         .sys_clk_n(sys_clk_n),
         .sys_clk_p(sys_clk_p));
   mig_7series_nosysclock_mig_7series_v4_2_infrastructure u_ddr3_infrastructure
@@ -3609,12 +3609,12 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
         .bm_end_r1_0(\mem_intfc0/mc0/bank_mach0/bank_cntrl[1].bank0/bank_state0/bm_end_r1 ),
         .bm_end_r1_1(\mem_intfc0/mc0/bank_mach0/bank_cntrl[2].bank0/bank_state0/bm_end_r1 ),
         .bm_end_r1_2(\mem_intfc0/mc0/bank_mach0/bank_cntrl[3].bank0/bank_state0/bm_end_r1 ),
-        .clk_ref_i(clk_ref_in),
         .device_temp_sync_r4_neq_r3(device_temp_sync_r4_neq_r3),
         .freq_refclk(freq_refclk),
         .\gen_mmcm.mmcm_i_i_1_0 (u_ddr3_infrastructure_n_0),
         .insert_maint_r(\mem_intfc0/mc0/bank_mach0/insert_maint_r ),
         .mem_refclk(mem_refclk),
+        .out(clk_ref_in),
         .pi_cnt_dec(\mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl/pi_cnt_dec ),
         .pll_locked(pll_locked),
         .po_cnt_dec(\mem_intfc0/ddr_phy_top0/u_ddr_calib_top/mb_wrlvl_inst.u_ddr_phy_wrlvl/po_cnt_dec ),
@@ -3653,7 +3653,7 @@ module mig_7series_nosysclock_mig_7series_nosysclock_mig
         .ui_clk_sync_rst(ui_clk_sync_rst));
   mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl u_iodelay_ctrl
        (.AS(sys_rst_act_hi),
-        .clk_ref_i(clk_ref_in),
+        .out(clk_ref_in),
         .ref_dll_lock(ref_dll_lock),
         .rst_tmp(rst_tmp),
         .\rstdiv2_sync_r_reg[11] (u_ddr3_infrastructure_n_0),
@@ -17481,10 +17481,10 @@ endmodule
 
 (* ORIG_REF_NAME = "mig_7series_v4_2_clk_ibuf" *) 
 module mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf
-   (clk_ref_i,
+   (out,
     sys_clk_p,
     sys_clk_n);
-  output clk_ref_i;
+  output out;
   input sys_clk_p;
   input sys_clk_n;
 
@@ -17492,7 +17492,7 @@ module mig_7series_nosysclock_mig_7series_v4_2_clk_ibuf
   wire sys_clk_n;
   wire sys_clk_p;
 
-  assign clk_ref_i = sys_clk_ibufg;
+  assign out = sys_clk_ibufg;
   (* BOX_TYPE = "PRIMITIVE" *) 
   (* CAPACITANCE = "DONT_CARE" *) 
   (* IBUF_DELAY_VALUE = "0" *) 
@@ -71870,7 +71870,7 @@ module mig_7series_nosysclock_mig_7series_v4_2_infrastructure
     rstdiv0_sync_r1_reg_rep__15_2,
     rstdiv0_sync_r1_reg_rep__15_3,
     rstdiv0_sync_r1_reg_rep__16_1,
-    clk_ref_i,
+    out,
     AS,
     rst_tmp,
     device_temp_sync_r4_neq_r3,
@@ -71921,7 +71921,7 @@ module mig_7series_nosysclock_mig_7series_v4_2_infrastructure
   output rstdiv0_sync_r1_reg_rep__15_2;
   output [0:0]rstdiv0_sync_r1_reg_rep__15_3;
   output rstdiv0_sync_r1_reg_rep__16_1;
-  input clk_ref_i;
+  input out;
   input [0:0]AS;
   input rst_tmp;
   input device_temp_sync_r4_neq_r3;
@@ -71948,7 +71948,6 @@ module mig_7series_nosysclock_mig_7series_v4_2_infrastructure
   wire bm_end_r1_2;
   wire clk_div2_bufg_in;
   wire clk_pll_i;
-  wire clk_ref_i;
   wire device_temp_sync_r4_neq_r3;
   wire freq_refclk;
   wire \gen_mmcm.mmcm_i_i_1_0 ;
@@ -71958,6 +71957,7 @@ module mig_7series_nosysclock_mig_7series_v4_2_infrastructure
   wire insert_maint_r;
   wire mem_refclk;
   wire mmcm_ps_clk_bufg_in;
+  wire out;
   wire p_0_in;
   wire pi_cnt_dec;
   wire pll_clk3;
@@ -72186,7 +72186,7 @@ module mig_7series_nosysclock_mig_7series_v4_2_infrastructure
     plle2_i
        (.CLKFBIN(pll_clkfbout),
         .CLKFBOUT(pll_clkfbout),
-        .CLKIN1(clk_ref_i),
+        .CLKIN1(out),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
         .CLKOUT0(freq_refclk),
@@ -72672,36 +72672,49 @@ endmodule
 module mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl
    (rst_tmp,
     AS,
-    \rstdiv2_sync_r_reg[11] ,
-    ref_dll_lock,
+    out,
     sys_rst,
-    clk_ref_i);
+    \rstdiv2_sync_r_reg[11] ,
+    ref_dll_lock);
   output rst_tmp;
   output [0:0]AS;
+  input out;
+  input sys_rst;
   input \rstdiv2_sync_r_reg[11] ;
   input ref_dll_lock;
-  input sys_rst;
-  input clk_ref_i;
 
   wire [0:0]AS;
   wire \clk_ref_200.u_bufg_clk_ref_n_0 ;
-  wire clk_ref_i;
   wire [0:0]iodelay_ctrl_rdy;
-  wire [14:1]p_0_in;
+  wire out;
   wire ref_dll_lock;
   wire [0:0]rst_ref;
+  wire \rst_ref_sync_r_reg_n_0_[0][0] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][10] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][11] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][12] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][13] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][1] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][2] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][3] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][4] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][5] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][6] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][7] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][8] ;
+  wire \rst_ref_sync_r_reg_n_0_[0][9] ;
   wire rst_tmp;
   wire \rstdiv2_sync_r_reg[11] ;
-  wire sys_rst;
   (* RTL_KEEP = "true" *) wire sys_rst_i;
 
+  assign sys_rst_i = sys_rst;
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG \clk_ref_200.u_bufg_clk_ref 
-       (.I(clk_ref_i),
+       (.I(out),
         .O(\clk_ref_200.u_bufg_clk_ref_n_0 ));
   LUT1 #(
     .INIT(2'h1)) 
-    \rst_ref_sync_r[0][14]_i_1 
+    plle2_i_i_1
        (.I0(sys_rst_i),
         .O(AS));
   (* syn_maxfan = "10" *) 
@@ -72710,105 +72723,105 @@ module mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl
         .CE(1'b1),
         .D(1'b0),
         .PRE(AS),
-        .Q(p_0_in[1]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][0] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][10] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[10]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][9] ),
         .PRE(AS),
-        .Q(p_0_in[11]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][10] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][11] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[11]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][10] ),
         .PRE(AS),
-        .Q(p_0_in[12]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][11] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][12] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[12]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][11] ),
         .PRE(AS),
-        .Q(p_0_in[13]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][12] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][13] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[13]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][12] ),
         .PRE(AS),
-        .Q(p_0_in[14]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][13] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][14] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[14]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][13] ),
         .PRE(AS),
         .Q(rst_ref));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][1] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[1]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][0] ),
         .PRE(AS),
-        .Q(p_0_in[2]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][1] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][2] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[2]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][1] ),
         .PRE(AS),
-        .Q(p_0_in[3]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][2] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][3] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[3]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][2] ),
         .PRE(AS),
-        .Q(p_0_in[4]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][3] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][4] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[4]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][3] ),
         .PRE(AS),
-        .Q(p_0_in[5]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][4] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][5] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[5]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][4] ),
         .PRE(AS),
-        .Q(p_0_in[6]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][5] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][6] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[6]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][5] ),
         .PRE(AS),
-        .Q(p_0_in[7]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][6] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][7] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[7]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][6] ),
         .PRE(AS),
-        .Q(p_0_in[8]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][7] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][8] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[8]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][7] ),
         .PRE(AS),
-        .Q(p_0_in[9]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][8] ));
   (* syn_maxfan = "10" *) 
   FDPE \rst_ref_sync_r_reg[0][9] 
        (.C(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .CE(1'b1),
-        .D(p_0_in[9]),
+        .D(\rst_ref_sync_r_reg_n_0_[0][8] ),
         .PRE(AS),
-        .Q(p_0_in[10]));
+        .Q(\rst_ref_sync_r_reg_n_0_[0][9] ));
   LUT4 #(
     .INIT(16'h7FFF)) 
     \rstdiv2_sync_r[11]_i_1 
@@ -72825,15 +72838,6 @@ module mig_7series_nosysclock_mig_7series_v4_2_iodelay_ctrl
        (.RDY(iodelay_ctrl_rdy),
         .REFCLK(\clk_ref_200.u_bufg_clk_ref_n_0 ),
         .RST(rst_ref));
-  (* BOX_TYPE = "PRIMITIVE" *) 
-  (* CAPACITANCE = "DONT_CARE" *) 
-  (* IBUF_DELAY_VALUE = "0" *) 
-  (* IFD_DELAY_VALUE = "AUTO" *) 
-  IBUF #(
-    .IOSTANDARD("DEFAULT")) 
-    u_sys_rst_ibuf
-       (.I(sys_rst),
-        .O(sys_rst_i));
 endmodule
 
 (* ORIG_REF_NAME = "mig_7series_v4_2_mc" *) 

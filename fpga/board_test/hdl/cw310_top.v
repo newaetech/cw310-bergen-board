@@ -49,7 +49,7 @@ module cw310_top #(
     // Buttons/LEDs on Board
     input wire [7:0]                    USRDIP,         // DIP switch 0-7
     input wire                          USRSW2,     // Pushbutton SW4, connected to R1, used here as reset
-    output wire [7:0]                   USRLED,
+    output reg  [7:0]                   USRLED,
 
     // PLL
     input wire                          PLL_CLK1,       //PLL Clock Channel #1
@@ -161,17 +161,23 @@ module cw310_top #(
     wire  dbg_wrcal_err;
     wire [6:0] ddr3_stat;
 
-    //assign USRLED = heartbeats? {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]} : reg_leds;
-    //TODO: temporary, for easier DDR debug
-    assign USRLED[0] = init_calib_complete;
-    assign USRLED[1] = ddr3_fail;
-    assign USRLED[2] = ddr3_pass;
-    assign USRLED[3] = ~dbg_pi_phaselock_err;
-    assign USRLED[4] = ~dbg_pi_dqsfound_err;
-    assign USRLED[5] = ~dbg_wrlvl_err;
-    assign USRLED[6] = ~dbg_rdlvl_err[1];
-    assign USRLED[7] = ~dbg_wrcal_err;
-    //assign USRLED[7] = ~dbg_rdlvl_err[0];
+    always @(*) begin
+        if (ddr3_en) begin
+            USRLED[0] = init_calib_complete;
+            USRLED[1] = ddr3_fail;
+            USRLED[2] = ddr3_pass;
+            USRLED[3] = ~dbg_pi_phaselock_err;
+            USRLED[4] = ~dbg_pi_dqsfound_err;
+            USRLED[5] = ~dbg_wrlvl_err;
+            USRLED[6] = ~dbg_rdlvl_err[1];
+            USRLED[7] = ~dbg_wrcal_err;
+            //USRLED[7] = ~dbg_rdlvl_err[0];
+        end
+        else if (heartbeats)
+            USRLED = {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]};
+        else
+            USRLED = reg_leds;
+    end
 
     assign dbg_pi_phaselock_err = ddr3_ila_basic_w[6];
     assign dbg_pi_dqsfound_err  = ddr3_ila_basic_w[9];
