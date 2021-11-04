@@ -65,11 +65,11 @@ module cw310_reg_aes #(
    input  wire                                  I_ready,  /* Crypto core ready. Tie to '1' if not used. */
    input  wire                                  I_done,   /* Crypto done. Can be high for one crypto_clk cycle or longer. */
    input  wire                                  I_busy,   /* Crypto busy. */
-   input  wire                                  I_ddr3_calib_complete,
+   input  wire [6:0]                            I_ddr3_stat,
    input  wire                                  I_ddr3_pass,
+   input  wire                                  I_ddr3_fail,
    input  wire                                  I_sram_pass,
    input  wire [7:0]                            I_dip,
-   input  wire [31:0]                           I_sysclk_freq,
 
 // register outputs:
    output reg  [4:0]                            O_clksettings,
@@ -79,11 +79,18 @@ module cw310_reg_aes #(
    output wire [pCT_WIDTH-1:0]                  O_cipherin,
    output wire                                  O_start,  /* High for one crypto_clk cycle, indicates text ready. */
 
+// DDR stuff:
    output reg                                   O_ddr3_en,
    output reg                                   O_sram_en,
    output reg                                   O_xo_en,
    output reg                                   O_vddr_enable,
    input  wire                                  I_vddr_pgood,
+
+   output reg                                   O_ddr3_clear_fail,
+   input  wire [15:0]                           I_ddr3_iteration,
+   input  wire [7:0]                            I_ddr3_errors,
+   input  wire [29:0]                           I_ddr3_error_addr,
+
    output reg  [7:0]                            O_leds,
    output reg                                   O_heartbeats,
    output reg  [7:0]                            O_sram_top_address
@@ -160,11 +167,17 @@ module cw310_reg_aes #(
             `REG_BUILDTIME:             reg_read_data = buildtime[reg_bytecnt*8 +: 8];
             `REG_DDR3_EN:               reg_read_data = O_ddr3_en;
             `REG_SRAM_EN:               reg_read_data = O_sram_en;
-            `REG_DDR3_PASS:             reg_read_data = {6'b0, I_ddr3_calib_complete, I_ddr3_pass};
+            `REG_DDR3_PASS:             reg_read_data = {6'b0, I_ddr3_fail, I_ddr3_pass};
+            `REG_DDR3_STAT:             reg_read_data = {1'b0, I_ddr3_stat};
+
+            `REG_DDR3_CLEAR_FAIL:       reg_read_data = {7'b0, O_ddr3_clear_fail};
+            `REG_DDR3_ITERATIONS:       reg_read_data = I_ddr3_iteration[reg_bytecnt*8 +: 8];
+            `REG_DDR3_ERRORS:           reg_read_data = I_ddr3_errors;
+            `REG_DDR3_ERROR_ADDR:       reg_read_data = I_ddr3_error_addr[reg_bytecnt*8 +: 8];
+
             `REG_SRAM_PASS:             reg_read_data = I_sram_pass;
             `REG_DIP:                   reg_read_data = I_dip;
             `REG_XO_EN:                 reg_read_data = {6'b0, O_vddr_enable, O_xo_en};
-            `REG_XO_FREQ:               reg_read_data = I_sysclk_freq[reg_bytecnt*8 +: 8];
             `REG_LEDS:                  reg_read_data = O_leds;
             `REG_HEARTBEATS:            reg_read_data = O_heartbeats;
             `REG_SRAM_MEM_BYTES:        reg_read_data = O_sram_top_address;
@@ -200,6 +213,7 @@ module cw310_reg_aes #(
          O_heartbeats <= 0;
          O_sram_top_address <= 0;
          reg_crypt_go_pulse <= 1'b0;
+         O_ddr3_clear_fail <= 1'b0;
       end
 
       else begin
@@ -216,6 +230,7 @@ module cw310_reg_aes #(
                `REG_LEDS:               O_leds <= write_data;
                `REG_HEARTBEATS:         O_heartbeats <= write_data[0];
                `REG_SRAM_MEM_BYTES:     O_sram_top_address <= write_data;
+               `REG_DDR3_CLEAR_FAIL:    O_ddr3_clear_fail <= write_data[0];
             endcase
          end
 

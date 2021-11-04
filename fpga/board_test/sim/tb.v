@@ -245,8 +245,12 @@ module tb();
       .SRAM_CE2                 (SRAM_CE2),
       .SRAM_CEn                 (SRAM_CEn),
       .SRAM_OEn                 (SRAM_OEn),
-      .SRAM_WEn                 (SRAM_WEn)
+      .SRAM_WEn                 (SRAM_WEn),
 
+      .SYSCLK_P                 (1'b0),
+      .SYSCLK_N                 (1'b0),
+
+      .vddr_pgood               (1'b0)
    );
 
 

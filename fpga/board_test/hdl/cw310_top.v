@@ -141,6 +141,10 @@ module cw310_top #(
     wire resetn = USRSW2;
     wire reset = !resetn;
 
+    wire         ddr3_clear_fail;
+    wire [15:0]  ddr3_iteration;
+    wire [7:0]   ddr3_errors;
+    wire [29:0]  ddr3_error_addr;
 
     // USB CLK Heartbeat
     reg [24:0] usb_timer_heartbeat;
@@ -150,17 +154,38 @@ module cw310_top #(
     reg [22:0] crypt_clk_heartbeat;
     always @(posedge crypt_clk) crypt_clk_heartbeat <= crypt_clk_heartbeat +  23'd1;
 
+    wire  dbg_pi_phaselock_err;
+    wire  dbg_pi_dqsfound_err;
+    wire  dbg_wrlvl_err;
+    wire [1:0] dbg_rdlvl_err;
+    wire  dbg_wrcal_err;
+    wire [6:0] ddr3_stat;
+
     //assign USRLED = heartbeats? {6'b0, crypt_clk_heartbeat[22], usb_timer_heartbeat[24]} : reg_leds;
     //TODO: temporary, for easier DDR debug
     assign USRLED[0] = init_calib_complete;
     assign USRLED[1] = ddr3_fail;
     assign USRLED[2] = ddr3_pass;
-    assign USRLED[3] = ~ddr3_ila_basic_w[6];  //dbg_pi_phaselock_err;
-    assign USRLED[4] = ~ddr3_ila_basic_w[9];  //dbg_pi_dqsfound_err;
-    assign USRLED[5] = ~ddr3_ila_basic_w[3];  //dbg_wrlvl_err;
-    assign USRLED[6] = ~ddr3_ila_basic_w[15]; //dbg_rdlvl_err[1];
-    assign USRLED[7] = ~ddr3_ila_basic_w[21]; //dbg_wrcal_err;
-    //assign USRLED[7] = ~ddr3_ila_basic_w[14]; //dbg_rdlvl_err[0];
+    assign USRLED[3] = ~dbg_pi_phaselock_err;
+    assign USRLED[4] = ~dbg_pi_dqsfound_err;
+    assign USRLED[5] = ~dbg_wrlvl_err;
+    assign USRLED[6] = ~dbg_rdlvl_err[1];
+    assign USRLED[7] = ~dbg_wrcal_err;
+    //assign USRLED[7] = ~dbg_rdlvl_err[0];
+
+    assign dbg_pi_phaselock_err = ddr3_ila_basic_w[6];
+    assign dbg_pi_dqsfound_err  = ddr3_ila_basic_w[9];
+    assign dbg_wrlvl_err        = ddr3_ila_basic_w[3];
+    assign dbg_rdlvl_err        = ddr3_ila_basic_w[15:14];
+    assign dbg_wrcal_err        = ddr3_ila_basic_w[21];
+
+    assign ddr3_stat = {dbg_pi_phaselock_err,
+                        dbg_pi_dqsfound_err,
+                        dbg_wrlvl_err,
+                        dbg_rdlvl_err,
+                        dbg_wrcal_err,
+                        init_calib_complete
+                       };
 
     assign read_data = read_data_aes | read_data_xadc;
 
@@ -214,11 +239,11 @@ module cw310_top #(
        .I_ready                 (crypt_ready),
        .I_done                  (crypt_done),
        .I_busy                  (crypt_busy),
-       .I_ddr3_pass             (ddr3_pass & ~ddr3_fail),
+       .I_ddr3_pass             (ddr3_pass),
+       .I_ddr3_fail             (ddr3_fail),
        .I_sram_pass             (sram_pass & ~sram_fail),
-       .I_ddr3_calib_complete   (init_calib_complete),
+       .I_ddr3_stat             (ddr3_stat),
        .I_dip                   (USRDIP),
-       .I_sysclk_freq           (), // TODO- cleanup
 
        .O_user_led              (),
        .O_key                   (crypt_key),
@@ -231,6 +256,12 @@ module cw310_top #(
        .O_xo_en                 (LVDS_XO_200M_ENA),
        .O_vddr_enable           (vddr_enable),
        .I_vddr_pgood            (vddr_pgood),
+
+       .O_ddr3_clear_fail       (ddr3_clear_fail ),
+       .I_ddr3_iteration        (ddr3_iteration  ),
+       .I_ddr3_errors           (ddr3_errors     ),
+       .I_ddr3_error_addr       (ddr3_error_addr ),
+
        .O_leds                  (reg_leds),
        .O_heartbeats            (heartbeats),
        .O_sram_top_address      (sram_top_address)
@@ -372,6 +403,7 @@ module cw310_top #(
 
    wire [255:0] ddr3_ila_basic_w;
 
+
    simple_ddr3_rwtest #(
       .pDATA_WIDTH                         (32),
       .pADDR_WIDTH                         (30),
@@ -379,10 +411,17 @@ module cw310_top #(
    ) U_simple_ddr3_rwtest (
       .clk                                 (ui_clk              ),
       .reset                               (reset               ),
-      .active                              (ddr3_en             ),
+      .active_usb                          (ddr3_en             ),
       .init_calib_complete                 (init_calib_complete ),
       .pass                                (ddr3_pass           ),
       .fail                                (ddr3_fail           ),
+      .clear_fail                          (ddr3_clear_fail     ),
+
+      .iteration                           (ddr3_iteration      ),
+      .errors                              (ddr3_errors         ),
+      .error_addr                          (ddr3_error_addr     ),
+      .ddrtest_incr                        (8'd8                ),
+      .ddrtest_stop                        (32'h1FFF_FFF8       ),
 
       .app_addr                            (app_addr            ),
       .app_cmd                             (app_cmd             ),

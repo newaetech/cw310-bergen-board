@@ -52,7 +52,6 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_SRAM_PASS                   'h0f
 `define REG_DIP                         'h10
 `define REG_XO_EN                       'h11
-`define REG_XO_FREQ                     'h12
 `define REG_LEDS                        'h13
 `define REG_HEARTBEATS                  'h14
 `define REG_SRAM_MEM_BYTES              'h15
@@ -60,3 +59,11 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_XADC_DRP_ADDR               'h17
 `define REG_XADC_DRP_DATA               'h18
 `define REG_XADC_STAT                   'h19
+
+`define REG_DDR3_CLEAR_FAIL             'h20
+`define REG_DDR3_ITERATIONS             'h21
+`define REG_DDR3_ERRORS                 'h22
+`define REG_DDR3_ERROR_ADDR             'h23
+`define REG_DDR3_STAT                   'h24
+
+
