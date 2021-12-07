@@ -10,8 +10,6 @@ src\ASF\common\services\sleepmgr\sam\sleepmgr.c
 
 src\ASF\common\services\usb\class\cdc\device\udi_cdc.c
 
-src\ASF\common\services\usb\class\composite\device\udi_composite_desc.c
-
 src\ASF\common\services\usb\class\vendor\device\udi_vendor.c
 
 src\ASF\sam\drivers\chipid\chipid.c
@@ -36,7 +34,11 @@ src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\sam\services\flash_efc\flash_efc.c
 
+src\naeusb\naeusb_mpsse.c
+
 src\naeusb\udc.c
+
+src\naeusb\udi_composite_desc.c
 
 src\naeusb_bergen.c
 
