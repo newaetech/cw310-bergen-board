@@ -52,7 +52,7 @@
 //! Device definition (mandatory)
 #define  USB_DEVICE_VENDOR_ID             0x2B3E
 #define  USB_DEVICE_PRODUCT_ID            0xC310
-#define  USB_DEVICE_MAJOR_VERSION         1
+#define  USB_DEVICE_MAJOR_VERSION         9
 #define  USB_DEVICE_MINOR_VERSION         0
 #define  USB_DEVICE_POWER                 500 // Consumption on Vbus line (mA)
 #define  USB_DEVICE_ATTR                \
@@ -438,7 +438,7 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_HS_SUPPORT
 
 #define FW_VER_MAJOR 1
-#define FW_VER_MINOR 0
+#define FW_VER_MINOR 2
 #define FW_VER_DEBUG 0
 //@}
 /**
