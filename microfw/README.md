@@ -89,3 +89,17 @@ For remote sensor (not needed):
 #### Pins
 
 `TEMP_ALERT_N` on `PA23`: Interrupt on thermal overload.
+
+## Building the Firmware
+
+To build the firmware, use the `Makefile` in `CW310\Debug`. The default `Makefile` is built for Windows,
+you can use the `update_linux_makefile.sh` script to build a compatible Linux makefile (one is committed
+in the repo as well).
+
+To use the Linux makefile, just run:
+
+```
+make -f Makefile.linux CW310.elf
+```
+
+This will build the `CW310.bin` output.
