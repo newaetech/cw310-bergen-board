@@ -1,0 +1,3 @@
+[submodule "microfw/CW310/src/naeusb"]
+	path = microfw/CW310/src/naeusb
+	url = https://github.com/newaetech/naeusb

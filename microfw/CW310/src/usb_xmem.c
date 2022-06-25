@@ -16,16 +16,17 @@
  */
 
 #include <asf.h>
-#include "fpga_xmem.h"
+#include "usb_xmem.h"
 
 /* Access pointer for FPGA Interface */
 uint8_t volatile *xram = (uint8_t *) PSRAM_BASE_ADDRESS;
 
 static volatile fpga_lockstatus_t _fpga_locked = fpga_unlocked;
 
-void FPGA_setlock(fpga_lockstatus_t lockstatus)
+int FPGA_setlock(fpga_lockstatus_t lockstatus)
 {
 	_fpga_locked = lockstatus;
+	return 0;
 }
 
 fpga_lockstatus_t FPGA_lockstatus(void)

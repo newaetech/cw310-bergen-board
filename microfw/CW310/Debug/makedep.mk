@@ -10,11 +10,7 @@ src\ASF\common\services\sleepmgr\sam\sleepmgr.c
 
 src\ASF\common\services\usb\class\cdc\device\udi_cdc.c
 
-src\ASF\common\services\usb\class\composite\device\udi_composite_desc.c
-
 src\ASF\common\services\usb\class\vendor\device\udi_vendor.c
-
-src\ASF\common\services\usb\udc\udc.c
 
 src\ASF\sam\drivers\chipid\chipid.c
 
@@ -38,17 +34,35 @@ src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\sam\services\flash_efc\flash_efc.c
 
-src\cdce906.c
+src\naeusb\naeusb_mpsse.c
 
-src\circbuffer.c
+src\naeusb\udc.c
+
+src\naeusb\udi_composite_desc.c
+
+src\naeusb_bergen.c
+
+src\cdce906.c
 
 src\fpgaspi_program.c
 
 src\fpgautil_io.c
 
-src\fpga_program.c
-
 src\main_cw310.c
+
+src\naeusb\circbuffer.c
+
+src\naeusb\fpga_program.c
+
+src\naeusb\naeusb.c
+
+src\naeusb\naeusb_default.c
+
+src\naeusb\naeusb_fpga_target.c
+
+src\naeusb\naeusb_usart.c
+
+src\naeusb\usb_xmem.c
 
 src\thermal_power.c
 
@@ -57,12 +71,6 @@ src\tasks.c
 src\timers.c
 
 src\tps56520.c
-
-src\usart_driver.c
-
-src\usb.c
-
-src\usb_xmem.c
 
 src\ASF\common\services\clock\sam3x\sysclk.c
 
