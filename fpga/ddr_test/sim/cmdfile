@@ -1,0 +1,10 @@
+../hdl/cw310_top.v
+../hdl/clocks.v
+../hdl/cw310_defines.v
+../hdl/cw310_usb_reg_fe.v
+../hdl/cw310_reg_ddr.v
+../hdl/simple_ddr3_rwtest.v
+../hdl/lfsr.v
+../hdl/xadc.v
+../hdl/cdc_pulse.v
+
