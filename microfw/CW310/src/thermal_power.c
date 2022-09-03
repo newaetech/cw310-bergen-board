@@ -7,7 +7,6 @@
  Thermal and power management
  */ 
 #include <asf.h>
-#include "CW310_platform.h"
 #include "thermal_power.h"
 
 #define MAX1617_I2C_ADDR 0x18

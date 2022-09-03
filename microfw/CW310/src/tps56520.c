@@ -17,7 +17,6 @@
 
 #include <asf.h>
 #include "tps56520.h"
-#include "CW310_platform.h"
 
 #define TPS56520_ADDR 0x34
 

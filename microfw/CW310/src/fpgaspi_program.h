@@ -33,7 +33,7 @@
 
 #ifndef _FPGASPI_PROGRAM_H_
 #define _FPGASPI_PROGRAM_H_
-#include "CW310_platform.h"
+#include <asf.h>
 
 #define PIN_FPGASPI_CCLK_FLAGS	(PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
 #define FPGASPI_CCLK_LOW()		gpio_set_pin_low(PIN_FPGA_CCLK_GPIO)

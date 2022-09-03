@@ -23,7 +23,6 @@
 #include "usart_driver.h"
 #include "tasks.h"
 #include "usb_xmem.h"
-#include "usb.h"
 #include "tps56520.h"
 #include "cdce906.h"
 #include "timers.h"

@@ -17,6 +17,8 @@ extern volatile uint8_t I2C_LOCK;
 #define BOARD_FREQ_MAINCK_XTAL      (12000000U)
 #define BOARD_FREQ_MAINCK_BYPASS    (12000000U)
 
+
+
 #define SPI SPI0
 
 /** Master clock frequency */
@@ -26,6 +28,7 @@ extern volatile uint8_t I2C_LOCK;
 #define BOARD_OSC_STARTUP_US   15625
 //#define CONFIG_USBCLK_SOURCE CONFIG_PLL1_SOURCE
 
+#define board_power(a)	 if (a){enable_fpga_power();} else {kill_fpga_power();}
 
 #define PIN_FPGA_INITB_GPIO		PIO_PB18_IDX
 #define PIN_FPGA_DONE_GPIO		PIO_PB17_IDX

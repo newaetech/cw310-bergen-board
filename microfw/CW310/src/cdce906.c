@@ -17,7 +17,6 @@
 
 #include <asf.h>
 #include "cdce906.h"
-#include "CW310_platform.h"
 
 #define CDCE906_ADDR 0x69
 

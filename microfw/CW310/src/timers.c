@@ -6,7 +6,6 @@
  */ 
 #include <asf.h>
 #include "thermal_power.h"
-#include "CW310_platform.h"
 #include "timers.h"
 
 #define PERIODIC_TIMER_CHANNEL 1
