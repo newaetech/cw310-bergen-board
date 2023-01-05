@@ -34,7 +34,7 @@ src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\sam\services\flash_efc\flash_efc.c
 
-src\naeusb\naeusb_mpsse.c
+src\main_cw340.c
 
 src\naeusb\udc.c
 
@@ -47,8 +47,6 @@ src\cdce906.c
 src\fpgaspi_program.c
 
 src\fpgautil_io.c
-
-src\main_cw310.c
 
 src\naeusb\circbuffer.c
 

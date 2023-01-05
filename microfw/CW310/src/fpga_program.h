@@ -37,10 +37,11 @@
 
 #include "CW310_platform.h"
 
+#ifndef FPGA_USE_BITBANG
 #define FPGA_USE_BITBANG 0
-
 #define FPGA_PROG_USART			USART2
 #define FPGA_PROG_USART_ID		ID_USART2
+#endif
 
 #if FPGA_USE_BITBANG
   #define PIN_FPGA_DO_FLAGS			(PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)

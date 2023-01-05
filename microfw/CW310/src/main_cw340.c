@@ -232,9 +232,9 @@ int main(void)
 #else
 	system_init();
 #endif
-
+	gpio_configure_pin(PIN_PWD_SDA, PIN_PWD_SDA_FLAGS);
+	gpio_configure_pin(PIN_PWD_SCL, PIN_PWD_SCL_FLAGS);
 	//tps56520_init();
-
 	//Init CDCE906 Chip
 	cdce906_init();
 
