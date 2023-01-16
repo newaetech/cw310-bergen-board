@@ -34,15 +34,15 @@ unsigned char checkoddparity(unsigned char p)
 /* Init the TPS56520 chip, set to 1.00V output */
 bool tps56520_init(void)
 {
-	gpio_configure_pin(PIN_PWD_SDA, PIN_PWD_SDA_FLAGS);
-	gpio_configure_pin(PIN_PWD_SCL, PIN_PWD_SCL_FLAGS);
+	// gpio_configure_pin(PIN_PWD_SDA, PIN_PWD_SDA_FLAGS);
+	// gpio_configure_pin(PIN_PWD_SCL, PIN_PWD_SCL_FLAGS);
 	
-	twi_master_options_t opt = {
-		.speed = 50000,
-		.chip  = TPS56520_ADDR
-	};
+	// twi_master_options_t opt = {
+	// 	.speed = 50000,
+	// 	.chip  = TPS56520_ADDR
+	// };
 	
-	twi_master_setup(TWI0, &opt);	
+	// twi_master_setup(TWI0, &opt);	
 	for(int retry = 3; retry > 0; retry--){
 		if(tps56520_set(1100)){
 			return true;

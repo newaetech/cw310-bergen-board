@@ -298,6 +298,21 @@ int usb_pd_soft_reset()
 }
 
 
+#define TPS56520_ADDR 0x34
+void i2c_setup(void)
+{
+	gpio_configure_pin(PIN_PWD_SDA, PIN_PWD_SDA_FLAGS);
+	gpio_configure_pin(PIN_PWD_SCL, PIN_PWD_SCL_FLAGS);
+	
+	twi_master_options_t opt = {
+		.speed = 50000,
+		.chip  = TPS56520_ADDR
+	};
+	
+	twi_master_setup(TWI0, &opt);	
+}
+
+
 /*! \brief Main function. Execution starts here.
  */
 int main(void)
@@ -344,6 +359,7 @@ int main(void)
 #else
 	system_init();
 #endif
+	i2c_setup();
 
 	tps56520_init();
 	gpio_set_pin_low(PIN_USB_RESET);
