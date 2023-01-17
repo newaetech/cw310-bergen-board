@@ -51,7 +51,7 @@
 
 //! Device definition (mandatory)
 #define  USB_DEVICE_VENDOR_ID             0x2B3E
-#define  USB_DEVICE_PRODUCT_ID            0xC310
+#define  USB_DEVICE_PRODUCT_ID            0xC340
 #define  USB_DEVICE_MAJOR_VERSION         9
 #define  USB_DEVICE_MINOR_VERSION         0
 #define  USB_DEVICE_POWER                 500 // Consumption on Vbus line (mA)
@@ -66,7 +66,7 @@
 extern char usb_serial_number[33];
 
 #define  USB_DEVICE_MANUFACTURE_NAME      "NewAE Technology Inc."
-#define  USB_DEVICE_PRODUCT_NAME          "CW310 Bergen Board"
+#define  USB_DEVICE_PRODUCT_NAME          "CW340 Luna Board"
 #define  USB_DEVICE_GET_SERIAL_NAME_POINTER usb_serial_number
 #define  USB_DEVICE_GET_SERIAL_NAME_LENGTH 32
 #define  USB_DEVICE_HS_SUPPORT
@@ -395,7 +395,7 @@ udi_cdc_data_desc_t udi_cdc_data;
 
 #include "compiler.h"
 
-#define NAEUSB_MPSSE_SUPPORT 1
+#define NAEUSB_MPSSE_SUPPORT 0
 
 #if NAEUSB_MPSSE_SUPPORT == 1
 #define  UDI_MPSSE_EP_BULK_IN		 (0x05 | USB_EP_DIR_IN)
@@ -419,7 +419,7 @@ struct {\
 #endif
 
 #define  USB_DEVICE_VENDOR_ID             0x2B3E
-#define  USB_DEVICE_PRODUCT_ID            0xC310
+#define  USB_DEVICE_PRODUCT_ID            0xC340
 
 #define  USB_DEVICE_MAJOR_VERSION         9
 #define  USB_DEVICE_MINOR_VERSION         0
@@ -431,7 +431,7 @@ struct {\
 extern char usb_serial_number[33];
 
 #define  USB_DEVICE_MANUFACTURE_NAME      "NewAE Technology Inc."
-#define  USB_DEVICE_PRODUCT_NAME          "ChipWhisperer CW310 - Bergen Board"
+#define  USB_DEVICE_PRODUCT_NAME          "ChipWhisperer CW340 - Luna Board"
 #define  USB_DEVICE_GET_SERIAL_NAME_POINTER usb_serial_number
 #define  USB_DEVICE_GET_SERIAL_NAME_LENGTH 32
 

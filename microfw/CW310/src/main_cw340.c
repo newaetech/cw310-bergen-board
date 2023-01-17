@@ -33,7 +33,6 @@
 #include "naeusb/naeusb_default.h"
 #include "naeusb/naeusb_usart.h"
 #include "naeusb/naeusb_fpga_target.h"
-#include "naeusb/naeusb_mpsse.h"
 #include <string.h>
 
 
@@ -41,7 +40,6 @@
 char usb_serial_number[33] = "000000000000DEADBEEF";
 
 void fpga_pins(bool enabled);
-int usb_pd_soft_reset(void);
 void usb_pwr_setup(void);
 void check_power_state(void);
 
@@ -79,26 +77,26 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
 		gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
 			
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A3, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A4, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A5, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A6, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A7, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A8, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A9, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A10, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A11, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A12, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A13, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A14, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A15, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A16, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A3, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A4, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A5, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A6, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A7, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A8, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A9, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A10, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A11, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A12, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A13, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A14, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A15, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A16, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIN_EBI_DATA_BUS_FLAG1);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIN_EBI_DATA_BUS_FLAG1);
 		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIN_EBI_DATA_BUS_FLAG1); /* TODO: Add ADDR20 back */
 		
 		
@@ -151,26 +149,26 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NWE, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NCS0, PIO_INPUT);
 		
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A3, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A4, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A5, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A6, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A7, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A8, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A9, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A10, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A11, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A12, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A13, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A14, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A15, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A16, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A3, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A4, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A5, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A6, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A7, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A8, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A9, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A10, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A11, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A12, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A13, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A14, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A15, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A16, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIO_INPUT);
+		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIO_INPUT);
 		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIO_INPUT);	
 			
 		/* FPGA External memory interface */
@@ -220,7 +218,7 @@ void peripheral_setup(void)
 	enable_switched_power();
 
 	// Let power come up
-	delay_ms(25);
+	// delay_ms(25);
 
 	// Set enabled detection pin for switching regulator to input
 	gpio_configure_pin(PIN_SWSTATE_GPIO, PIN_SWSTATE_FLAGS);
@@ -230,8 +228,8 @@ void peripheral_setup(void)
 
 	// USB-PD Chip reset - must be done before configuring 
 	// gpio_set_pin_low(PIN_USB_RESET); // out of reset?
-	delay_ms(1);
-	gpio_configure_pin(PIN_USB_RESET, PIO_TYPE_PIO_OUTPUT_1);
+	// delay_ms(1);
+	// gpio_configure_pin(PIN_USB_RESET, PIO_TYPE_PIO_OUTPUT_1);
 	// gpio_set_pin_high(PIN_USB_RESET); //reset enable
 	// setup interrupts
 	irq_initialize_vectors();
@@ -281,15 +279,11 @@ void peripheral_setup(void)
 	fan_pwm_init();
 	fan_pwm_set_duty_cycle(75); //Set at 50% in case we crash - will be tuned later
 
-	tps56520_init(); // set FPGA voltage to default (1V)
+	// tps56520_init(); // set FPGA voltage to default (1V) //do later, after daughter board connected
 	cdce906_init();  //Init CDCE906 PLL Chip
 
-	gpio_set_pin_low(PIN_USB_RESET); // bring USB-PD chip out of reset
-	delay_ms(100); //TODO - these delays are way off??
-
-	// setup usbc power
-	usb_pwr_setup(); // tell USB-PD to request 20V 5A when renegotiating
-	usb_pd_soft_reset(); // renegotiate power
+	// gpio_set_pin_low(PIN_USB_RESET); // bring USB-PD chip out of reset
+	// delay_ms(100); //TODO - these delays are way off??
 
 	// turn on power pins for various on board regulators
 	power_init();
@@ -344,13 +338,11 @@ int main(void)
 	naeusart_register_handlers();
 	fpga_target_register_handlers();
 	bergen_register_handlers();
-	mpsse_register_handlers();
 	
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
 		cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed		
-		MPSSE_main_sendrecv_byte();
 	}
 }
 
