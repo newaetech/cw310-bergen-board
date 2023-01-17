@@ -23,15 +23,17 @@
 #include "usart_driver.h"
 #include "tasks.h"
 #include "usb_xmem.h"
-#include "tps56520.h"
-#include "cdce906.h"
+#include "naeusb/tps56520.h"
+#include "naeusb/cdce906.h"
 #include "timers.h"
 #include "thermal_power.h"
 #include "naeusb_bergen.h"
+#include "usbc_pd.h"
 
 #include "naeusb/naeusb_default.h"
 #include "naeusb/naeusb_usart.h"
 #include "naeusb/naeusb_fpga_target.h"
+#include "naeusb/naeusb_mpsse.h"
 #include <string.h>
 
 
@@ -45,7 +47,6 @@ void check_power_state(void);
 
 void fpga_pins(bool enabled)
 {
-
 	gpio_configure_pin(PIN_FPGA_DONE_GPIO, PIN_FPGA_DONE_FLAGS);
 	
 	//gpio_configure_pin(PIO_PB22_IDX, PIO_OUTPUT_0);
@@ -193,111 +194,6 @@ void fpga_pins(bool enabled)
 	
 }
 
-/*
-Setup st USBC power chip to accept 20V 5A, 
-*/
-void usb_pwr_setup()
-{// set pdo2 to 20V
-	//starts from 0 address?
-	uint32_t req_voltage = 1; //(12/0.05);
-	uint8_t status[10] = {0};
-	twi_package_t packet_begin = {
-			.addr = {0x0D, 0, 0},
-			.addr_length = 1,
-			.chip = 0x28,
-			.buffer = status,
-			.length = 10
-	};
-	if (I2C_LOCK)
-		return;
-	I2C_LOCK = 1;
-	
-	if (twi_master_read(TWI0, &packet_begin) != TWI_SUCCESS) {
-		req_voltage = 0;
-	}
-	twi_package_t packet_read_voltage = {
-		.addr = {0x89, 0, 0},
-		.addr_length = 1,
-		.chip = 0x28,
-		.buffer = &req_voltage,
-		.length = 4
-	};
-	
-	if (twi_master_read(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
-		req_voltage = 0;
-	}
-	
-	req_voltage &= ~(0x3FF);
-	req_voltage |= (100);
-	
-	if (twi_master_write(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
-		req_voltage = 0;
-	}
-		
-	if (twi_master_read(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
-		req_voltage = 0;
-	}
-	I2C_LOCK = 0;
-}
-
-/*
-Get USBC Power Chip to renegotiate power with power brick
-
-Must be done after setting new power settings
-*/
-int usb_pd_soft_reset()
-{
-	if (I2C_LOCK)
-		return;
-	I2C_LOCK = 1;
-	uint8_t cmd = 0x0D;
-	twi_package_t packet_soft_reset = {
-		.addr = {0x51, 0, 0},
-		.addr_length = 1,
-		.chip = 0x28,
-		.buffer = &cmd,
-		.length = 1
-	};
-	
-	
-	if (twi_master_write(TWI0, &packet_soft_reset) != TWI_SUCCESS) {
-		I2C_LOCK = 0;
-		return -1;
-	}
-	
-	uint8_t send_cmd = 0x26;
-	twi_package_t packet_send_cmd = {
-		.addr = {0x1A, 0, 0},
-		.addr_length = 1,
-		.chip = 0x28,
-		.buffer = &send_cmd,
-		.length = 1
-	};
-	
-	uint32_t req_voltage = 1; //(12/0.05);
-	
-	if (twi_master_write(TWI0, &packet_send_cmd) != TWI_SUCCESS) {
-		I2C_LOCK = 0;
-		return -1;
-	}
-	
-	twi_package_t packet_read_voltage = {
-		.addr = {0x89, 0, 0},
-		.addr_length = 1,
-		.chip = 0x28,
-		.buffer = &req_voltage,
-		.length = 4
-	};
-	
-	if (twi_master_read(TWI0, &packet_read_voltage) != TWI_SUCCESS) {
-		req_voltage = 0;
-	}
-	I2C_LOCK = 0;
-	
-	return 5;
-}
-
-
 #define TPS56520_ADDR 0x34
 void i2c_setup(void)
 {
@@ -306,94 +202,60 @@ void i2c_setup(void)
 	
 	twi_master_options_t opt = {
 		.speed = 50000,
-		.chip  = TPS56520_ADDR
+		.chip  = 0x00
 	};
 	
 	twi_master_setup(TWI0, &opt);	
 }
 
-
-/*! \brief Main function. Execution starts here.
- */
-int main(void)
+void peripheral_setup(void)
 {
-	volatile uint32_t reset_reason = 0;
-	I2C_LOCK = 0;
-	
-	// capture reset reason as watchdog on by default...
-	reset_reason = RSTC->RSTC_SR;
-	reset_reason = reset_reason; //Still a thing in 2021??
-	uint32_t serial_number[4];
-	
-	//disable watchdog
-	WDT->WDT_MR = (1 << 25);
-	
+	ioport_init(); //enable IO clocks
+
 	//Fan on for now - will switch to PWM later.
-	gpio_configure_pin(PIO_PB25_IDX, PIO_TYPE_PIO_OUTPUT_1);
-	
-	flash_read_unique_id(serial_number, sizeof(serial_number));
-	
-	ioport_init();
+	// gpio_configure_pin(PIO_PB25_IDX, PIO_TYPE_PIO_OUTPUT_1);
+
+	fpga_pins(0); // set FPGA pins as inputs
+
 	enable_switched_power();
-		
-	irq_initialize_vectors();
-	cpu_irq_enable();
-		
+
 	// Let power come up
 	delay_ms(25);
-	
-	//Detect state of switch
+
+	// Set enabled detection pin for switching regulator to input
 	gpio_configure_pin(PIN_SWSTATE_GPIO, PIN_SWSTATE_FLAGS);
+
+	// Turn on USB heartbeat pin
 	gpio_configure_pin(PIN_USB_HBEAT, PIN_USB_HBEAT_FLAGS);
-	
+
 	// USB-PD Chip reset - must be done before configuring 
-	gpio_configure_pin(PIN_USB_RESET, PIO_TYPE_PIO_OUTPUT_0);
-	gpio_set_pin_high(PIN_USB_RESET);
-	
+	// gpio_set_pin_low(PIN_USB_RESET); // out of reset?
+	delay_ms(1);
+	gpio_configure_pin(PIN_USB_RESET, PIO_TYPE_PIO_OUTPUT_1);
+	// gpio_set_pin_high(PIN_USB_RESET); //reset enable
+	// setup interrupts
+	irq_initialize_vectors();
+	cpu_irq_enable();
+
 	// Initialize the sleep manager
 	sleepmgr_init();
-	irq_initialize_vectors();
+
 #if !SAMD21 && !SAMR21
 	sysclk_init();
 	board_init();
 #else
 	system_init();
 #endif
-	i2c_setup();
+	i2c_setup(); // setup I2C comms
 
-	tps56520_init();
-	gpio_set_pin_low(PIN_USB_RESET);
-	
-	//Init CDCE906 Chip
-	cdce906_init();
-	
-	// usbc PD chip needs more time?
-	delay_ms(25); //TODO - these delays are way off??
-	
-	// setup usbc power
-	usb_pwr_setup();
-	usb_pd_soft_reset();
 
-	//Convert serial number to ASCII for USB Serial number
-		//Convert serial number to ASCII for USB Serial number
-	for(unsigned int i = 0; i < 4; i++){
-		sprintf(usb_serial_number+(i*8), "%08x", (unsigned int)serial_number[i]);
-	}
-	usb_serial_number[32] = 0;
-
-	/* Enable SMC */
-	pmc_enable_periph_clk(ID_SMC);	
-	fpga_pins(true);
-	
-	/* Configure EBI I/O for PSRAM connection */
-	printf("Setting up FPGA Communication\n");
-	
+	/* complete SMC configuration between PSRAM and SMC waveforms. */
 	//The Read Cycle = NCS_RD_SETUP + NCS_RD_PULSE + NCS_RD_HOLD
 	//But you can't define things invalid, so hold is auto-calculated:	
 	//NRD_HOLD = NRD_CYCLE - NRD SETUP - NRD PULSE
 	//NCS_RD_HOLD = NRD_CYCLE - NCS_RD_SETUP - NCS_RD_PULSE
-	
-	/* complete SMC configuration between PSRAM and SMC waveforms. */
+
+	pmc_enable_periph_clk(ID_SMC);	
 	smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(2)
 	| SMC_SETUP_NCS_WR_SETUP(3)
 	| SMC_SETUP_NRD_SETUP(2)
@@ -407,28 +269,77 @@ int main(void)
 	smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
         | SMC_MODE_DBW_BIT_8);
 
+
 	/* Enable PCLK0 at 84 MHz */	
 	genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
 	pmc_enable_upll_clock();
 	pmc_enable_periph_clk(ID_UOTGHS);
-	
-	
-	//Fan output pin
+
+	// Setup fan PWM
 	gpio_configure_pin(PIO_PB25_IDX, PIO_PERIPH_B);	
-	
+
 	fan_pwm_init();
 	fan_pwm_set_duty_cycle(75); //Set at 50% in case we crash - will be tuned later
+
+	tps56520_init(); // set FPGA voltage to default (1V)
+	cdce906_init();  //Init CDCE906 PLL Chip
+
+	gpio_set_pin_low(PIN_USB_RESET); // bring USB-PD chip out of reset
+	delay_ms(100); //TODO - these delays are way off??
+
+	// setup usbc power
+	usb_pwr_setup(); // tell USB-PD to request 20V 5A when renegotiating
+	usb_pd_soft_reset(); // renegotiate power
+
+	// turn on power pins for various on board regulators
 	power_init();
+
+	// enable on board thermometers for monitoring board temps
+	thermals_init(); 
+
+	/* Enable SMC */
+	fpga_pins(true);
+
+	udc_start();
+
+	// enable periodic interrupt to check thermals
+	periodic_timer_init();
+
+	// enable power delivery to FPGA (Tgt Power switch)
+	gpio_configure_pin(PIO_PB27_IDX, PIO_OUTPUT_1 | PIO_DEFAULT);
+
+	enable_fpga_power();
+
+	gpio_configure_pin(PIN_VBUS_DETECT, PIN_VBUS_DETECT_FLAGS);
+}
+
+/*! \brief Main function. Execution starts here.
+ */
+int main(void)
+{
+	volatile uint32_t reset_reason = 0;
+	
+	// capture reset reason as watchdog on by default...
+	reset_reason = RSTC->RSTC_SR;
+	reset_reason = reset_reason; //Still a thing in 2021??
+	WDT->WDT_MR = (1 << 25); //disable watchdog
+	
+	// unlock I2C
+	I2C_LOCK = 0;
+	
+	//Convert serial number to ASCII for USB Serial number
+	uint32_t serial_number[4];
+	flash_read_unique_id(serial_number, sizeof(serial_number));
+	for(unsigned int i = 0; i < 4; i++){
+		sprintf(usb_serial_number+(i*8), "%08x", (unsigned int)serial_number[i]);
+	}
+	usb_serial_number[32] = 0;
+
+	peripheral_setup(); // turn on required peripherals
 	
 	//Following is 60MHz version
 	//genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_PLLBCK, GENCLK_PCK_PRES_4);
-	thermals_init();
-	periodic_timer_init();
-	udc_start();
 	
-	
-	gpio_configure_pin(PIO_PB27_IDX, PIO_OUTPUT_1 | PIO_DEFAULT);
-	enable_fpga_power();
 	naeusb_register_handlers();
 	naeusart_register_handlers();
 	fpga_target_register_handlers();

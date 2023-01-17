@@ -276,11 +276,18 @@ void fpga_power_reset_handler(const uint32_t id, const uint32_t index)
 	}
 }
 
+
+int usb_pd_soft_reset(void);
+int usb_pd_attached(void);
+int usb_pd_update_status(void);
+int usb_pd_ov(void);
+
 /*
 Can insert regular tasks here if needed
 */
 void check_power_state(void)
 {
+	// TODO: if power killed, maybe ask USB-PD chip if it's getting power
 	//Force check on start-up
 	static bool last_power_state = true;
 	
@@ -289,7 +296,7 @@ void check_power_state(void)
 		if (board_get_powerstate()){
 			//If power turned on, enable all IO to FPGA
 			fpga_pins(true);
-			} else {
+		} else {
 			//If power turned off, disable all IO to FPGA
 			fpga_pins(false);
 		}
@@ -297,6 +304,23 @@ void check_power_state(void)
 		//Record new state
 		last_power_state = board_get_powerstate();
 	}
+
+	// if (gpio_pin_is_low(PIN_PGOOD_VCCINT)) {
+	// 	usb_pd_update_status();
+	// 	// if (usb_pd_ov()) {
+
+	// 	// }
+	// 	if (usb_pd_attached()) {
+	// 		gpio_set_pin_high(PIN_USB_RESET); // bring USB-PD chip out of reset
+	// 		delay_ms(100); //TODO - these delays are way off??
+	// 		gpio_set_pin_low(PIN_USB_RESET); // bring USB-PD chip out of reset
+	// 		delay_ms(100); //TODO - these delays are way off??
+
+	// 		// setup usbc power
+	// 		usb_pwr_setup(); // tell USB-PD to request 20V 5A when renegotiating
+	// 		usb_pd_soft_reset(); // renegotiate power
+	// 	}
+	// }
 }
 
 void pgood_alert_handler(const uint32_t id, const uint32_t index)

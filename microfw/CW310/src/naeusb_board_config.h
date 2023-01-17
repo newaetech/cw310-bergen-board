@@ -28,6 +28,8 @@ extern volatile uint8_t I2C_LOCK;
 #define BOARD_OSC_STARTUP_US   15625
 //#define CONFIG_USBCLK_SOURCE CONFIG_PLL1_SOURCE
 
+void enable_fpga_power(void);
+void kill_fpga_power(void);
 #define board_power(a)	 if (a){enable_fpga_power();} else {kill_fpga_power();}
 
 #define PIN_FPGA_INITB_GPIO		PIO_PB18_IDX
@@ -235,5 +237,8 @@ extern volatile uint8_t I2C_LOCK;
 #define PIN_FPGA_POWER_RESET_FLAGS PIO_TYPE_PIO_INPUT | PIO_DEGLITCH | PIO_DEBOUNCE | PIO_PULLUP
 #define PIN_FPGA_POWER_RESET_PORT PIOB
 #define PIN_FPGA_POWER_RESET_PIN PIO_PB23
+
+#define PIN_VBUS_DETECT       (PIO_PC15_IDX)
+#define PIN_VBUS_DETECT_FLAGS (PIO_TYPE_PIO_INPUT | PIO_DEFAULT)
 
 #endif /* CW305_PLUS_PINS_H_ */

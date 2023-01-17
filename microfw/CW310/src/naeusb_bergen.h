@@ -16,6 +16,7 @@
 #define REQ_I2C_DATA 0x44
 
 
+void bergen_register_handlers(void);
 
 
 #endif /* NAEUSB_BERGEN_H_ */

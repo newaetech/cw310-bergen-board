@@ -16,11 +16,12 @@
  */
 
 
-#ifndef TPS56520_H_
-#define TPS56520_H_
+#ifndef USBC_PD_H_
+#define USBC_PD_H_
 
-bool tps56520_init(void);
-bool tps56520_set(uint16_t mv_output);
+int usb_pd_update_status(void);
+int usb_pd_attached(void);
+void usb_pwr_setup(void);
+int usb_pd_soft_reset(void);
 
-
-#endif /* TPS56520_H_ */
+#endif //USBC_PD_H_

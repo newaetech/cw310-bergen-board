@@ -84,7 +84,7 @@ void ctrl_fpga_temp_cb(void)
 }
 
 bool naeusb_cdc_settings_in(void);
-bool naeusb_cdc_settings_out(void);
+void naeusb_cdc_settings_out(void);
 
 bool bergen_setup_out_received(void)
 {
