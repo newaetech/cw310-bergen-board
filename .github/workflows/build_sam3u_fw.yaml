@@ -8,12 +8,12 @@ on:
   push:
     paths:
       - 'microfw/**'
-      - '.github/workflows/build_sam3u_fw.yml'
+      - '.github/workflows/build_sam3u_fw.yaml'
 
   pull_request:
     paths:
       - 'microfw/**'
-      - '.github/workflows/build_sam3u_fw.yml'
+      - '.github/workflows/build_sam3u_fw.yaml'
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
