@@ -226,6 +226,11 @@ void peripheral_setup(void)
 	// Turn on USB heartbeat pin
 	gpio_configure_pin(PIN_USB_HBEAT, PIN_USB_HBEAT_FLAGS);
 
+	// enable temp GPIOs
+
+	gpio_configure_pin(PIN_TEMP_ERR_LED, PIN_TEMP_ERR_LED_FLAGS);
+	gpio_configure_pin(PIN_TEMP_OK_LED, PIN_TEMP_OK_LED_FLAGS);
+
 	// USB-PD Chip reset - must be done before configuring 
 	// gpio_set_pin_low(PIN_USB_RESET); // out of reset?
 	// delay_ms(1);
