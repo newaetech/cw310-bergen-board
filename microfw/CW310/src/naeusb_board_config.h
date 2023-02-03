@@ -33,6 +33,8 @@ void kill_fpga_power(void);
 #define BOARD_OSC_STARTUP_US   15625
 //#define CONFIG_USBCLK_SOURCE CONFIG_PLL1_SOURCE
 
+#define FPGA_PROG_USART			USART2
+#define FPGA_PROG_USART_ID		ID_USART2
 
 #define PIN_FPGA_INITB_GPIO		PIO_PB18_IDX
 #define PIN_FPGA_DONE_GPIO		PIO_PB17_IDX
@@ -88,7 +90,7 @@ void kill_fpga_power(void);
 
 /** EBI NWE pin */
 #define PIN_EBI_NWE                  PIO_PC18_IDX
-#define PIN_EBI_NWE_FLAGS       PIO_PERIPH_A | PIO_PULLUP
+#define PIN_EBI_NWE_FLAGS       PIO_DEFAULT//PIO_PERIPH_A | PIO_PULLUP
 #define PIN_EBI_NWE_MASK  1 << 18
 #define PIN_EBI_NWE_PIO  PIOC
 #define PIN_EBI_NWE_ID  ID_PIOC
@@ -123,7 +125,9 @@ void kill_fpga_power(void);
 #define PIN_PWD_SDA_FLAGS (PIO_PERIPH_A | PIO_PULLUP)
 #define PIN_PWD_SCL_FLAGS (PIO_PERIPH_A | PIO_PULLUP)
 
-#define PIN_FPGA_DO_GPIO PIO_PC3_IDX
+//HERE
+#define PIN_FPGA_DO_GPIO PIO_PB20_IDX
+//HERE
 
 #define PIN_SPARE1 PIO_PC21_IDX
 #define PIN_SPARE2 PIO_PC22_IDX
@@ -143,7 +147,7 @@ void kill_fpga_power(void);
 #define CW_USE_USART0 1
 #define CW_USE_USART1 1
 
-#define FPGA_USE_BITBANG 1
+#define FPGA_USE_BITBANG 0
 #define FPGA_USE_USART 0
 
 #if FPGA_USE_BITBANG
