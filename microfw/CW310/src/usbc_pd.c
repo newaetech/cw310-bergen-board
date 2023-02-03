@@ -35,32 +35,32 @@ int usb_pd_update_status(void)
 }
 
 // 0 if not attached, 1 if attached
-int usb_pd_attached(void)
-{
-	uint8_t status = 0;
-	twi_package_t packet_begin = {
-			.addr = {0x0E, 0, 0},
-			.addr_length = 1,
-			.chip = 0x28,
-			.buffer = &status,
-			.length = 1
-	};
+// int usb_pd_attached(void)
+// {
+// 	uint8_t status = 0;
+// 	twi_package_t packet_begin = {
+// 			.addr = {0x0E, 0, 0},
+// 			.addr_length = 1,
+// 			.chip = 0x28,
+// 			.buffer = &status,
+// 			.length = 1
+// 	};
 
-	if (I2C_LOCK)
-		return -1;
-	I2C_LOCK = 1;
+// 	if (I2C_LOCK)
+// 		return -1;
+// 	I2C_LOCK = 1;
 	
-	if (twi_master_read(TWI0, &packet_begin) != TWI_SUCCESS) {
-		return 0;
-	}
+// 	if (twi_master_read(TWI0, &packet_begin) != TWI_SUCCESS) {
+// 		return 0;
+// 	}
 
-	if (status & 0x01) {
-		return 1;
-	} else {
-		return 0;
-	}
+// 	if (status & 0x01) {
+// 		return 1;
+// 	} else {
+// 		return 0;
+// 	}
 
-}
+// }
 
 /*
 Setup st USBC power chip to accept 20V 5A, 
@@ -164,5 +164,5 @@ int usb_pd_soft_reset(void)
 	}
 	I2C_LOCK = 0;
 	
-	return 5;
+	return 0;
 }

@@ -309,6 +309,10 @@ void peripheral_setup(void)
 
 	enable_fpga_power();
 
+	gpio_configure_pin(PIN_FPGA_M0, PIN_FPGA_M0_FLAGS);
+	gpio_configure_pin(PIN_FPGA_M1, PIN_FPGA_M1_FLAGS);
+	gpio_configure_pin(PIN_FPGA_M2, PIN_FPGA_M2_FLAGS);
+
 	gpio_configure_pin(PIN_VBUS_DETECT, PIN_VBUS_DETECT_FLAGS);
 }
 
@@ -338,6 +342,8 @@ int main(void)
 	
 	//Following is 60MHz version
 	//genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_PLLBCK, GENCLK_PCK_PRES_4);
+
+	
 	
 	naeusb_register_handlers();
 	naeusart_register_handlers();
@@ -348,6 +354,13 @@ int main(void)
 	while (true) {
 		cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed		
+		if (!TPS_CONNECTED) {
+			if (tps56520_set(600)) {
+				if (tps56520_set(1000)) {
+					TPS_CONNECTED = true;
+				}
+			}
+		}
 	}
 }
 
