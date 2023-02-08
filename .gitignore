@@ -1,5 +1,11 @@
 *.o
 *.d
+*.elf
+*.hex
+*.lss
+*.sym
+*.map
+*.eep
 a.out
 tags
 *.jou
@@ -21,9 +27,9 @@ tags
 *.ip_user_files/
 *.runs/
 *.hw/
-/microfw/CW310/Debug/CW310.eep
-/microfw/CW310/Debug/CW310.elf
-/microfw/CW310/Debug/CW310.hex
-/microfw/CW310/Debug/CW310.lss
-/microfw/CW310/Debug/CW310.map
-/microfw/CW310/Debug/CW310.srec
+/microfw/CW310/Debug/*.eep
+/microfw/CW310/Debug/*.elf
+/microfw/CW310/Debug/*.hex
+/microfw/CW310/Debug/*.lss
+/microfw/CW310/Debug/*.map
+/microfw/CW310/Debug/*.srec
