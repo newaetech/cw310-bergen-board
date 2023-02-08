@@ -28,6 +28,7 @@
 #include "timers.h"
 #include "thermal_power.h"
 #include "naeusb_bergen.h"
+#include "naeusb_luna.h"
 #include "usbc_pd.h"
 
 #include "naeusb/naeusb_default.h"
@@ -66,7 +67,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_USART1_TXD, PIN_USART1_TXD_FLAGS);
 		
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
-		// gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
@@ -74,7 +75,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
-		// gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
+		gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
 		gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
 			
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIN_EBI_DATA_BUS_FLAG1);
@@ -349,6 +350,7 @@ int main(void)
 	naeusart_register_handlers();
 	fpga_target_register_handlers();
 	bergen_register_handlers();
+	luna_register_handlers();
 	
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
