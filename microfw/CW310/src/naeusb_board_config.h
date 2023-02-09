@@ -89,7 +89,7 @@ void kill_fpga_power(void);
 
 /** EBI NWE pin */
 #define PIN_EBI_NWE                  PIO_PC18_IDX
-#define PIN_EBI_NWE_FLAGS       PIO_DEFAULT//PIO_PERIPH_A | PIO_PULLUP
+#define PIN_EBI_NWE_FLAGS       PIO_PERIPH_A | PIO_DEFAULT
 #define PIN_EBI_NWE_MASK  1 << 18
 #define PIN_EBI_NWE_PIO  PIOC
 #define PIN_EBI_NWE_ID  ID_PIOC

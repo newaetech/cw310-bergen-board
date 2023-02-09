@@ -147,7 +147,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NRD, PIO_INPUT);
-		gpio_configure_pin(PIN_EBI_NWE, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 		gpio_configure_pin(PIN_EBI_NCS0, PIO_INPUT);
 		
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIO_INPUT);
@@ -351,6 +351,7 @@ int main(void)
 	fpga_target_register_handlers();
 	bergen_register_handlers();
 	luna_register_handlers();
+    gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 	
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
