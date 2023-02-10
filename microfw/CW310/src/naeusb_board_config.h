@@ -29,6 +29,7 @@ void kill_fpga_power(void);
 #define BOARD_MCK                   CHIP_FREQ_CPU_MAX
 
 /** board main clock xtal startup time */
+
 #define BOARD_OSC_STARTUP_US   15625
 //#define CONFIG_USBCLK_SOURCE CONFIG_PLL1_SOURCE
 
@@ -147,7 +148,8 @@ void kill_fpga_power(void);
 #define CW_USE_USART1 1
 
 #define FPGA_USE_BITBANG 0
-#define FPGA_USE_USART 0
+#define FPGA_USE_USART 1
+#define SERIAL_PROG_DMA
 
 #if FPGA_USE_BITBANG
 #define PIN_FPGA_DO_FLAGS			(PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
@@ -225,8 +227,19 @@ void kill_fpga_power(void);
 #define PIN_VBUS_DETECT       (PIO_PC15_IDX)
 #define PIN_VBUS_DETECT_FLAGS (PIO_TYPE_PIO_INPUT | PIO_DEFAULT)
 
-#endif
+#define PIN_DISPLAY_BUSY (PIO_PD3_IDX)
+#define PIN_DISPLAY_BUSY_FLAGS (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
 
+#define PIN_DISPLAY_TX (PIO_PD4_IDX)
+#define PIN_DISPLAY_TX_FLAGS (PIO_TYPE_PIO_PERIPH_B | PIO_DEFAULT)
+
+#define PIN_DISPLAY_NRST (PIO_PD6_IDX)
+#define PIN_DISPLAY_NRST_FLAGS (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
+
+#define PIN_DISPLAY_ON (PIO_PD7_IDX)
+#define PIN_DISPLAY_ON_FLAGS (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
+
+#endif
 #else
 
 /*

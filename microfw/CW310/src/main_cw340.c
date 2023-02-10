@@ -31,6 +31,8 @@
 #include "naeusb_luna.h"
 #include "usbc_pd.h"
 
+#include "VFD_display.h"
+
 #include "naeusb/naeusb_default.h"
 #include "naeusb/naeusb_usart.h"
 #include "naeusb/naeusb_fpga_target.h"
@@ -352,7 +354,7 @@ int main(void)
 	bergen_register_handlers();
 	luna_register_handlers();
     gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
-	
+
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
 		cdc_send_to_pc();
