@@ -8,9 +8,10 @@
  */ 
 #include <asf.h>
 #include "thermal_power.h"
+#include "i2c_util.h"
 
 #define MAX1617_I2C_ADDR 0x18
-#define MAX1617_I2C TWI0
+// #define MAX1617_I2C TWI0
 
 //TODO: SW_STATE (PB26) if low should high-z fpga pins (maybe interrupt?)
 
@@ -49,40 +50,13 @@ int enable_switched_power(void)
 
 int max1617_register_read(uint8_t reg_addr, int8_t *result)
 {
-	twi_package_t max_packet = {
-		.addr = {reg_addr, 0x00, 0x00},
-		.addr_length = 1,
-		.chip = MAX1617_I2C_ADDR,
-		.buffer = result,
-		.length = 1	
-	};
-	if (I2C_LOCK) {
-		return -1;
-	}
-	I2C_LOCK = 1;
-	int rtn = twi_master_read(MAX1617_I2C, &max_packet);
-	I2C_LOCK = 0;
-	return rtn;
+
+	return i2c_read(MAX1617_I2C_ADDR, reg_addr, result, 1);
 }
 
 int max1617_register_write(uint8_t reg_addr, int8_t data)
 {
-	twi_package_t max_packet = {
-		.addr = {reg_addr, 0x00, 0x00},
-		.addr_length = 1,
-		.chip = MAX1617_I2C_ADDR,
-		.buffer = &data,
-		.length = 1
-	};
-	
-	if (I2C_LOCK) {
-		return -1;
-	}
-	I2C_LOCK = 1;
-	
-	int rtn = twi_master_write(MAX1617_I2C, &max_packet);
-	I2C_LOCK = 0;
-	return rtn;
+	return i2c_write(MAX1617_I2C_ADDR, reg_addr, &data, 1);
 }
 
 int power_init(void)
