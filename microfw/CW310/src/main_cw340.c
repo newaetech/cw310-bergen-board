@@ -50,10 +50,10 @@ void check_power_state(void);
 void fpga_pins(bool enabled)
 {
 	gpio_configure_pin(PIN_FPGA_DONE_GPIO, PIN_FPGA_DONE_FLAGS);
-	
+
 	//gpio_configure_pin(PIO_PB22_IDX, PIO_OUTPUT_0);
-	//gpio_configure_pin(PIO_PB18_IDX, PIO_OUTPUT_0);	
-	
+	//gpio_configure_pin(PIO_PB18_IDX, PIO_OUTPUT_0);
+
 	if (enabled){
 		#ifdef CONF_BOARD_PCK0
 		gpio_configure_pin(PIN_PCK0, PIN_PCK0_FLAGS);
@@ -62,13 +62,13 @@ void fpga_pins(bool enabled)
 		#ifdef CONF_BOARD_PCK1
 		gpio_configure_pin(PIN_PCK1, PIN_PCK1_FLAGS);
 		#endif
-		
-		
+
+
 		gpio_configure_pin(PIN_USART0_RXD, PIN_USART0_RXD_FLAGS);
 		gpio_configure_pin(PIN_USART0_TXD, PIN_USART0_TXD_FLAGS);
 		gpio_configure_pin(PIN_USART1_RXD, PIN_USART1_RXD_FLAGS);
 		gpio_configure_pin(PIN_USART1_TXD, PIN_USART1_TXD_FLAGS);
-		
+
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
@@ -80,7 +80,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
 		gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
 		gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
-			
+
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIN_EBI_DATA_BUS_FLAG1);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIN_EBI_DATA_BUS_FLAG1);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIN_EBI_DATA_BUS_FLAG1);
@@ -102,27 +102,27 @@ void fpga_pins(bool enabled)
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIN_EBI_DATA_BUS_FLAG1);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIN_EBI_DATA_BUS_FLAG1);
 		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIN_EBI_DATA_BUS_FLAG1); /* TODO: Add ADDR20 back */
-		
-		
+
+
 		/* FPGA Programming pins */
 		FPGA_NPROG_SETUP();
-		FPGA_NPROG_HIGH();		
-			
+		FPGA_NPROG_HIGH();
+
 		/* FPGA External memory interface */
 		//Allow sync writing to address pins
 		//gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT));
 		//pio_enable_output_write(FPGA_ADDR_PORT, FPGA_ADDR_PINS);
-			
+
 		//ALE pin under SW control
 		//gpio_configure_pin(FPGA_ALE_GPIO, FPGA_ALE_FLAGS);
 		//gpio_set_pin_high(FPGA_ALE_GPIO);
-			
+
 		//Force FPGA trigger
-		
+
 		gpio_configure_pin(FPGA_TRIGGER_GPIO, FPGA_TRIGGER_FLAGS);
-		
+
 		gpio_configure_pin(PIN_FPGA_PROGRAM_GPIO, PIN_FPGA_PROGRAM_FLAGS);
-		
+
 		//gpio_configure_pin(SPI_MISO_GPIO, SPI_MISO_FLAGS); /* TODO: Add back */
 		//gpio_configure_pin(SPI_MOSI_GPIO, SPI_MOSI_FLAGS); /* TODO: Add back */
 		//gpio_configure_pin(SPI_SPCK_GPIO, SPI_SPCK_FLAGS); /* TODO: Add back */
@@ -135,12 +135,12 @@ void fpga_pins(bool enabled)
 		#ifdef CONF_BOARD_PCK1
 		gpio_configure_pin(PIN_PCK1, PIO_INPUT);
 		#endif
-		
+
 		gpio_configure_pin(PIN_USART0_RXD, PIO_INPUT);
 		gpio_configure_pin(PIN_USART0_TXD, PIO_INPUT);
 		gpio_configure_pin(PIN_USART1_RXD, PIO_INPUT);
 		gpio_configure_pin(PIN_USART1_TXD, PIO_INPUT);
-		
+
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIO_INPUT);
@@ -152,7 +152,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NRD, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 		gpio_configure_pin(PIN_EBI_NCS0, PIO_INPUT);
-		
+
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIO_INPUT);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIO_INPUT);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIO_INPUT);
@@ -173,27 +173,27 @@ void fpga_pins(bool enabled)
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIO_INPUT);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIO_INPUT);
 		// gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIO_INPUT);
-		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIO_INPUT);	
-			
+		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIO_INPUT);
+
 		/* FPGA External memory interface */
 		//Allow sync writing to address pins
 		//gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, PIO_INPUT);
-		
+
 		//ALE pin under SW control
 		//gpio_configure_pin(FPGA_ALE_GPIO, PIO_INPUT);
-		
+
 		//Force FPGA trigger
 		gpio_configure_pin(FPGA_TRIGGER_GPIO, PIO_INPUT);
-		
+
 		gpio_configure_pin(PIN_FPGA_PROGRAM_GPIO, PIO_INPUT);
-		
+
 		gpio_configure_pin(SPI_MISO_GPIO, PIO_INPUT); /* TODO: Add back */
 		gpio_configure_pin(SPI_MOSI_GPIO, PIO_INPUT); /* TODO: Add back */
 		gpio_configure_pin(SPI_SPCK_GPIO, PIO_INPUT); /* TODO: Add back */
 	}
-	
+
 	gpio_configure_pin(PIN_FPGA_DONE_GPIO, PIN_FPGA_DONE_FLAGS);
-	
+
 }
 
 #define TPS56520_ADDR 0x34
@@ -201,13 +201,13 @@ void fpga_pins(bool enabled)
 // {
 // 	gpio_configure_pin(PIN_PWD_SDA, PIN_PWD_SDA_FLAGS);
 // 	gpio_configure_pin(PIN_PWD_SCL, PIN_PWD_SCL_FLAGS);
-	
+
 // 	twi_master_options_t opt = {
 // 		.speed = 50000,
 // 		.chip  = 0x00
 // 	};
-	
-// 	twi_master_setup(TWI0, &opt);	
+
+// 	twi_master_setup(TWI0, &opt);
 // }
 
 void peripheral_setup(void)
@@ -235,7 +235,7 @@ void peripheral_setup(void)
 	gpio_configure_pin(PIN_TEMP_ERR_LED, PIN_TEMP_ERR_LED_FLAGS);
 	gpio_configure_pin(PIN_TEMP_OK_LED, PIN_TEMP_OK_LED_FLAGS);
 
-	// USB-PD Chip reset - must be done before configuring 
+	// USB-PD Chip reset - must be done before configuring
 	// gpio_set_pin_low(PIN_USB_RESET); // out of reset?
 	// delay_ms(1);
 	// gpio_configure_pin(PIN_USB_RESET, PIO_TYPE_PIO_OUTPUT_1);
@@ -258,11 +258,11 @@ void peripheral_setup(void)
 
 	/* complete SMC configuration between PSRAM and SMC waveforms. */
 	//The Read Cycle = NCS_RD_SETUP + NCS_RD_PULSE + NCS_RD_HOLD
-	//But you can't define things invalid, so hold is auto-calculated:	
+	//But you can't define things invalid, so hold is auto-calculated:
 	//NRD_HOLD = NRD_CYCLE - NRD SETUP - NRD PULSE
 	//NCS_RD_HOLD = NRD_CYCLE - NCS_RD_SETUP - NCS_RD_PULSE
 
-	pmc_enable_periph_clk(ID_SMC);	
+	pmc_enable_periph_clk(ID_SMC);
 	smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(2)
 	| SMC_SETUP_NCS_WR_SETUP(3)
 	| SMC_SETUP_NRD_SETUP(2)
@@ -277,13 +277,13 @@ void peripheral_setup(void)
         | SMC_MODE_DBW_BIT_8);
 
 
-	/* Enable PCLK0 at 84 MHz */	
+	/* Enable PCLK0 at 84 MHz */
 	genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
 	pmc_enable_upll_clock();
 	pmc_enable_periph_clk(ID_UOTGHS);
 
 	// Setup fan PWM
-	gpio_configure_pin(PIO_PB25_IDX, PIO_PERIPH_B);	
+	gpio_configure_pin(PIO_PB25_IDX, PIO_PERIPH_B);
 
 	fan_pwm_init();
 	fan_pwm_set_duty_cycle(75); //Set at 50% in case we crash - will be tuned later
@@ -298,10 +298,12 @@ void peripheral_setup(void)
 	power_init();
 
 	// enable on board thermometers for monitoring board temps
-	thermals_init(); 
+	thermals_init();
 
 	/* Enable SMC */
 	fpga_pins(true);
+
+	GU7000_init();
 
 	udc_start();
 
@@ -325,15 +327,15 @@ void peripheral_setup(void)
 int main(void)
 {
 	volatile uint32_t reset_reason = 0;
-	
+
 	// capture reset reason as watchdog on by default...
 	reset_reason = RSTC->RSTC_SR;
 	reset_reason = reset_reason; //Still a thing in 2021??
 	WDT->WDT_MR = (1 << 25); //disable watchdog
-	
+
 	// unlock I2C
 	I2C_LOCK = 0;
-	
+
 	//Convert serial number to ASCII for USB Serial number
 	uint32_t serial_number[4];
 	flash_read_unique_id(serial_number, sizeof(serial_number));
@@ -343,12 +345,12 @@ int main(void)
 	usb_serial_number[32] = 0;
 
 	peripheral_setup(); // turn on required peripherals
-	
+
 	//Following is 60MHz version
 	//genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_PLLBCK, GENCLK_PCK_PRES_4);
 
-	
-	
+
+
 	naeusb_register_handlers();
 	naeusart_register_handlers();
 	fpga_target_register_handlers();
@@ -356,10 +358,29 @@ int main(void)
 	luna_register_handlers();
     gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 
+	delay_ms(500);
+	//GU7000_cursorOn();
+
+	/* 16x16 image "opentitan_icon" */
+	static const uint8_t image_opentitan_icon[] = {
+		0xf9,0x9f,0xf9,0x9f,0xc1,0x83,0xc1,0x83,0xc1,0x83,0x07,0xe0,0x04,0x20,0xfc,0x3f,
+		0xfc,0x3f,0x04,0x20,0x07,0xe0,0xc1,0x83,0xc1,0x83,0xc1,0x83,0xf9,0x9f,0xf9,0x9f
+	};
+	GU7000_drawImage_ram(16, 16, image_opentitan_icon);
+
+    GU7000_defineWindow(1, 17, 0, 112-17, 16);
+	GU7000_selectWindow(1);
+
+	GU7000_setFontSize(1, 1, false);
+	GU7000_setFontStyle(true, false);
+	vfd_write("Luna Board\n\r");
+	vfd_write(__DATE__);
+
+
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
 		cdc_send_to_pc();
-		check_power_state(); //make sure power hasn't been killed		
+		check_power_state(); //make sure power hasn't been killed
 		if (!TPS_CONNECTED) {
 			if (tps56520_set(600)) {
 				if (tps56520_set(1000)) {

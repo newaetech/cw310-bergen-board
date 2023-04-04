@@ -165,6 +165,10 @@ void kill_fpga_power(void);
 #define PIN_TEMP_ALERT PIO_PA23_IDX
 #define PIN_TEMP_ALERT_FLAGS PIO_TYPE_PIO_INPUT | PIO_DEFAULT
 
+
+#define PIN_CFG_RDRW PIO_PC1_IDX
+#define PIN_CFG_RDRW_PIO_PC1_FLAGS PIO_OUTPUT_0 | PIO_DEFAULT
+
 #define PIN_FPGA_FAN_PWM PIO_PB25_IDX
 #define PIN_FPGA_FAN_PWM_FLAGS PIO_PERIPH_B | PIO_DEFAULT
 
@@ -247,7 +251,7 @@ void kill_fpga_power(void);
  *
  * Created: 1/27/2021 8:15:46 AM
  *  Author: adewa
- */ 
+ */
 
 extern volatile uint8_t I2C_LOCK;
 
@@ -294,9 +298,9 @@ void kill_fpga_power(void);
 #define BOARD_NF_DATA_ADDR      0x61000000 //might not be right
 
 #define PIN_USB_RESET		PIO_PC14_IDX
-	
+
 #define PIN_SAM3X_AUXPOWER_NENABLE PIO_PA4_IDX
-	
+
 /* Turn on Clock to FPGA */
 #define CONF_BOARD_PCK0
 #define PIN_PCK0			PIO_PB22_IDX
@@ -403,7 +407,7 @@ void kill_fpga_power(void);
 #define PIN_FPGA_DI_GPIO SPI_MISO_GPIO
 #define PIN_SPARE1 PIN_FPGA_DO_GPIO
 #define PIN_SPARE2 PIN_FPGA_DI_GPIO
-	
+
 #define PIN_USART0_RXD PIO_PA10_IDX
 #define PIN_USART0_TXD PIO_PA11_IDX
 #define PIN_USART0_RXD_FLAGS PIO_PERIPH_A | PIO_DEFAULT
@@ -419,7 +423,7 @@ void kill_fpga_power(void);
 
 
 #define CW_USE_USART0 1
-#define CW_USE_USART1 1 
+#define CW_USE_USART1 1
 
 
 #define FPGA_PROG_USART			USART2

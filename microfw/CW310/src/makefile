@@ -6,7 +6,7 @@ else
 	SRC += usbc_pd.c main_cw310.c naeusb/naeusb_mpsse.c
 endif
 
-SRC += naeusb/circbuffer.c fpgautil_io.c naeusb_bergen.c 
+SRC += naeusb/circbuffer.c fpgautil_io.c naeusb_bergen.c
 SRC += tasks.c thermal_power.c timers.c
 
 SRC += naeusb/circbuffer.c naeusb/udc.c naeusb/naeusb.c naeusb/naeusb_default.c naeusb/naeusb_usart.c naeusb/naeusb_fpga_target.c
