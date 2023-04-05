@@ -383,6 +383,8 @@ int main(void)
 
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
+
+		/*TODO - vfd write uses polling so locks up CPU. Should do interrupt-based. */
 		if(global_fpga_temp != last_fpga_temp){
 			last_fpga_temp = global_fpga_temp;
 			GU7000_setCursor(0, 8);
