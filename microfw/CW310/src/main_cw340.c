@@ -43,6 +43,8 @@
 //Serial Number - will be read by device ID
 char usb_serial_number[33] = "000000000000DEADBEEF";
 
+extern volatile int global_fpga_temp;
+
 void fpga_pins(bool enabled);
 void usb_pwr_setup(void);
 void check_power_state(void);
@@ -374,11 +376,20 @@ int main(void)
 	GU7000_setFontSize(1, 1, false);
 	GU7000_setFontStyle(true, false);
 	vfd_write("Luna Board\n\r");
-	vfd_write(__DATE__);
+	
+	static int last_fpga_temp;
+	char sbuf[20];
 
 
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
+		if(global_fpga_temp != last_fpga_temp){
+			last_fpga_temp = global_fpga_temp;
+			GU7000_setCursor(0, 8);
+			itoa(last_fpga_temp, sbuf, 10);
+			vfd_write(sbuf);
+			vfd_write(" C ");
+		}
 		cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed
 		if (!TPS_CONNECTED) {

@@ -119,12 +119,22 @@ int8_t max1617_read_remote_temp(void)
 	return temp;
 }
 
+int8_t max1617_read_board_temp(void)
+{
+	int8_t temp = 0;
+	max1617_register_read(MAX1617_READ_LOCAL_TEMP, &temp);
+	return temp;
+}
+
 //Do all 2s periodic max1617 things (mostly just read temp and go from there)
 volatile bool power_killed = false;
+volatile int global_fpga_temp = 99;
 int thermals_slow_tick(void)
 {
 	int8_t fpga_temp = 0;
 	fpga_temp = max1617_read_remote_temp();
+
+	global_fpga_temp = fpga_temp;
 
 
 	if (fpga_temp == 0){
@@ -162,6 +172,7 @@ int thermals_slow_tick(void)
 	}
 
 	fan_pwm_set_duty_cycle(fan_pwm);
+
 
 	return 0x00;
 
