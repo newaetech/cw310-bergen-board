@@ -383,7 +383,7 @@ int main(void)
 		check_power_state(); //make sure power hasn't been killed
 		if (!TPS_CONNECTED) {
 			if (tps56520_set(600)) {
-				if (tps56520_set(1000)) {
+				if (tps56520_set(950)) {
 					TPS_CONNECTED = true;
 				}
 			}
