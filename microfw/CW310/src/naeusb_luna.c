@@ -21,16 +21,6 @@ enum FPGA_PROG_MODE {
     FPGA_PROG_MODE_PARALLEL,
     FPGA_PROG_MODE_PARALLEL16
 };
-// void selectmap_bulk_callback(udd_ep_status_t status, iram_size_t nb_transferred, udd_ep_id_t ep)
-// {
-//     if (UDD_EP_TRANSFER_OK != status) {
-//         return;
-//     }
-//     // udi_vendor_bulk_out_run(
-//     //     xram,
-//     //     sizeof(main_buf_loopback),
-//     //     selectmap_bulk_callback);
-// }
 
 void luna_progfpga_bulk(void) {
     uint32_t prog_freq = 20E6;
@@ -74,10 +64,9 @@ void luna_progfpga_bulk(void) {
                 case FPGA_PROG_MODE_PARALLEL:
                 case FPGA_PROG_MODE_PARALLEL16:
                     fpga_selectmap_setup2();
-                    // gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
                     udd_ep_abort(UDI_VENDOR_EP_BULK_OUT);
                     if (!udi_vendor_bulk_out_run(xram, 0xFFFFFFFF, NULL)) {
-                        //todo error
+                        // could technically return non-zero if endpoint is in use
                     }
                     break;
             }
@@ -88,10 +77,6 @@ void luna_progfpga_bulk(void) {
             } else if (FPGA_CURRENT_PROG_MODE == FPGA_PROG_MODE_PARALLEL) {
                 udd_ep_abort(UDI_VENDOR_EP_BULK_OUT);
                 fpga_selectmap_setup3();
-                // udi_vendor_bulk_out_run(
-                //         main_buf_loopback,
-                //         sizeof(main_buf_loopback),
-                //         main_vendor_bulk_out_received);
             }
             break;
 

@@ -12,6 +12,10 @@ Full documentation for this board is rendered at [https://rtfm.newae.com/Targets
 
 The documentation in the `docs` folder is rendered to [https://rtfm.newae.com/Targets/CW310 Bergen Board](https://rtfm.newae.com/Targets/CW310%20Bergen%20Board/), the github markdown is missing some features that markdown file is designed for.
 
+### Firmware Documentation
+
+See `microfw/README.md` for a firmware overview.
+
 ### Schematic
 
 * [View schematics online](https://github.com/newaetech/cw310-bergen-board/blob/main/docs/BergenBoard_Rev06C.PDF)

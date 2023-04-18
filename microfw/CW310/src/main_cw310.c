@@ -107,17 +107,7 @@ void fpga_pins(bool enabled)
 		FPGA_NPROG_SETUP();
 		FPGA_NPROG_HIGH();		
 			
-		/* FPGA External memory interface */
-		//Allow sync writing to address pins
-		//gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT));
-		//pio_enable_output_write(FPGA_ADDR_PORT, FPGA_ADDR_PINS);
-			
-		//ALE pin under SW control
-		//gpio_configure_pin(FPGA_ALE_GPIO, FPGA_ALE_FLAGS);
-		//gpio_set_pin_high(FPGA_ALE_GPIO);
-			
 		//Force FPGA trigger
-		
 		gpio_configure_pin(FPGA_TRIGGER_GPIO, FPGA_TRIGGER_FLAGS);
 		
 		gpio_configure_pin(PIN_FPGA_PROGRAM_GPIO, PIN_FPGA_PROGRAM_FLAGS);
@@ -200,9 +190,6 @@ void fpga_pins(bool enabled)
 void peripheral_setup(void)
 {
 	ioport_init(); //enable IO clocks
-
-	//Fan on for now - will switch to PWM later.
-	// gpio_configure_pin(PIO_PB25_IDX, PIO_TYPE_PIO_OUTPUT_1);
 
 	fpga_pins(0); // set FPGA pins as inputs
 
@@ -326,9 +313,7 @@ int main(void)
 
 	peripheral_setup(); // turn on required peripherals
 	
-	//Following is 60MHz version
-	//genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_PLLBCK, GENCLK_PCK_PRES_4);
-	
+	// register USB transfer handlers
 	naeusb_register_handlers();
 	naeusart_register_handlers();
 	fpga_target_register_handlers();

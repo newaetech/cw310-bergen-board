@@ -208,9 +208,9 @@ void kill_fpga_power(void)
 void max1617_alert_handler(const uint32_t id, const uint32_t index)
 {
 	if ((id == ID_PIOA) && (index == PIO_PA16) && (!pio_get(PIOA, PIO_INPUT, PIO_PA16))) {
-			// temp too high, kill power
-			power_killed = true;
-			kill_fpga_power();
+		// temp too high, kill power
+		power_killed = true;
+		kill_fpga_power();
 	}
 }
 
@@ -289,23 +289,6 @@ void check_power_state(void)
 		//Record new state
 		last_power_state = board_get_powerstate();
 	}
-
-	// if (gpio_pin_is_low(PIN_PGOOD_VCCINT)) {
-	// 	usb_pd_update_status();
-	// 	// if (usb_pd_ov()) {
-
-	// 	// }
-	// 	if (usb_pd_attached()) {
-	// 		gpio_set_pin_high(PIN_USB_RESET); // bring USB-PD chip out of reset
-	// 		delay_ms(100); //TODO - these delays are way off??
-	// 		gpio_set_pin_low(PIN_USB_RESET); // bring USB-PD chip out of reset
-	// 		delay_ms(100); //TODO - these delays are way off??
-
-	// 		// setup usbc power
-	// 		usb_pwr_setup(); // tell USB-PD to request 20V 5A when renegotiating
-	// 		usb_pd_soft_reset(); // renegotiate power
-	// 	}
-	// }
 }
 
 void pgood_alert_handler(const uint32_t id, const uint32_t index)
