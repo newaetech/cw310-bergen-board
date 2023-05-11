@@ -11,6 +11,7 @@
 #define NAEUSB_LUNA_H_
 
 #define REQ_FPGA_MODE_PINS 0x4A
+#define REQ_LUNA_FPGA_SETTINGS 0x4B
 
 
 void luna_register_handlers(void);

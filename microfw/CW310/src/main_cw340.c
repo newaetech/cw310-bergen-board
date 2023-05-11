@@ -79,6 +79,15 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D8, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D9, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D10, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D11, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D12, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D13, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D14, PIN_EBI_DATA_BUS_FLAG1);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D15, PIN_EBI_DATA_BUS_FLAG1);
+
 		gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
 		gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
 		gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
@@ -118,6 +127,14 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D8,  PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D9,  PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D10, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D11, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D12, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D13, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D14, PIO_INPUT);
+		gpio_configure_pin(PIN_EBI_DATA_BUS_D15, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NRD, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 		gpio_configure_pin(PIN_EBI_NCS0, PIO_INPUT);

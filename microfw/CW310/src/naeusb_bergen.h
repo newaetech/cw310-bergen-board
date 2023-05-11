@@ -15,7 +15,7 @@
 #define REQ_I2C_SETUP 0x43
 #define REQ_I2C_DATA 0x44
 
-// 0x45 reserved for Luna board
+// 0x4A+ reserved for Luna board
 
 
 void bergen_register_handlers(void);

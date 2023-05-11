@@ -60,6 +60,8 @@ void kill_fpga_power(void);
 #define PIN_PCK0			PIO_PB22_IDX
 #define PIN_PCK0_FLAGS		PIO_PERIPH_B
 
+#define FPGA_ADDR_PORT PIOC
+
 #define PIN_EBI_DATA_BUS_D0 PIO_PC2_IDX
 #define PIN_EBI_DATA_BUS_D1 PIO_PC3_IDX
 #define PIN_EBI_DATA_BUS_D2 PIO_PC4_IDX
