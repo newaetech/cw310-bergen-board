@@ -49,6 +49,11 @@ void fpga_pins(bool enabled);
 void usb_pwr_setup(void);
 void check_power_state(void);
 
+/*
+If enabled, configure FPGA pins as their default
+
+If not enabled, high-z FPGA pins to avoid powering FPGA thru them
+*/
 void fpga_pins(bool enabled)
 {
 	gpio_configure_pin(PIN_FPGA_DONE_GPIO, PIN_FPGA_DONE_FLAGS);
@@ -91,6 +96,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
 		gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
 		gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
+		gpio_configure_pin(FPGA_ALE_GPIO, FPGA_ALE_FLAGS);
 
 		/* FPGA Programming pins */
 		FPGA_NPROG_SETUP();
@@ -106,6 +112,7 @@ void fpga_pins(bool enabled)
 		//gpio_configure_pin(SPI_SPCK_GPIO, SPI_SPCK_FLAGS); /* TODO: Add back */
 
 	} else {
+		// high-z FPGA pins to avoid powering the FPGA thru these pins
 		#ifdef CONF_BOARD_PCK0
 		gpio_configure_pin(PIN_PCK0, PIO_INPUT);
 		#endif
@@ -138,6 +145,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_NRD, PIO_INPUT);
 		gpio_configure_pin(PIN_EBI_NWE, PIO_OUTPUT_0);
 		gpio_configure_pin(PIN_EBI_NCS0, PIO_INPUT);
+		gpio_configure_pin(FPGA_ALE_GPIO, PIO_INPUT);
 
 		//Force FPGA trigger
 		gpio_configure_pin(FPGA_TRIGGER_GPIO, PIO_INPUT);

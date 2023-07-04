@@ -6,6 +6,13 @@
 #include "fpga_selectmap.h"
 #include "usb_xmem.h"
 #include "pdc.h"
+#if FPGA_ALE_GPIO == PIO_PC17_IDX
+#error ALE wrong pin
+#endif
+
+#if FPGA_TRIGGER_GPIO == PIO_PC13_IDX
+#error ALE wrong pin
+#endif
 
 uint8_t FPGA_TRANSFER_16BIT = 0;
 uint32_t FPGA_COMM_SPEED = 0;
@@ -19,7 +26,20 @@ static unsigned int ctrlmemread_size;
 
 void main_vendor_bulk_out_received(udd_ep_status_t status,
                                    iram_size_t nb_transfered, udd_ep_id_t ep);
+void luna_vendor_bulk_out_received(udd_ep_status_t status,
+                                  iram_size_t nb_transfered, udd_ep_id_t ep);
+void luna_vendor_bulk_in_received(udd_ep_status_t status,
+                                  iram_size_t nb_transfered, udd_ep_id_t ep);
 void setup_fpga_rw(void);
+
+/*
+Buffer to hold data to send to FPGA/read from FPGA.
+
+Need to write on upper FPGA bytes, so can't directly
+setup bulk read/write to act on the SMC memory addr
+*/
+static volatile uint32_t FPGA_WR_LEFT; //number of bytes left in transfer
+static volatile uint8_t FPGA_WR_BUF[256]; //buffer for holding data for FPGA transfer
 
 enum FPGA_PROG_MODE {
     FPGA_PROG_MODE_SERIAL,
@@ -29,11 +49,6 @@ enum FPGA_PROG_MODE {
 
 void luna_fpga_settings(void)
 {
-    if (udd_g_ctrlreq.payload[0] == 1) {
-        FPGA_TRANSFER_16BIT = 1;
-    } else {
-        FPGA_TRANSFER_16BIT = 0;
-    }
     setup_fpga_rw();
 }
 
@@ -50,76 +65,84 @@ void setup_fpga_rw(void)
 	smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(12)
 	| SMC_CYCLE_NRD_CYCLE(12));
 
-    if (FPGA_TRANSFER_16BIT) {
-        FPGA_TRANSFER_16BIT = 1;
-		smc_set_mode(SMC, 0, SMC_MODE_WRITE_MODE | SMC_MODE_READ_MODE
-			| SMC_MODE_DBW_BIT_16 | SMC_MODE_WRITE_MODE_NCS_CTRL | SMC_MODE_READ_MODE_NCS_CTRL);
-    } else {
-		smc_set_mode(SMC, 0, SMC_MODE_WRITE_MODE | SMC_MODE_READ_MODE
-			| SMC_MODE_DBW_BIT_8 | SMC_MODE_WRITE_MODE_NCS_CTRL | SMC_MODE_READ_MODE_NCS_CTRL);
-    }
+    // TODO: no longer needed, just do 16 bit version
+    smc_set_mode(SMC, 0, SMC_MODE_WRITE_MODE | SMC_MODE_READ_MODE
+        | SMC_MODE_DBW_BIT_16 | SMC_MODE_WRITE_MODE_NCS_CTRL | SMC_MODE_READ_MODE_NCS_CTRL);
 }
 
 void luna_readmem_bulk(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
+    luna_fpga_settings();
 
-    FPGA_setlock(fpga_blockin);
+    FPGA_WR_LEFT = buflen;
+
+    uint16_t bytes_to_transfer = min(FPGA_WR_LEFT, sizeof(FPGA_WR_BUF)); // get number of bytes to read in this transfer
 
     FPGA_releaselock();
     while(!FPGA_setlock(fpga_blockin));
-
     FPGA_setaddr(address);
+
+    // Do the read now so that we have data when the PC is ready
+    for (uint16_t i = 0; i < bytes_to_transfer; i++) {
+        FPGA_WR_BUF[i] = (xram16[i] >> 8) & 0xFF; //read from upper byte as bottom 4 bits not usable by FPGA
+    }
+
+    // do the transfer
     if  (!udi_vendor_bulk_in_run(
-        (uint8_t *) PSRAM_BASE_ADDRESS,
-        buflen,
-        NULL
+        FPGA_WR_BUF,
+        bytes_to_transfer,
+        luna_vendor_bulk_in_received
         )) {
-            //abort
+            //abort, TODO: again should do error handling?
         }
 }
 
 void luna_readmem_ctrl(void)
 {
+    //TODO: check buflen valid
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
+    luna_fpga_settings();
+
+    FPGA_releaselock();
+
+    while(!FPGA_setlock(fpga_ctrlmem));
+
+    udd_ep_abort(UDI_VENDOR_EP_BULK_IN); //make sure no ongoing transfer
+
     FPGA_setaddr(address);
-    FPGA_setlock(fpga_generic);
-    if (FPGA_TRANSFER_16BIT) {
-        // do 16-bit read here
-        uint16_t *ctrlbuf16 = (uint16_t *)(respbuf);
-        uint32_t buflen16 = (buflen / 2) + (buflen & 1); // cut buflen in half since it's 16-bit
-        for (uint32_t i = 0; i < buflen16; i++) {
-            ctrlbuf16[i] = xram16[i];
-        }
-        ctrlmemread_buf = respbuf;
-        FPGA_releaselock();
 
-    } else {
-        ctrlmemread_buf = xram;
+    // do read
+    for (uint32_t i = 0; i < buflen; i++) {
+        respbuf[i] = xram16[i] >> 8;
     }
-
-
+    ctrlmemread_buf = respbuf;
+    FPGA_releaselock();
 }
 
 void luna_writemem_bulk(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
+    luna_fpga_settings();
 
-    FPGA_setlock(fpga_blockout);
+    FPGA_WR_LEFT = buflen;
 
     FPGA_releaselock();
+
     while(!FPGA_setlock(fpga_blockout));
 
+    udd_ep_abort(UDI_VENDOR_EP_BULK_OUT); //make sure no ongoing transfer
+
     FPGA_setaddr(address);
-    if  (!udi_vendor_bulk_in_run(
-        (uint8_t *) PSRAM_BASE_ADDRESS,
-        buflen,
-        NULL
+    if  (!udi_vendor_bulk_out_run(
+        FPGA_WR_BUF,
+        sizeof(FPGA_WR_BUF),
+        luna_vendor_bulk_out_received
         )) {
-            //abort
+            //abort //TODO: should do some sort of error handling?
         }
 }
 
@@ -127,25 +150,87 @@ void luna_writemem_ctrl(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
+    luna_fpga_settings();
+
+    FPGA_releaselock();
+    while(!FPGA_setlock(fpga_generic));
+
     FPGA_setaddr(address);
+    uint8_t *ctrlbuf_payload = (uint8_t *)(CTRLBUFFER_WORDPTR + 2);
+    FPGA_setlock(fpga_generic);
 
-    if (FPGA_TRANSFER_16BIT) {
-        uint16_t *ctrlbuf_payload = (uint16_t *)(CTRLBUFFER_WORDPTR + 2);
-        FPGA_setlock(fpga_generic);
-        uint32_t buflen16 = (buflen / 2) + (buflen & 1); // cut buflen in half since it's 16-bit
-
-        for (uint32_t i = 0; i < buflen16; i++) {
-            xram16[i] = ctrlbuf_payload[i];
-        }
-    } else {
-        uint8_t *ctrlbuf_payload = (uint8_t *)(CTRLBUFFER_WORDPTR + 2);
-        FPGA_setlock(fpga_generic);
-
-        for (uint32_t i = 0; i < buflen; i++) {
-            xram[i] = ctrlbuf_payload[i];
-        }
+    for (uint32_t i = 0; i < buflen; i++) {
+        xram16[i] = ((uint16_t)FPGA_WR_BUF[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
     }
     FPGA_releaselock();
+}
+
+void luna_vendor_bulk_in_received(udd_ep_status_t status,
+                                  iram_size_t nb_transfered, udd_ep_id_t ep)
+{
+    UNUSED(ep);
+    if (UDD_EP_TRANSFER_OK != status) {
+        // Transfer aborted
+        FPGA_releaselock();
+        return;
+    }
+
+    if (nb_transfered < FPGA_WR_LEFT) {
+        // subtract what we transferred
+        FPGA_WR_LEFT -= nb_transfered;
+    } else {
+        // otherwise, we're done with the read
+        FPGA_WR_LEFT = 0;
+        FPGA_releaselock();
+        return;
+    }
+    uint16_t bytes_to_transfer = min(FPGA_WR_LEFT, sizeof(FPGA_WR_BUF));
+
+    // read in the bytes we want to send to the PC
+    for (uint16_t i = 0; i < bytes_to_transfer; i++) {
+        FPGA_WR_BUF[i] = (xram16[i] >> 8) & 0xFF; //read from upper byte as bottom 4 bits not usable by FPGA
+    }
+
+    // setup transfer for sending bytes to PC
+    if  (!udi_vendor_bulk_in_run(
+        FPGA_WR_BUF,
+        bytes_to_transfer,
+        luna_vendor_bulk_in_received
+        )) {
+            //abort, TODO: again should do error handling?
+        }
+}
+
+void luna_vendor_bulk_out_received(udd_ep_status_t status,
+                                  iram_size_t nb_transfered, udd_ep_id_t ep)
+{
+    UNUSED(ep);
+    FPGA_releaselock();
+    if (UDD_EP_TRANSFER_OK != status) {
+        // Transfer aborted
+        FPGA_releaselock();
+        return;
+    }
+
+    // transfer the bytes we got from the PC
+    for (uint16_t i = 0; i < nb_transfered; i++) {
+        xram16[i] = ((uint16_t)FPGA_WR_BUF[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
+    }
+
+    // if we haven't transferred all data, setup bulk out run again
+    if (nb_transfered < FPGA_WR_LEFT) {
+        FPGA_WR_LEFT -= nb_transfered;
+        if  (!udi_vendor_bulk_out_run(
+            FPGA_WR_BUF,
+            sizeof(FPGA_WR_BUF),
+            luna_vendor_bulk_out_received
+            )) {
+                //abort, TODO: again should do error handling?
+            }
+    } else {
+        FPGA_releaselock();
+    }
+
 }
 
 void luna_progfpga_bulk(void) 
