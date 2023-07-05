@@ -66,15 +66,13 @@ void setup_fpga_rw(void)
 	| SMC_CYCLE_NRD_CYCLE(12));
 
     // TODO: no longer needed, just do 16 bit version
-    smc_set_mode(SMC, 0, SMC_MODE_WRITE_MODE | SMC_MODE_READ_MODE
-        | SMC_MODE_DBW_BIT_16 | SMC_MODE_WRITE_MODE_NCS_CTRL | SMC_MODE_READ_MODE_NCS_CTRL);
+    smc_set_mode(SMC, 0, SMC_MODE_DBW_BIT_16 | SMC_MODE_WRITE_MODE_NCS_CTRL | SMC_MODE_READ_MODE_NCS_CTRL);
 }
 
 void luna_readmem_bulk(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
-    luna_fpga_settings();
 
     FPGA_WR_LEFT = buflen;
 
@@ -83,6 +81,10 @@ void luna_readmem_bulk(void)
     FPGA_releaselock();
     while(!FPGA_setlock(fpga_blockin));
     FPGA_setaddr(address);
+
+    udd_ep_abort(UDI_VENDOR_EP_BULK_IN); //make sure no ongoing transfer
+
+    luna_fpga_settings();
 
     // Do the read now so that we have data when the PC is ready
     for (uint16_t i = 0; i < bytes_to_transfer; i++) {
@@ -104,15 +106,15 @@ void luna_readmem_ctrl(void)
     //TODO: check buflen valid
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
-    luna_fpga_settings();
 
     FPGA_releaselock();
 
     while(!FPGA_setlock(fpga_ctrlmem));
 
-    udd_ep_abort(UDI_VENDOR_EP_BULK_IN); //make sure no ongoing transfer
 
     FPGA_setaddr(address);
+
+    luna_fpga_settings();
 
     // do read
     for (uint32_t i = 0; i < buflen; i++) {
@@ -126,7 +128,6 @@ void luna_writemem_bulk(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
-    luna_fpga_settings();
 
     FPGA_WR_LEFT = buflen;
 
@@ -134,9 +135,12 @@ void luna_writemem_bulk(void)
 
     while(!FPGA_setlock(fpga_blockout));
 
+
     udd_ep_abort(UDI_VENDOR_EP_BULK_OUT); //make sure no ongoing transfer
 
     FPGA_setaddr(address);
+
+    luna_fpga_settings();
     if  (!udi_vendor_bulk_out_run(
         FPGA_WR_BUF,
         sizeof(FPGA_WR_BUF),
@@ -150,17 +154,19 @@ void luna_writemem_ctrl(void)
 {
     uint32_t buflen = *(CTRLBUFFER_WORDPTR);
     uint32_t address = *(CTRLBUFFER_WORDPTR + 1);
-    luna_fpga_settings();
 
     FPGA_releaselock();
     while(!FPGA_setlock(fpga_generic));
 
     FPGA_setaddr(address);
+
+    luna_fpga_settings();
     uint8_t *ctrlbuf_payload = (uint8_t *)(CTRLBUFFER_WORDPTR + 2);
     FPGA_setlock(fpga_generic);
 
     for (uint32_t i = 0; i < buflen; i++) {
         xram16[i] = ((uint16_t)FPGA_WR_BUF[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
+        xram16[i] = ((uint16_t)FPGA_WR_BUF[i]); //write to upper byte as bottom 4 bits not usable by FPGA
     }
     FPGA_releaselock();
 }

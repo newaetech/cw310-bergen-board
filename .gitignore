@@ -33,3 +33,4 @@ tags
 /microfw/CW310/Debug/*.lss
 /microfw/CW310/Debug/*.map
 /microfw/CW310/Debug/*.srec
+**/.vscode/**
