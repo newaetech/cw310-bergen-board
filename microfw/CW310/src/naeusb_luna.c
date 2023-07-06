@@ -31,6 +31,7 @@ void luna_vendor_bulk_out_received(udd_ep_status_t status,
 void luna_vendor_bulk_in_received(udd_ep_status_t status,
                                   iram_size_t nb_transfered, udd_ep_id_t ep);
 void setup_fpga_rw(void);
+void fpga_pins(bool enabled);
 
 /*
 Buffer to hold data to send to FPGA/read from FPGA.
@@ -54,6 +55,8 @@ void luna_fpga_settings(void)
 
 void setup_fpga_rw(void)
 {
+    fpga_pins(1);
+	pmc_enable_periph_clk(ID_SMC);
 	smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(2)
 	| SMC_SETUP_NCS_WR_SETUP(3)
 	| SMC_SETUP_NRD_SETUP(2)
@@ -166,7 +169,7 @@ void luna_writemem_ctrl(void)
 
     for (uint32_t i = 0; i < buflen; i++) {
         xram16[i] = ((uint16_t)FPGA_WR_BUF[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
-        xram16[i] = ((uint16_t)FPGA_WR_BUF[i]); //write to upper byte as bottom 4 bits not usable by FPGA
+        // xram16[i] = ((uint16_t)FPGA_WR_BUF[i]); //write to upper byte as bottom 4 bits not usable by FPGA
     }
     FPGA_releaselock();
 }
