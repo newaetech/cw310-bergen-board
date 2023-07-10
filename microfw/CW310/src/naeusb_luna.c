@@ -168,7 +168,7 @@ void luna_writemem_ctrl(void)
     FPGA_setlock(fpga_generic);
 
     for (uint32_t i = 0; i < buflen; i++) {
-        xram16[i] = ((uint16_t)FPGA_WR_BUF[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
+        xram16[i] = ((uint16_t)ctrlbuf_payload[i]) << 8; //write to upper byte as bottom 4 bits not usable by FPGA
         // xram16[i] = ((uint16_t)FPGA_WR_BUF[i]); //write to upper byte as bottom 4 bits not usable by FPGA
     }
     FPGA_releaselock();
