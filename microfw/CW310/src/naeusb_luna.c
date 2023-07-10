@@ -124,6 +124,7 @@ void luna_readmem_ctrl(void)
         respbuf[i] = xram16[i] >> 8;
     }
     ctrlmemread_buf = respbuf;
+    ctrlmemread_size = buflen;
     FPGA_releaselock();
 }
 
