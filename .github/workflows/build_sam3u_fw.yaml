@@ -30,8 +30,13 @@ jobs:
       - name: Install compilers
         run: >- 
           sudo apt install -y make build-essential gcc-arm-none-eabi
-      - name: Build firmware
+      - name: Build CW340 firmware
         run: |
           cd microfw/CW310/src
           git submodule update --init naeusb
-          make -j
+          make TARGET=CW340 -j
+      - name: Build CW310 firmware
+        run: |
+          cd microfw/CW310/src
+          git submodule update --init naeusb
+          make TARGET=CW310 -j
