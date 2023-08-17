@@ -112,7 +112,7 @@ void kill_fpga_power(void);
 //#define FPGA_ADDR_PORT PIOC
 
 /* Technically SPARE3 */
-#define FPGA_ALE_GPIO		 (PIO_PC24_IDX)
+#define FPGA_ALE_GPIO		 (PIO_PA28_IDX)
 #define FPGA_ALE_FLAGS		 (PIO_TYPE_PIO_OUTPUT_1 | PIO_DEFAULT)
 
 #define PIN_CDCE_SDA PIO_PA17_IDX
