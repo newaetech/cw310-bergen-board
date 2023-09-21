@@ -331,7 +331,7 @@ int main(void)
 			vfd_write(sbuf);
 			vfd_write(" C ");
 		}
-		cdc_send_to_pc();
+		// cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed
 		if (!TPS_CONNECTED) {
 			if (tps56520_set(600)) {

@@ -83,7 +83,7 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_HS_SUPPORT
 
 #define FW_VER_MAJOR 1
-#define FW_VER_MINOR 0
+#define FW_VER_MINOR 1
 #define FW_VER_DEBUG 0
 //@}
 /**
@@ -183,10 +183,10 @@ extern void my_callback_config(uint8_t port, usb_cdc_line_coding_t * cfg);
 #define  UDI_CDC_DATA_EP_OUT_0         (4 | USB_EP_DIR_OUT) // RX
 #define  UDI_CDC_COMM_EP_0             (7 | USB_EP_DIR_IN)  // Notify endpoint
 
-//! Endpoints' numbers used by single or first CDC port
 #define  UDI_CDC_DATA_EP_IN_1          (5 | USB_EP_DIR_IN)  // TX
 #define  UDI_CDC_DATA_EP_OUT_1         (6 | USB_EP_DIR_OUT) // RX
 #define  UDI_CDC_COMM_EP_1             (8 | USB_EP_DIR_IN)  // Notify endpoint
+
 
 //! Interface numbers used by single or first CDC port
 #define  UDI_CDC_COMM_IFACE_NUMBER_0   1
@@ -239,6 +239,7 @@ bool main_setup_in_received(void);
 //! Interface number
 #define  UDI_VENDOR_IFACE_NUMBER     0
 
+
 #ifndef UDI_COMPOSITE_DESC_T
 #define UDI_COMPOSITE_DESC_T \
 udi_vendor_desc_t udi_vendor; \
@@ -278,7 +279,6 @@ udi_cdc_data_desc_t udi_cdc_data1;
 &udi_api_cdc_data, \
 &udi_api_cdc_comm, \
 &udi_api_cdc_data,
-
 //! The includes of classes and other headers must be done at the end of this file to avoid compile error
 #include "udi_vendor.h"
 #include "udi_cdc.h"
