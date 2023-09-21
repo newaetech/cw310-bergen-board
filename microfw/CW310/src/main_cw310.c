@@ -323,7 +323,7 @@ int main(void)
 	
 	// send received USART data over to PC on cdc 0 and 1
 	while (true) {
-		cdc_send_to_pc();
+		// cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed		
 		MPSSE_main_sendrecv_byte();
 	}
