@@ -495,6 +495,11 @@ bool main_setup_in_received(void);
 #define UDI_VENDOR_SETUP_OUT_RECEIVED()   main_setup_out_received()
 #define UDI_VENDOR_SETUP_IN_RECEIVED()    main_setup_in_received()
 
+bool naeusb_cdc_handle_send_break(uint8_t port, uint16_t wValue);
+
+#define UDI_CDC_HANDLE_SEND_BREAK(port, wValue) naeusb_cdc_handle_send_break(port, wValue)
+
+
 //! endpoints size for full speed
 //! Note: Disable the endpoints of a type, if size equal 0
 #define UDI_VENDOR_EPS_SIZE_INT_FS    0 /*64*/

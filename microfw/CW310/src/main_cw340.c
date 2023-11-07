@@ -49,6 +49,7 @@ void fpga_pins(bool enabled);
 void usb_pwr_setup(void);
 void check_power_state(void);
 
+uint8_t FPGA_PINS_ON = 0;
 /*
 If enabled, configure FPGA pins as their default
 
@@ -62,6 +63,7 @@ void fpga_pins(bool enabled)
 	//gpio_configure_pin(PIO_PB18_IDX, PIO_OUTPUT_0);
 
 	if (enabled){
+		FPGA_PINS_ON = 1;
 		#ifdef CONF_BOARD_PCK0
 		gpio_configure_pin(PIN_PCK0, PIN_PCK0_FLAGS);
 		#endif
@@ -112,6 +114,7 @@ void fpga_pins(bool enabled)
 		//gpio_configure_pin(SPI_SPCK_GPIO, SPI_SPCK_FLAGS); /* TODO: Add back */
 
 	} else {
+		FPGA_PINS_ON = 0;
 		// high-z FPGA pins to avoid powering the FPGA thru these pins
 		#ifdef CONF_BOARD_PCK0
 		gpio_configure_pin(PIN_PCK0, PIO_INPUT);

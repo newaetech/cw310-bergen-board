@@ -502,4 +502,5 @@ void kill_fpga_power(void);
 
 #endif /* CW305_PLUS_PINS_H_ */
 
+extern uint8_t FPGA_PINS_ON;
 #endif
