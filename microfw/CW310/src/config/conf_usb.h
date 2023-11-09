@@ -370,7 +370,7 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_HS_SUPPORT
 
 #define FW_VER_MAJOR 1
-#define FW_VER_MINOR 2
+#define FW_VER_MINOR 3
 #define FW_VER_DEBUG 0
 //@}
 /**
