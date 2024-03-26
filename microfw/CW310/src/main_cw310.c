@@ -103,7 +103,7 @@ void fpga_pins(bool enabled)
 		gpio_configure_pin(PIN_EBI_ADDR_BUS_A17, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_ADDR_BUS_A18, PIN_EBI_DATA_BUS_FLAG1);
 		gpio_configure_pin(PIN_EBI_ADDR_BUS_A19, PIN_EBI_DATA_BUS_FLAG1);
-		gpio_configure_pin(FPGA_ALE_GPIO, FPGA_ALE_FLAGS);
+		// gpio_configure_pin(FPGA_ALE_GPIO, FPGA_ALE_FLAGS);
 		//gpio_configure_pin(PIN_EBI_ADDR_BUS_A20, PIN_EBI_DATA_BUS_FLAG1); /* TODO: Add ADDR20 back */
 		
 		
@@ -174,7 +174,7 @@ void fpga_pins(bool enabled)
 		//gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, PIO_INPUT);
 		
 		//ALE pin under SW control
-		gpio_configure_pin(FPGA_ALE_GPIO, PIO_INPUT);
+		// gpio_configure_pin(FPGA_ALE_GPIO, PIO_INPUT);
 		
 		//Force FPGA trigger
 		gpio_configure_pin(FPGA_TRIGGER_GPIO, PIO_INPUT);
@@ -304,9 +304,6 @@ int main(void)
 	reset_reason = RSTC->RSTC_SR;
 	reset_reason = reset_reason; //Still a thing in 2021??
 	WDT->WDT_MR = (1 << 25); //disable watchdog
-	
-	// unlock I2C
-	I2C_LOCK = 0;
 	
 	//Convert serial number to ASCII for USB Serial number
 	uint32_t serial_number[4];

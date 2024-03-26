@@ -7,6 +7,7 @@
 #include "naeusb.h"
 #include "naeusb_bergen.h"
 #include "naeusb_default.h"
+#include "i2c_util.h"
 
 int max1617_register_read(uint8_t reg_addr, int8_t *result);
 
@@ -42,16 +43,14 @@ void ctrl_i2c_send(void)
 	if (udd_g_ctrlreq.req.wLength > udd_g_ctrlreq.payload_size)
 	return;
 	
-	if (I2C_LOCK) {
+	if (i2c_is_locked()) {
 		I2C_STATUS = 1;
 		return;
 	}
 	
 	USER_TWI_PACKET.buffer = udd_g_ctrlreq.payload;
 	USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;
-	I2C_LOCK = 1;
-	I2C_STATUS = twi_master_write(TWI0, &USER_TWI_PACKET);
-	I2C_LOCK = 0;
+	raw_i2c_send(&USER_TWI_PACKET);
 }
 
 void ctrl_i2c_setup(void)
@@ -73,13 +72,11 @@ void ctrl_i2c_setup(void)
 
 void ctrl_fpga_temp_cb(void)
 {
-	if (I2C_LOCK) {
+	if (i2c_is_locked()) {
 		I2C_STATUS = 1;
 		return;
 	}
-	I2C_LOCK = 1;
 	max1617_register_write(udd_g_ctrlreq.req.wValue & 0xFF, udd_g_ctrlreq.payload[0]);
-	I2C_LOCK = 0;
 	I2C_STATUS = 0;
 }
 
@@ -115,7 +112,7 @@ bool bergen_setup_in_received(void)
 	switch (udd_g_ctrlreq.req.bRequest & 0xFF) {
 		case REQ_FPGA_TEMP:
 			addr = udd_g_ctrlreq.req.wValue & 0xFF;
-			if (I2C_LOCK) {
+			if (i2c_is_locked()) {
 				respbuf[0] = 1;
 				udd_g_ctrlreq.payload = respbuf;
 				udd_g_ctrlreq.payload_size = 1;
@@ -142,18 +139,15 @@ bool bergen_setup_in_received(void)
 		case REQ_I2C_DATA:
 			USER_TWI_PACKET.length = udd_g_ctrlreq.req.wLength;
 			USER_TWI_PACKET.buffer = respbuf + 1;
-			if (I2C_LOCK) {
+			if (i2c_is_locked()) {
 				respbuf[0] = 1;
 				I2C_STATUS = 1;
 				udd_g_ctrlreq.payload = respbuf;
 				udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length + 1;
 				return true;
 			}
-			
-			I2C_LOCK = 1;
-			twi_master_read(TWI0, &USER_TWI_PACKET);
+			raw_i2c_read(&USER_TWI_PACKET);
 			respbuf[0] = 0;
-			I2C_LOCK = 0;
 			udd_g_ctrlreq.payload = respbuf;
 			udd_g_ctrlreq.payload_size = USER_TWI_PACKET.length + 1;
 			return true;

@@ -60,9 +60,9 @@ Must be done after setting new power settings
 */
 int usb_pd_soft_reset(void)
 {
-	if (I2C_LOCK)
+	if (i2c_is_locked())
 		return -1;
-	I2C_LOCK = 1;
+
 	uint8_t cmd = 0x0D;
 	int rtn;
 

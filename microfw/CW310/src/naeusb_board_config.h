@@ -7,7 +7,6 @@
 
 #ifdef __PLAT_CW340__
 
-extern volatile uint8_t I2C_LOCK;
 extern uint8_t FPGA_PINS_ON;
 
 
@@ -256,7 +255,6 @@ void kill_fpga_power(void);
  *  Author: adewa
  */
 
-extern volatile uint8_t I2C_LOCK;
 extern uint8_t FPGA_PINS_ON;
 
 
