@@ -282,7 +282,7 @@ int main(void)
 	WDT->WDT_MR = (1 << 25); //disable watchdog
 
 	// unlock I2C
-	I2C_LOCK = 0;
+	// I2C_LOCK = 0;
 
 	//Convert serial number to ASCII for USB Serial number
 	uint32_t serial_number[4];
