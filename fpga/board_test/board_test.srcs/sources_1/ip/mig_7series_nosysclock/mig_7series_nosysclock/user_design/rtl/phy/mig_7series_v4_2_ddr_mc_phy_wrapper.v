@@ -593,7 +593,7 @@ module mig_7series_v4_2_ddr_mc_phy_wrapper #
 
   wire iddr_rst_i;
 
-  (* use_dsp48 = "no" *) wire [DQS_CNT_WIDTH:0]             byte_sel_cnt_w1;
+  (* use_dsp = "no" *) wire [DQS_CNT_WIDTH:0]             byte_sel_cnt_w1;
 
   // Always read from input data FIFOs when not empty
   assign phy_rd_en = !if_empty;

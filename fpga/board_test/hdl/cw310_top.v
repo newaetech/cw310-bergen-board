@@ -46,6 +46,12 @@ module cw310_top #(
     input wire                          USB_nCE,        // !CE, active low chip enable
     input wire                          usb_trigger,    // High when trigger requested
 
+    // SAM3X UART/USART Interface (Serial Console): simple loopback
+    output wire                         SAM_RXD0,
+    input  wire                         SAM_TXD0,
+    output wire                         SAM_RXD1,
+    input  wire                         SAM_TXD1,
+
     // Buttons/LEDs on Board
     input wire [7:0]                    USRDIP,         // DIP switch 0-7
     input wire                          USRSW2,     // Pushbutton SW4, connected to R1, used here as reset
@@ -99,6 +105,8 @@ module cw310_top #(
     input  wire                         vddr_pgood
     );
 
+    assign SAM_RXD0 = SAM_TXD0;
+    assign SAM_RXD1 = SAM_TXD1;
 
     wire [pKEY_WIDTH-1:0] crypt_key;
     wire [pPT_WIDTH-1:0] crypt_textout;

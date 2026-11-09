@@ -1,10 +1,11 @@
-// Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+// Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+// Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-// Date        : Tue Nov  2 13:15:29 2021
-// Host        : red running 64-bit Ubuntu 18.04.6 LTS
+// Tool Version: Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+// Date        : Thu Nov  5 16:28:22 2026
+// Host        : red running 64-bit Ubuntu 24.04.5 LTS
 // Command     : write_verilog -force -mode funcsim
-//               /home/jpnewae/git/bergen/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0_sim_netlist.v
+//               /home/jpnewae/git/cw310-bergen-board/fpga/board_test/board_test.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0_sim_netlist.v
 // Design      : xadc_wiz_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -113,7 +114,7 @@ module xadc_wiz_0
   wire vp_in;
   wire [6:4]NLW_inst_alarm_out_UNCONNECTED;
 
-  xadc_wiz_0_xadc_wiz_0_axi_xadc inst
+  xadc_wiz_0_axi_xadc inst
        (.alarm_out({alarm_out,NLW_inst_alarm_out_UNCONNECTED[6:4],vbram_alarm_out,vccaux_alarm_out,vccint_alarm_out,user_temp_alarm_out}),
         .busy_out(busy_out),
         .channel_out(channel_out),
@@ -144,6 +145,128 @@ module xadc_wiz_0
         .vp_in(vp_in));
 endmodule
 
+module xadc_wiz_0_axi_xadc
+   (daddr_in,
+    den_in,
+    di_in,
+    dwe_in,
+    do_out,
+    drdy_out,
+    s_axis_aclk,
+    m_axis_aclk,
+    m_axis_resetn,
+    m_axis_tdata,
+    m_axis_tvalid,
+    m_axis_tid,
+    m_axis_tready,
+    vauxp0,
+    vauxn0,
+    vauxp1,
+    vauxn1,
+    vauxp8,
+    vauxn8,
+    busy_out,
+    channel_out,
+    eoc_out,
+    eos_out,
+    ot_out,
+    alarm_out,
+    temp_out,
+    vp_in,
+    vn_in);
+  input [6:0]daddr_in;
+  input den_in;
+  input [15:0]di_in;
+  input dwe_in;
+  output [15:0]do_out;
+  output drdy_out;
+  input s_axis_aclk;
+  input m_axis_aclk;
+  input m_axis_resetn;
+  output [15:0]m_axis_tdata;
+  output m_axis_tvalid;
+  output [4:0]m_axis_tid;
+  input m_axis_tready;
+  input vauxp0;
+  input vauxn0;
+  input vauxp1;
+  input vauxn1;
+  input vauxp8;
+  input vauxn8;
+  output busy_out;
+  output [4:0]channel_out;
+  output eoc_out;
+  output eos_out;
+  output ot_out;
+  output [7:0]alarm_out;
+  output [11:0]temp_out;
+  input vp_in;
+  input vn_in;
+
+  wire \<const0> ;
+  wire [7:0]\^alarm_out ;
+  wire busy_out;
+  wire [4:0]channel_out;
+  wire [6:0]daddr_in;
+  wire den_in;
+  wire [15:0]di_in;
+  wire [15:0]do_out;
+  wire drdy_out;
+  wire dwe_in;
+  wire eoc_out;
+  wire eos_out;
+  wire m_axis_aclk;
+  wire m_axis_resetn;
+  wire [15:0]m_axis_tdata;
+  wire [4:0]m_axis_tid;
+  wire m_axis_tready;
+  wire m_axis_tvalid;
+  wire ot_out;
+  wire s_axis_aclk;
+  wire [11:0]temp_out;
+  wire vauxn0;
+  wire vauxn1;
+  wire vauxn8;
+  wire vauxp0;
+  wire vauxp1;
+  wire vauxp8;
+  wire vn_in;
+  wire vp_in;
+
+  assign alarm_out[7] = \^alarm_out [7];
+  assign alarm_out[6] = \<const0> ;
+  assign alarm_out[5] = \<const0> ;
+  assign alarm_out[4] = \<const0> ;
+  assign alarm_out[3:0] = \^alarm_out [3:0];
+  xadc_wiz_0_xadc_core_drp AXI_XADC_CORE_I
+       (.VAUXN({vauxn8,vauxn1,vauxn0}),
+        .VAUXP({vauxp8,vauxp1,vauxp0}),
+        .alarm_out({\^alarm_out [7],\^alarm_out [3:0]}),
+        .busy_out(busy_out),
+        .channel_out(channel_out),
+        .daddr_in(daddr_in),
+        .den_in(den_in),
+        .di_in(di_in),
+        .do_out(do_out),
+        .drdy_out(drdy_out),
+        .dwe_in(dwe_in),
+        .eoc_out(eoc_out),
+        .eos_out(eos_out),
+        .m_axis_aclk(m_axis_aclk),
+        .m_axis_resetn(m_axis_resetn),
+        .m_axis_tdata(m_axis_tdata),
+        .m_axis_tid(m_axis_tid),
+        .m_axis_tready(m_axis_tready),
+        .m_axis_tvalid(m_axis_tvalid),
+        .ot_out(ot_out),
+        .s_axis_aclk(s_axis_aclk),
+        .temp_out(temp_out),
+        .vn_in(vn_in),
+        .vp_in(vp_in));
+  GND GND
+       (.G(\<const0> ));
+endmodule
+
 (* ORIG_REF_NAME = "drp_arbiter" *) 
 module xadc_wiz_0_drp_arbiter
    (m_axis_reset,
@@ -155,15 +278,15 @@ module xadc_wiz_0_drp_arbiter
     wren_fifo,
     \do_A_reg_reg[14]_0 ,
     Q,
-    \FSM_sequential_state_reg[0]_0 ,
+    XADC_INST,
     \do_A_reg_reg[15]_0 ,
-    state__0,
+    state,
     do_out,
     \daddr_C_reg_reg[6]_0 ,
     \di_C_reg_reg[15]_0 ,
     m_axis_aclk,
     den_reg,
-    \m_axis_tdata[15] ,
+    FIFO18E1_inst_data,
     m_axis_resetn,
     \FSM_sequential_state_reg[3] ,
     mode_change,
@@ -182,7 +305,7 @@ module xadc_wiz_0_drp_arbiter
     jtaglocked_i,
     DO,
     overlap_A,
-    \FSM_sequential_state_reg[0]_1 );
+    \FSM_sequential_state_reg[0]_0 );
   output m_axis_reset;
   output den_C;
   output dwe_C;
@@ -192,15 +315,15 @@ module xadc_wiz_0_drp_arbiter
   output wren_fifo;
   output \do_A_reg_reg[14]_0 ;
   output [15:0]Q;
-  output \FSM_sequential_state_reg[0]_0 ;
+  output XADC_INST;
   output \do_A_reg_reg[15]_0 ;
-  output [1:0]state__0;
+  output [1:0]state;
   output [15:0]do_out;
   output [6:0]\daddr_C_reg_reg[6]_0 ;
   output [15:0]\di_C_reg_reg[15]_0 ;
   input m_axis_aclk;
   input den_reg;
-  input \m_axis_tdata[15] ;
+  input FIFO18E1_inst_data;
   input m_axis_resetn;
   input \FSM_sequential_state_reg[3] ;
   input mode_change;
@@ -219,9 +342,10 @@ module xadc_wiz_0_drp_arbiter
   input jtaglocked_i;
   input [15:0]DO;
   input overlap_A;
-  input \FSM_sequential_state_reg[0]_1 ;
+  input \FSM_sequential_state_reg[0]_0 ;
 
   wire [15:0]DO;
+  wire FIFO18E1_inst_data;
   wire \FSM_sequential_state[0]_i_1_n_0 ;
   wire \FSM_sequential_state[0]_i_2__0_n_0 ;
   wire \FSM_sequential_state[1]_i_1_n_0 ;
@@ -230,11 +354,11 @@ module xadc_wiz_0_drp_arbiter
   wire \FSM_sequential_state[1]_i_4_n_0 ;
   wire \FSM_sequential_state[1]_i_5_n_0 ;
   wire \FSM_sequential_state_reg[0]_0 ;
-  wire \FSM_sequential_state_reg[0]_1 ;
   wire \FSM_sequential_state_reg[3] ;
   wire [0:0]\FSM_sequential_state_reg[3]_0 ;
   wire \FSM_sequential_state_reg[3]_1 ;
   wire [15:0]Q;
+  wire XADC_INST;
   wire bbusy_A;
   wire [0:0]channel_out;
   wire [6:0]daddr_C_reg0_in;
@@ -315,7 +439,6 @@ module xadc_wiz_0_drp_arbiter
   wire m_axis_aclk;
   wire m_axis_reset;
   wire m_axis_resetn;
-  wire \m_axis_tdata[15] ;
   wire mode_change;
   wire overlap_A;
   wire overlap_A_i_1_n_0;
@@ -326,24 +449,24 @@ module xadc_wiz_0_drp_arbiter
   wire overlap_B_i_3_n_0;
   wire overlap_B_i_4_n_0;
   wire overlap_B_reg_0;
-  wire [1:0]state__0;
+  wire [1:0]state;
   wire wren_fifo;
 
   LUT2 #(
     .INIT(4'h8)) 
     FIFO18E1_inst_data_i_2
        (.I0(drdy_i),
-        .I1(\m_axis_tdata[15] ),
+        .I1(FIFO18E1_inst_data),
         .O(wren_fifo));
   LUT6 #(
     .INIT(64'h0000FFFFCCF40000)) 
     \FSM_sequential_state[0]_i_1 
        (.I0(overlap_B_reg_0),
         .I1(\FSM_sequential_state[0]_i_2__0_n_0 ),
-        .I2(\FSM_sequential_state_reg[0]_1 ),
-        .I3(state__0[1]),
+        .I2(\FSM_sequential_state_reg[0]_0 ),
+        .I3(state[1]),
         .I4(\FSM_sequential_state[1]_i_3_n_0 ),
-        .I5(state__0[0]),
+        .I5(state[0]),
         .O(\FSM_sequential_state[0]_i_1_n_0 ));
   LUT2 #(
     .INIT(4'hE)) 
@@ -358,7 +481,7 @@ module xadc_wiz_0_drp_arbiter
         .I1(overlap_B_reg_0),
         .I2(bbusy_A),
         .I3(\FSM_sequential_state[1]_i_3_n_0 ),
-        .I4(state__0[1]),
+        .I4(state[1]),
         .O(\FSM_sequential_state[1]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT3 #(
@@ -371,8 +494,8 @@ module xadc_wiz_0_drp_arbiter
   LUT6 #(
     .INIT(64'h0200020002000300)) 
     \FSM_sequential_state[1]_i_2__0 
-       (.I0(state__0[0]),
-        .I1(state__0[1]),
+       (.I0(state[0]),
+        .I1(state[1]),
         .I2(bbusy_A),
         .I3(den_in),
         .I4(den_A),
@@ -385,15 +508,15 @@ module xadc_wiz_0_drp_arbiter
         .I1(overlap_A_reg_n_0),
         .I2(\daddr_C_reg[6]_i_4_n_0 ),
         .I3(\FSM_sequential_state[1]_i_5_n_0 ),
-        .I4(state__0[1]),
+        .I4(state[1]),
         .I5(dwe_reg_i_5_n_0),
         .O(\FSM_sequential_state[1]_i_3_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair2" *) 
   LUT3 #(
     .INIT(8'h60)) 
     \FSM_sequential_state[1]_i_4 
-       (.I0(state__0[1]),
-        .I1(state__0[0]),
+       (.I0(state[1]),
+        .I1(state[0]),
         .I2(drdy_C),
         .O(\FSM_sequential_state[1]_i_4_n_0 ));
   LUT2 #(
@@ -411,7 +534,7 @@ module xadc_wiz_0_drp_arbiter
         .I2(\FSM_sequential_state_reg[3]_0 ),
         .I3(Q[14]),
         .I4(Q[15]),
-        .O(\FSM_sequential_state_reg[0]_0 ));
+        .O(XADC_INST));
   LUT6 #(
     .INIT(64'h00F09999FFFFFFFF)) 
     \FSM_sequential_state[3]_i_7 
@@ -423,19 +546,23 @@ module xadc_wiz_0_drp_arbiter
         .I5(\FSM_sequential_state_reg[3]_1 ),
         .O(\do_A_reg_reg[14]_0 ));
   (* FSM_ENCODED_STATES = "grant_b:10,nogrant:00,grant_a:01" *) 
-  FDCE \FSM_sequential_state_reg[0] 
+  FDCE #(
+    .INIT(1'b0)) 
+    \FSM_sequential_state_reg[0] 
        (.C(m_axis_aclk),
         .CE(1'b1),
         .CLR(m_axis_reset),
         .D(\FSM_sequential_state[0]_i_1_n_0 ),
-        .Q(state__0[0]));
+        .Q(state[0]));
   (* FSM_ENCODED_STATES = "grant_b:10,nogrant:00,grant_a:01" *) 
-  FDCE \FSM_sequential_state_reg[1] 
+  FDCE #(
+    .INIT(1'b0)) 
+    \FSM_sequential_state_reg[1] 
        (.C(m_axis_aclk),
         .CE(1'b1),
         .CLR(m_axis_reset),
         .D(\FSM_sequential_state[1]_i_1_n_0 ),
-        .Q(state__0[1]));
+        .Q(state[1]));
   LUT6 #(
     .INIT(64'hFFFFF888F888F888)) 
     \daddr_C_reg[0]_i_1 
@@ -511,8 +638,8 @@ module xadc_wiz_0_drp_arbiter
         .I1(den_A),
         .I2(overlap_A_reg_n_0),
         .I3(drdy_C),
-        .I4(state__0[0]),
-        .I5(state__0[1]),
+        .I4(state[0]),
+        .I5(state[1]),
         .O(\daddr_C_reg[6]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFF888F888F888)) 
@@ -527,36 +654,36 @@ module xadc_wiz_0_drp_arbiter
   LUT6 #(
     .INIT(64'h11111111AAA2FFA2)) 
     \daddr_C_reg[6]_i_3 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(drdy_C),
         .I2(overlap_A_reg_n_0),
         .I3(den_A),
         .I4(jtaglocked_i),
-        .I5(state__0[0]),
+        .I5(state[0]),
         .O(\daddr_C_reg[6]_i_3_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair0" *) 
   LUT4 #(
     .INIT(16'h0001)) 
     \daddr_C_reg[6]_i_4 
        (.I0(bbusy_A),
-        .I1(state__0[1]),
-        .I2(state__0[0]),
+        .I1(state[1]),
+        .I2(state[0]),
         .I3(jtaglocked_i),
         .O(\daddr_C_reg[6]_i_4_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \daddr_C_reg[6]_i_5 
-       (.I0(state__0[0]),
-        .I1(state__0[1]),
+       (.I0(state[0]),
+        .I1(state[1]),
         .O(\daddr_C_reg[6]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h03C003C003F30340)) 
     \daddr_C_reg[6]_i_6 
        (.I0(overlap_B_reg_0),
-        .I1(state__0[0]),
+        .I1(state[0]),
         .I2(drdy_C),
-        .I3(state__0[1]),
+        .I3(state[1]),
         .I4(\daddr_C_reg[6]_i_9_n_0 ),
         .I5(bbusy_A),
         .O(\daddr_C_reg[6]_i_6_n_0 ));
@@ -566,17 +693,17 @@ module xadc_wiz_0_drp_arbiter
        (.I0(\daddr_C_reg[6]_i_10_n_0 ),
         .I1(overlap_A_reg_n_0),
         .I2(drdy_C),
-        .I3(state__0[0]),
-        .I4(state__0[1]),
+        .I3(state[0]),
+        .I4(state[1]),
         .I5(bbusy_A),
         .O(\daddr_C_reg[6]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h4000400040DD4050)) 
     \daddr_C_reg[6]_i_8 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(drdy_C),
         .I2(overlap_A_reg_n_0),
-        .I3(state__0[1]),
+        .I3(state[1]),
         .I4(overlap_B_reg_0),
         .I5(bbusy_A),
         .O(\daddr_C_reg[6]_i_8_n_0 ));
@@ -636,8 +763,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'h2F20)) 
     \daddr_reg[0]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [0]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[0]),
         .O(daddr_reg[0]));
   (* SOFT_HLUTNM = "soft_lutpair6" *) 
@@ -645,8 +772,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'h2F20)) 
     \daddr_reg[1]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [1]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[1]),
         .O(daddr_reg[1]));
   (* SOFT_HLUTNM = "soft_lutpair7" *) 
@@ -654,8 +781,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'h2F20)) 
     \daddr_reg[2]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [2]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[2]),
         .O(daddr_reg[2]));
   (* SOFT_HLUTNM = "soft_lutpair8" *) 
@@ -663,8 +790,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'h2F20)) 
     \daddr_reg[3]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [3]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[3]),
         .O(daddr_reg[3]));
   (* SOFT_HLUTNM = "soft_lutpair9" *) 
@@ -672,8 +799,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'h2F20)) 
     \daddr_reg[4]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [4]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[4]),
         .O(daddr_reg[4]));
   (* SOFT_HLUTNM = "soft_lutpair7" *) 
@@ -681,15 +808,15 @@ module xadc_wiz_0_drp_arbiter
     .INIT(4'h2)) 
     \daddr_reg[5]_i_1 
        (.I0(daddr_in[5]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(daddr_reg[5]));
   (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT4 #(
     .INIT(16'h2F20)) 
     \daddr_reg[6]_i_1 
        (.I0(\daddr_C_reg_reg[6]_1 [5]),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(daddr_in[6]),
         .O(daddr_reg[6]));
   FDCE \daddr_reg_reg[0] 
@@ -747,9 +874,9 @@ module xadc_wiz_0_drp_arbiter
   LUT6 #(
     .INIT(64'h0202024700000000)) 
     den_C_reg_i_2
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(drdy_C),
-        .I2(state__0[1]),
+        .I2(state[1]),
         .I3(overlap_B_reg_0),
         .I4(overlap_A_reg_n_0),
         .I5(den_A),
@@ -759,8 +886,8 @@ module xadc_wiz_0_drp_arbiter
     den_C_reg_i_3
        (.I0(overlap_A_reg_n_0),
         .I1(drdy_C),
-        .I2(state__0[0]),
-        .I3(state__0[1]),
+        .I2(state[0]),
+        .I3(state[1]),
         .I4(bbusy_A),
         .I5(den_A),
         .O(den_C_reg_i_3_n_0));
@@ -770,15 +897,15 @@ module xadc_wiz_0_drp_arbiter
     den_C_reg_i_4
        (.I0(drdy_C),
         .I1(den_in),
-        .I2(state__0[0]),
-        .I3(state__0[1]),
+        .I2(state[0]),
+        .I3(state[1]),
         .O(den_C_reg_i_4_n_0));
   LUT6 #(
     .INIT(64'h000000004000440C)) 
     den_C_reg_i_5
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(dwe_reg_i_4_n_0),
-        .I2(state__0[0]),
+        .I2(state[0]),
         .I3(drdy_C),
         .I4(overlap_A_reg_n_0),
         .I5(bbusy_A),
@@ -1024,112 +1151,112 @@ module xadc_wiz_0_drp_arbiter
     .INIT(4'h2)) 
     \di_reg[0]_i_1 
        (.I0(di_in[0]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[0]));
   (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[10]_i_1 
        (.I0(di_in[10]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[10]));
   (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[11]_i_1 
        (.I0(di_in[11]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[11]));
   (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[12]_i_1 
        (.I0(di_in[12]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[12]));
   (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[13]_i_1 
        (.I0(di_in[13]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[13]));
   (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[14]_i_1 
        (.I0(di_in[14]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[14]));
   (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[15]_i_1 
        (.I0(di_in[15]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[15]));
   (* SOFT_HLUTNM = "soft_lutpair33" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[1]_i_1 
        (.I0(di_in[1]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[1]));
   (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[2]_i_1 
        (.I0(di_in[2]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[2]));
   (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[3]_i_1 
        (.I0(di_in[3]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[3]));
   (* SOFT_HLUTNM = "soft_lutpair31" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[4]_i_1 
        (.I0(di_in[4]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[4]));
   (* SOFT_HLUTNM = "soft_lutpair31" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[5]_i_1 
        (.I0(di_in[5]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[5]));
   (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[6]_i_1 
        (.I0(di_in[6]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[6]));
   (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[7]_i_1 
        (.I0(di_in[7]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[7]));
   (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[8]_i_1 
        (.I0(di_in[8]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[8]));
   (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \di_reg[9]_i_1 
        (.I0(di_in[9]),
-        .I1(state__0[1]),
+        .I1(state[1]),
         .O(di_reg[9]));
   FDCE \di_reg_reg[0] 
        (.C(m_axis_aclk),
@@ -1230,119 +1357,119 @@ module xadc_wiz_0_drp_arbiter
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[0]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[0]),
         .O(do_A_reg0_in[0]));
   (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[10]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[10]),
         .O(do_A_reg0_in[10]));
   (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[11]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[11]),
         .O(do_A_reg0_in[11]));
   (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[12]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[12]),
         .O(do_A_reg0_in[12]));
   (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[13]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[13]),
         .O(do_A_reg0_in[13]));
   (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[14]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[14]),
         .O(do_A_reg0_in[14]));
   LUT3 #(
     .INIT(8'h31)) 
     \do_A_reg[15]_i_1 
-       (.I0(state__0[0]),
-        .I1(state__0[1]),
+       (.I0(state[0]),
+        .I1(state[1]),
         .I2(drdy_C),
         .O(\do_A_reg[15]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair11" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[15]_i_2 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[15]),
         .O(do_A_reg0_in[15]));
   (* SOFT_HLUTNM = "soft_lutpair18" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[1]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[1]),
         .O(do_A_reg0_in[1]));
   (* SOFT_HLUTNM = "soft_lutpair18" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[2]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[2]),
         .O(do_A_reg0_in[2]));
   (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[3]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[3]),
         .O(do_A_reg0_in[3]));
   (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[4]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[4]),
         .O(do_A_reg0_in[4]));
   (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[5]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[5]),
         .O(do_A_reg0_in[5]));
   (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[6]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[6]),
         .O(do_A_reg0_in[6]));
   (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[7]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[7]),
         .O(do_A_reg0_in[7]));
   (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[8]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[8]),
         .O(do_A_reg0_in[8]));
   (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_A_reg[9]_i_1 
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(DO[9]),
         .O(do_A_reg0_in[9]));
   FDCE \do_A_reg_reg[0] 
@@ -1445,56 +1572,56 @@ module xadc_wiz_0_drp_arbiter
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[0]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[0]),
         .O(do_B_reg0_in[0]));
   (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[10]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[10]),
         .O(do_B_reg0_in[10]));
   (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[11]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[11]),
         .O(do_B_reg0_in[11]));
   (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[12]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[12]),
         .O(do_B_reg0_in[12]));
   (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[13]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[13]),
         .O(do_B_reg0_in[13]));
   (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[14]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[14]),
         .O(do_B_reg0_in[14]));
   LUT3 #(
     .INIT(8'h31)) 
     \do_B_reg[15]_i_1 
-       (.I0(state__0[1]),
-        .I1(state__0[0]),
+       (.I0(state[1]),
+        .I1(state[0]),
         .I2(drdy_C),
         .O(\do_B_reg[15]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[15]_i_2 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[15]),
         .O(do_B_reg0_in[15]));
   LUT1 #(
@@ -1506,63 +1633,63 @@ module xadc_wiz_0_drp_arbiter
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[1]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[1]),
         .O(do_B_reg0_in[1]));
   (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[2]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[2]),
         .O(do_B_reg0_in[2]));
   (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[3]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[3]),
         .O(do_B_reg0_in[3]));
   (* SOFT_HLUTNM = "soft_lutpair24" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[4]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[4]),
         .O(do_B_reg0_in[4]));
   (* SOFT_HLUTNM = "soft_lutpair24" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[5]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[5]),
         .O(do_B_reg0_in[5]));
   (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[6]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[6]),
         .O(do_B_reg0_in[6]));
   (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[7]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[7]),
         .O(do_B_reg0_in[7]));
   (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[8]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[8]),
         .O(do_B_reg0_in[8]));
   (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \do_B_reg[9]_i_1 
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(DO[9]),
         .O(do_B_reg0_in[9]));
   FDCE \do_B_reg_reg[0] 
@@ -1666,8 +1793,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'hC808)) 
     drdy_A_reg_i_1
        (.I0(drdy_C),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(drdy_i),
         .O(drdy_A_reg_i_1_n_0));
   FDCE drdy_A_reg_reg
@@ -1681,8 +1808,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(16'hE020)) 
     drdy_B_reg_i_1
        (.I0(drdy_C),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(drdy_out),
         .O(drdy_B_reg_i_1_n_0));
   FDCE drdy_B_reg_reg
@@ -1719,15 +1846,15 @@ module xadc_wiz_0_drp_arbiter
   LUT2 #(
     .INIT(4'h4)) 
     dwe_reg_i_2
-       (.I0(state__0[1]),
+       (.I0(state[1]),
         .I1(dwe_in),
         .O(dwe_reg));
   (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT2 #(
     .INIT(4'h2)) 
     dwe_reg_i_3
-       (.I0(state__0[1]),
-        .I1(state__0[0]),
+       (.I0(state[1]),
+        .I1(state[0]),
         .O(dwe_reg_i_3_n_0));
   (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT2 #(
@@ -1740,7 +1867,7 @@ module xadc_wiz_0_drp_arbiter
   LUT3 #(
     .INIT(8'h10)) 
     dwe_reg_i_5
-       (.I0(state__0[0]),
+       (.I0(state[0]),
         .I1(jtaglocked_i),
         .I2(den_A),
         .O(dwe_reg_i_5_n_0));
@@ -1748,8 +1875,8 @@ module xadc_wiz_0_drp_arbiter
   LUT5 #(
     .INIT(32'h22320000)) 
     dwe_reg_i_6
-       (.I0(state__0[0]),
-        .I1(state__0[1]),
+       (.I0(state[0]),
+        .I1(state[1]),
         .I2(bbusy_A),
         .I3(jtaglocked_i),
         .I4(den_in),
@@ -1799,11 +1926,11 @@ module xadc_wiz_0_drp_arbiter
     .INIT(64'h00000000E0F0E0E0)) 
     overlap_B_i_2
        (.I0(bbusy_A),
-        .I1(state__0[0]),
+        .I1(state[0]),
         .I2(den_in),
         .I3(overlap_B_reg_0),
         .I4(den_A),
-        .I5(state__0[1]),
+        .I5(state[1]),
         .O(overlap_B));
   LUT6 #(
     .INIT(64'h00008888000088F8)) 
@@ -1811,7 +1938,7 @@ module xadc_wiz_0_drp_arbiter
        (.I0(\daddr_C_reg[6]_i_4_n_0 ),
         .I1(den_A),
         .I2(den_in),
-        .I3(state__0[1]),
+        .I3(state[1]),
         .I4(overlap_A_reg_n_0),
         .I5(jtaglocked_i),
         .O(overlap_B_i_3_n_0));
@@ -1819,8 +1946,8 @@ module xadc_wiz_0_drp_arbiter
     .INIT(64'hAAAEAAAAAAAAAAAA)) 
     overlap_B_i_4
        (.I0(dwe_reg_i_6_n_0),
-        .I1(state__0[0]),
-        .I2(state__0[1]),
+        .I1(state[0]),
+        .I2(state[1]),
         .I3(bbusy_A),
         .I4(overlap_B_reg_0),
         .I5(drdy_C),
@@ -1842,7 +1969,7 @@ module xadc_wiz_0_drp_to_axi4stream
     bbusy_A,
     valid_data_wren_reg_0,
     \FSM_sequential_state_reg[0]_0 ,
-    m_axis_aclk_0,
+    XADC_INST,
     \FSM_sequential_state_reg[1]_0 ,
     den_reg,
     overlap_A,
@@ -1860,11 +1987,11 @@ module xadc_wiz_0_drp_to_axi4stream
     eoc_out,
     mode_change,
     \FSM_sequential_state_reg[3]_0 ,
+    channel_out,
     \FSM_sequential_state_reg[1]_1 ,
     \FSM_sequential_state_reg[2]_0 ,
-    channel_out,
     den_in,
-    state__0,
+    state,
     \FSM_sequential_state_reg[0]_1 ,
     mode_change_reg,
     daddr_in);
@@ -1875,7 +2002,7 @@ module xadc_wiz_0_drp_to_axi4stream
   output bbusy_A;
   output valid_data_wren_reg_0;
   output [0:0]\FSM_sequential_state_reg[0]_0 ;
-  output m_axis_aclk_0;
+  output XADC_INST;
   output \FSM_sequential_state_reg[1]_0 ;
   output den_reg;
   output overlap_A;
@@ -1893,11 +2020,11 @@ module xadc_wiz_0_drp_to_axi4stream
   input eoc_out;
   input mode_change;
   input \FSM_sequential_state_reg[3]_0 ;
+  input [4:0]channel_out;
   input \FSM_sequential_state_reg[1]_1 ;
   input \FSM_sequential_state_reg[2]_0 ;
-  input [4:0]channel_out;
   input den_in;
-  input [1:0]state__0;
+  input [1:0]state;
   input \FSM_sequential_state_reg[0]_1 ;
   input mode_change_reg;
   input [2:0]daddr_in;
@@ -1919,6 +2046,7 @@ module xadc_wiz_0_drp_to_axi4stream
   wire \FSM_sequential_state_reg[2]_0 ;
   wire \FSM_sequential_state_reg[3]_0 ;
   wire [15:0]Q;
+  wire XADC_INST;
   wire almost_full;
   wire bbusy_A;
   wire busy_o_i_1_n_0;
@@ -1940,7 +2068,6 @@ module xadc_wiz_0_drp_to_axi4stream
   wire eoc_out;
   wire fifo_empty;
   wire m_axis_aclk;
-  wire m_axis_aclk_0;
   wire m_axis_reset;
   wire [15:0]m_axis_tdata;
   wire [4:0]m_axis_tid;
@@ -1952,9 +2079,9 @@ module xadc_wiz_0_drp_to_axi4stream
   wire mode_change_sig_reset_i_1_n_0;
   wire overlap_A;
   wire s_axis_aclk;
-  wire [3:1]state;
-  wire [1:0]state__0;
-  wire [3:0]state__0_0;
+  wire [1:0]state;
+  wire [3:1]state_0;
+  wire [3:0]state__0;
   wire [11:0]temp_out;
   wire \temp_out[11]_i_1_n_0 ;
   wire \timer_cntr[0]_i_2_n_0 ;
@@ -1971,10 +2098,14 @@ module xadc_wiz_0_drp_to_axi4stream
   wire \timer_cntr[4]_i_4_n_0 ;
   wire \timer_cntr[4]_i_5_n_0 ;
   wire \timer_cntr[4]_i_6_n_0 ;
+  wire \timer_cntr[4]_i_7_n_0 ;
+  wire \timer_cntr[4]_i_8_n_0 ;
   wire \timer_cntr[8]_i_2_n_0 ;
   wire \timer_cntr[8]_i_3_n_0 ;
   wire \timer_cntr[8]_i_4_n_0 ;
   wire \timer_cntr[8]_i_5_n_0 ;
+  wire \timer_cntr[8]_i_6_n_0 ;
+  wire \timer_cntr[8]_i_7_n_0 ;
   wire [15:0]timer_cntr_reg;
   wire \timer_cntr_reg[0]_i_1_n_0 ;
   wire \timer_cntr_reg[0]_i_1_n_1 ;
@@ -2118,16 +2249,16 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(64'h0135313501050105)) 
     \FSM_sequential_state[0]_i_1__0 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(state[3]),
-        .I2(state[1]),
+        .I1(state_0[3]),
+        .I2(state_0[1]),
         .I3(mode_change),
-        .I4(state[2]),
+        .I4(state_0[2]),
         .I5(\FSM_sequential_state[0]_i_2_n_0 ),
-        .O(state__0_0[0]));
+        .O(state__0[0]));
   LUT6 #(
     .INIT(64'h2F0F2FFF2FFF2F0F)) 
     \FSM_sequential_state[0]_i_2 
-       (.I0(m_axis_aclk_0),
+       (.I0(XADC_INST),
         .I1(mode_change),
         .I2(\FSM_sequential_state_reg[1]_0 ),
         .I3(\FSM_sequential_state_reg[0]_0 ),
@@ -2142,23 +2273,23 @@ module xadc_wiz_0_drp_to_axi4stream
         .I2(\FSM_sequential_state_reg[0]_1 ),
         .O(busy_o_reg_0));
   LUT6 #(
-    .INIT(64'h001FAAAA0010AAAA)) 
+    .INIT(64'h1F0F10001F0F5040)) 
     \FSM_sequential_state[1]_i_1__0 
-       (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(mode_change),
-        .I2(state[2]),
-        .I3(state[3]),
-        .I4(state[1]),
-        .I5(\FSM_sequential_state_reg[1]_1 ),
-        .O(state__0_0[1]));
+       (.I0(state_0[3]),
+        .I1(state_0[2]),
+        .I2(state_0[1]),
+        .I3(\FSM_sequential_state_reg[1]_1 ),
+        .I4(\FSM_sequential_state_reg[0]_0 ),
+        .I5(mode_change),
+        .O(state__0[1]));
   LUT4 #(
     .INIT(16'h1014)) 
     \FSM_sequential_state[2]_i_1 
-       (.I0(state[3]),
-        .I1(state[1]),
-        .I2(state[2]),
+       (.I0(state_0[3]),
+        .I1(state_0[1]),
+        .I2(state_0[2]),
         .I3(\FSM_sequential_state_reg[2]_0 ),
-        .O(state__0_0[2]));
+        .O(state__0[2]));
   LUT6 #(
     .INIT(64'hFFFFFFFFF1110000)) 
     \FSM_sequential_state[3]_i_1 
@@ -2172,29 +2303,29 @@ module xadc_wiz_0_drp_to_axi4stream
   LUT4 #(
     .INIT(16'hFFFE)) 
     \FSM_sequential_state[3]_i_10 
-       (.I0(timer_cntr_reg[10]),
-        .I1(timer_cntr_reg[9]),
-        .I2(timer_cntr_reg[11]),
-        .I3(timer_cntr_reg[8]),
+       (.I0(timer_cntr_reg[14]),
+        .I1(timer_cntr_reg[13]),
+        .I2(timer_cntr_reg[7]),
+        .I3(timer_cntr_reg[6]),
         .O(\FSM_sequential_state[3]_i_10_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT3 #(
     .INIT(8'h53)) 
     \FSM_sequential_state[3]_i_11 
-       (.I0(state[1]),
-        .I1(state[2]),
-        .I2(state[3]),
+       (.I0(state_0[1]),
+        .I1(state_0[2]),
+        .I2(state_0[3]),
         .O(\FSM_sequential_state_reg[1]_0 ));
   LUT6 #(
     .INIT(64'h002FBB000000BB00)) 
     \FSM_sequential_state[3]_i_2 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
         .I1(mode_change),
-        .I2(state[2]),
-        .I3(state[3]),
-        .I4(state[1]),
+        .I2(state_0[2]),
+        .I3(state_0[3]),
+        .I4(state_0[1]),
         .I5(\FSM_sequential_state_reg[3]_0 ),
-        .O(state__0_0[3]));
+        .O(state__0[3]));
   LUT5 #(
     .INIT(32'hFFFFFFF8)) 
     \FSM_sequential_state[3]_i_3 
@@ -2207,10 +2338,10 @@ module xadc_wiz_0_drp_to_axi4stream
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
     \FSM_sequential_state[3]_i_4 
-       (.I0(timer_cntr_reg[14]),
-        .I1(timer_cntr_reg[15]),
-        .I2(timer_cntr_reg[12]),
-        .I3(timer_cntr_reg[13]),
+       (.I0(timer_cntr_reg[12]),
+        .I1(timer_cntr_reg[8]),
+        .I2(timer_cntr_reg[11]),
+        .I3(timer_cntr_reg[5]),
         .I4(\FSM_sequential_state[3]_i_9_n_0 ),
         .I5(\FSM_sequential_state[3]_i_10_n_0 ),
         .O(\FSM_sequential_state[3]_i_4_n_0 ));
@@ -2218,20 +2349,20 @@ module xadc_wiz_0_drp_to_axi4stream
   LUT4 #(
     .INIT(16'h1F11)) 
     \FSM_sequential_state[3]_i_5 
-       (.I0(state[2]),
-        .I1(state[1]),
-        .I2(state[3]),
+       (.I0(state_0[2]),
+        .I1(state_0[1]),
+        .I2(state_0[3]),
         .I3(\FSM_sequential_state_reg[0]_0 ),
         .O(\FSM_sequential_state[3]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h031F001033F330F3)) 
     \FSM_sequential_state[3]_i_6 
-       (.I0(m_axis_aclk_0),
-        .I1(state[3]),
+       (.I0(XADC_INST),
+        .I1(state_0[3]),
         .I2(\FSM_sequential_state_reg[0]_0 ),
-        .I3(state[2]),
+        .I3(state_0[2]),
         .I4(drdy_i),
-        .I5(state[1]),
+        .I5(state_0[1]),
         .O(\FSM_sequential_state[3]_i_6_n_0 ));
   LUT3 #(
     .INIT(8'hFE)) 
@@ -2243,47 +2374,55 @@ module xadc_wiz_0_drp_to_axi4stream
   LUT4 #(
     .INIT(16'hFFFE)) 
     \FSM_sequential_state[3]_i_9 
-       (.I0(timer_cntr_reg[7]),
-        .I1(timer_cntr_reg[6]),
-        .I2(timer_cntr_reg[5]),
-        .I3(timer_cntr_reg[4]),
+       (.I0(timer_cntr_reg[4]),
+        .I1(timer_cntr_reg[9]),
+        .I2(timer_cntr_reg[10]),
+        .I3(timer_cntr_reg[15]),
         .O(\FSM_sequential_state[3]_i_9_n_0 ));
   (* FSM_ENCODED_STATES = "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011" *) 
-  FDCE \FSM_sequential_state_reg[0] 
+  FDCE #(
+    .INIT(1'b1)) 
+    \FSM_sequential_state_reg[0] 
        (.C(m_axis_aclk),
         .CE(\FSM_sequential_state[3]_i_1_n_0 ),
         .CLR(m_axis_reset),
-        .D(state__0_0[0]),
+        .D(state__0[0]),
         .Q(\FSM_sequential_state_reg[0]_0 ));
   (* FSM_ENCODED_STATES = "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011" *) 
-  FDCE \FSM_sequential_state_reg[1] 
+  FDCE #(
+    .INIT(1'b0)) 
+    \FSM_sequential_state_reg[1] 
        (.C(m_axis_aclk),
         .CE(\FSM_sequential_state[3]_i_1_n_0 ),
         .CLR(m_axis_reset),
-        .D(state__0_0[1]),
-        .Q(state[1]));
+        .D(state__0[1]),
+        .Q(state_0[1]));
   (* FSM_ENCODED_STATES = "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011" *) 
-  FDCE \FSM_sequential_state_reg[2] 
+  FDCE #(
+    .INIT(1'b0)) 
+    \FSM_sequential_state_reg[2] 
        (.C(m_axis_aclk),
         .CE(\FSM_sequential_state[3]_i_1_n_0 ),
         .CLR(m_axis_reset),
-        .D(state__0_0[2]),
-        .Q(state[2]));
+        .D(state__0[2]),
+        .Q(state_0[2]));
   (* FSM_ENCODED_STATES = "wait_ind_adc:0111,wait_mode_change:0000,wait_seq_s_ch:1000,rd_ctrl_reg_temp:1010,rd_ctrl_reg_41:0010,rd_en_ctrl_reg_41:0001,rd_b_reg_cmd:0101,rd_en_ctrl_reg_temp:1001,rd_b_reg:0110,rd_a_reg:0100,wait_sim_samp:0011" *) 
-  FDCE \FSM_sequential_state_reg[3] 
+  FDCE #(
+    .INIT(1'b0)) 
+    \FSM_sequential_state_reg[3] 
        (.C(m_axis_aclk),
         .CE(\FSM_sequential_state[3]_i_1_n_0 ),
         .CLR(m_axis_reset),
-        .D(state__0_0[3]),
-        .Q(state[3]));
+        .D(state__0[3]),
+        .Q(state_0[3]));
   LUT6 #(
     .INIT(64'hFFFA55FA00001000)) 
     busy_o_i_1
-       (.I0(state[2]),
-        .I1(m_axis_aclk_0),
+       (.I0(state_0[2]),
+        .I1(XADC_INST),
         .I2(\FSM_sequential_state_reg[0]_0 ),
-        .I3(state[1]),
-        .I4(state[3]),
+        .I3(state_0[1]),
+        .I4(state_0[3]),
         .I5(bbusy_A),
         .O(busy_o_i_1_n_0));
   LUT2 #(
@@ -2291,7 +2430,7 @@ module xadc_wiz_0_drp_to_axi4stream
     busy_o_i_2
        (.I0(eoc_out),
         .I1(channel_out[4]),
-        .O(m_axis_aclk_0));
+        .O(XADC_INST));
   FDCE busy_o_reg
        (.C(m_axis_aclk),
         .CE(1'b1),
@@ -2302,9 +2441,9 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(32'h01FF0003)) 
     \channel_id[0]_i_1 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(state[2]),
-        .I2(state[1]),
-        .I3(state[3]),
+        .I1(state_0[2]),
+        .I2(state_0[1]),
+        .I3(state_0[3]),
         .I4(channel_out[0]),
         .O(channel_id[0]));
   (* SOFT_HLUTNM = "soft_lutpair35" *) 
@@ -2312,9 +2451,9 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(32'h222022AA)) 
     \channel_id[1]_i_1 
        (.I0(channel_out[1]),
-        .I1(state[3]),
-        .I2(state[1]),
-        .I3(state[2]),
+        .I1(state_0[3]),
+        .I2(state_0[1]),
+        .I3(state_0[2]),
         .I4(\FSM_sequential_state_reg[0]_0 ),
         .O(channel_id[1]));
   (* SOFT_HLUTNM = "soft_lutpair36" *) 
@@ -2322,9 +2461,9 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(32'h222022AA)) 
     \channel_id[2]_i_1 
        (.I0(channel_out[2]),
-        .I1(state[3]),
-        .I2(state[1]),
-        .I3(state[2]),
+        .I1(state_0[3]),
+        .I2(state_0[1]),
+        .I3(state_0[2]),
         .I4(\FSM_sequential_state_reg[0]_0 ),
         .O(channel_id[2]));
   (* SOFT_HLUTNM = "soft_lutpair34" *) 
@@ -2332,9 +2471,9 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(32'h212021AA)) 
     \channel_id[3]_i_1 
        (.I0(channel_out[3]),
-        .I1(state[3]),
-        .I2(state[1]),
-        .I3(state[2]),
+        .I1(state_0[3]),
+        .I2(state_0[1]),
+        .I3(state_0[2]),
         .I4(\FSM_sequential_state_reg[0]_0 ),
         .O(channel_id[3]));
   LUT6 #(
@@ -2342,26 +2481,26 @@ module xadc_wiz_0_drp_to_axi4stream
     \channel_id[4]_i_1 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
         .I1(channel_out[4]),
-        .I2(state[1]),
-        .I3(state[2]),
-        .I4(state[3]),
+        .I2(state_0[1]),
+        .I3(state_0[2]),
+        .I4(state_0[3]),
         .I5(channel_out[3]),
         .O(channel_id[4]));
   LUT4 #(
     .INIT(16'h222E)) 
     \channel_id[6]_i_1 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(state[3]),
-        .I2(state[2]),
-        .I3(state[1]),
+        .I1(state_0[3]),
+        .I2(state_0[2]),
+        .I3(state_0[1]),
         .O(\channel_id[6]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair36" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \channel_id[6]_i_2 
-       (.I0(state[2]),
-        .I1(state[1]),
-        .I2(state[3]),
+       (.I0(state_0[2]),
+        .I1(state_0[1]),
+        .I2(state_0[3]),
         .O(channel_id[6]));
   FDCE \channel_id_reg[0] 
        (.C(m_axis_aclk),
@@ -2404,9 +2543,9 @@ module xadc_wiz_0_drp_to_axi4stream
     den_o_i_1
        (.I0(drp_rdwr_status0),
         .I1(\FSM_sequential_state_reg[0]_0 ),
-        .I2(state[3]),
-        .I3(state[1]),
-        .I4(state[2]),
+        .I2(state_0[3]),
+        .I3(state_0[1]),
+        .I4(state_0[2]),
         .I5(den_A),
         .O(den_o_i_1_n_0));
   (* SOFT_HLUTNM = "soft_lutpair38" *) 
@@ -2429,8 +2568,8 @@ module xadc_wiz_0_drp_to_axi4stream
        (.I0(den_A),
         .I1(den_in),
         .I2(bbusy_A),
-        .I3(state__0[1]),
-        .I4(state__0[0]),
+        .I3(state[1]),
+        .I4(state[0]),
         .O(den_reg));
   (* SOFT_HLUTNM = "soft_lutpair38" *) 
   LUT4 #(
@@ -2469,9 +2608,9 @@ module xadc_wiz_0_drp_to_axi4stream
     .INIT(32'hFFFD0001)) 
     mode_change_sig_reset_i_1
        (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(state[2]),
-        .I2(state[1]),
-        .I3(state[3]),
+        .I1(state_0[2]),
+        .I2(state_0[1]),
+        .I3(state_0[3]),
         .I4(mode_change_sig_reset),
         .O(mode_change_sig_reset_i_1_n_0));
   FDCE mode_change_sig_reset_reg
@@ -2486,17 +2625,17 @@ module xadc_wiz_0_drp_to_axi4stream
     overlap_A_i_2
        (.I0(bbusy_A),
         .I1(den_A),
-        .I2(state__0[1]),
-        .I3(state__0[0]),
+        .I2(state[1]),
+        .I3(state[0]),
         .O(overlap_A));
   LUT5 #(
     .INIT(32'h10000000)) 
     \temp_out[11]_i_1 
        (.I0(\FSM_sequential_state_reg[0]_0 ),
-        .I1(state[2]),
+        .I1(state_0[2]),
         .I2(drdy_i),
-        .I3(state[1]),
-        .I4(state[3]),
+        .I3(state_0[1]),
+        .I4(state_0[3]),
         .O(\temp_out[11]_i_1_n_0 ));
   FDCE \temp_out_reg[0] 
        (.C(m_axis_aclk),
@@ -2571,7 +2710,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .D(Q[13]),
         .Q(temp_out[9]));
   LUT5 #(
-    .INIT(32'hFFFFFFFE)) 
+    .INIT(32'hAAAAAAAB)) 
     \timer_cntr[0]_i_2 
        (.I0(timer_cntr_reg[3]),
         .I1(timer_cntr_reg[0]),
@@ -2651,39 +2790,40 @@ module xadc_wiz_0_drp_to_axi4stream
         .I4(timer_cntr_reg[0]),
         .I5(timer_cntr_reg[3]),
         .O(\timer_cntr[12]_i_5_n_0 ));
-  LUT5 #(
-    .INIT(32'hFFFFFFFE)) 
+  LUT6 #(
+    .INIT(64'hAAAAAAAAAAAAAAAB)) 
     \timer_cntr[4]_i_2 
-       (.I0(timer_cntr_reg[3]),
-        .I1(timer_cntr_reg[0]),
-        .I2(timer_cntr_reg[2]),
-        .I3(timer_cntr_reg[1]),
-        .I4(\FSM_sequential_state[3]_i_4_n_0 ),
+       (.I0(timer_cntr_reg[7]),
+        .I1(timer_cntr_reg[3]),
+        .I2(timer_cntr_reg[0]),
+        .I3(timer_cntr_reg[2]),
+        .I4(timer_cntr_reg[1]),
+        .I5(\FSM_sequential_state[3]_i_4_n_0 ),
         .O(\timer_cntr[4]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555557)) 
+    .INIT(64'hAAAAAAAAAAAAAAAB)) 
     \timer_cntr[4]_i_3 
-       (.I0(timer_cntr_reg[7]),
-        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
-        .I2(timer_cntr_reg[1]),
+       (.I0(timer_cntr_reg[6]),
+        .I1(timer_cntr_reg[3]),
+        .I2(timer_cntr_reg[0]),
         .I3(timer_cntr_reg[2]),
-        .I4(timer_cntr_reg[0]),
-        .I5(timer_cntr_reg[3]),
+        .I4(timer_cntr_reg[1]),
+        .I5(\FSM_sequential_state[3]_i_4_n_0 ),
         .O(\timer_cntr[4]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555557)) 
+    .INIT(64'hAAAAAAAAAAAAAAAB)) 
     \timer_cntr[4]_i_4 
-       (.I0(timer_cntr_reg[6]),
-        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
-        .I2(timer_cntr_reg[1]),
+       (.I0(timer_cntr_reg[5]),
+        .I1(timer_cntr_reg[3]),
+        .I2(timer_cntr_reg[0]),
         .I3(timer_cntr_reg[2]),
-        .I4(timer_cntr_reg[0]),
-        .I5(timer_cntr_reg[3]),
+        .I4(timer_cntr_reg[1]),
+        .I5(\FSM_sequential_state[3]_i_4_n_0 ),
         .O(\timer_cntr[4]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'h5555555555555557)) 
     \timer_cntr[4]_i_5 
-       (.I0(timer_cntr_reg[5]),
+       (.I0(timer_cntr_reg[7]),
         .I1(\FSM_sequential_state[3]_i_4_n_0 ),
         .I2(timer_cntr_reg[1]),
         .I3(timer_cntr_reg[2]),
@@ -2691,9 +2831,9 @@ module xadc_wiz_0_drp_to_axi4stream
         .I5(timer_cntr_reg[3]),
         .O(\timer_cntr[4]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555556)) 
+    .INIT(64'h5555555555555557)) 
     \timer_cntr[4]_i_6 
-       (.I0(timer_cntr_reg[4]),
+       (.I0(timer_cntr_reg[6]),
         .I1(\FSM_sequential_state[3]_i_4_n_0 ),
         .I2(timer_cntr_reg[1]),
         .I3(timer_cntr_reg[2]),
@@ -2701,29 +2841,49 @@ module xadc_wiz_0_drp_to_axi4stream
         .I5(timer_cntr_reg[3]),
         .O(\timer_cntr[4]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555556)) 
-    \timer_cntr[8]_i_2 
-       (.I0(timer_cntr_reg[11]),
+    .INIT(64'h5555555555555557)) 
+    \timer_cntr[4]_i_7 
+       (.I0(timer_cntr_reg[5]),
         .I1(\FSM_sequential_state[3]_i_4_n_0 ),
         .I2(timer_cntr_reg[1]),
         .I3(timer_cntr_reg[2]),
         .I4(timer_cntr_reg[0]),
         .I5(timer_cntr_reg[3]),
+        .O(\timer_cntr[4]_i_7_n_0 ));
+  LUT6 #(
+    .INIT(64'h5555555555555556)) 
+    \timer_cntr[4]_i_8 
+       (.I0(timer_cntr_reg[4]),
+        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
+        .I2(timer_cntr_reg[1]),
+        .I3(timer_cntr_reg[2]),
+        .I4(timer_cntr_reg[0]),
+        .I5(timer_cntr_reg[3]),
+        .O(\timer_cntr[4]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'hAAAAAAAAAAAAAAAB)) 
+    \timer_cntr[8]_i_2 
+       (.I0(timer_cntr_reg[9]),
+        .I1(timer_cntr_reg[3]),
+        .I2(timer_cntr_reg[0]),
+        .I3(timer_cntr_reg[2]),
+        .I4(timer_cntr_reg[1]),
+        .I5(\FSM_sequential_state[3]_i_4_n_0 ),
         .O(\timer_cntr[8]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555556)) 
+    .INIT(64'hAAAAAAAAAAAAAAAB)) 
     \timer_cntr[8]_i_3 
-       (.I0(timer_cntr_reg[10]),
-        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
-        .I2(timer_cntr_reg[1]),
+       (.I0(timer_cntr_reg[8]),
+        .I1(timer_cntr_reg[3]),
+        .I2(timer_cntr_reg[0]),
         .I3(timer_cntr_reg[2]),
-        .I4(timer_cntr_reg[0]),
-        .I5(timer_cntr_reg[3]),
+        .I4(timer_cntr_reg[1]),
+        .I5(\FSM_sequential_state[3]_i_4_n_0 ),
         .O(\timer_cntr[8]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555557)) 
+    .INIT(64'h5555555555555556)) 
     \timer_cntr[8]_i_4 
-       (.I0(timer_cntr_reg[9]),
+       (.I0(timer_cntr_reg[11]),
         .I1(\FSM_sequential_state[3]_i_4_n_0 ),
         .I2(timer_cntr_reg[1]),
         .I3(timer_cntr_reg[2]),
@@ -2731,22 +2891,42 @@ module xadc_wiz_0_drp_to_axi4stream
         .I5(timer_cntr_reg[3]),
         .O(\timer_cntr[8]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'h5555555555555557)) 
+    .INIT(64'h5555555555555556)) 
     \timer_cntr[8]_i_5 
-       (.I0(timer_cntr_reg[8]),
+       (.I0(timer_cntr_reg[10]),
         .I1(\FSM_sequential_state[3]_i_4_n_0 ),
         .I2(timer_cntr_reg[1]),
         .I3(timer_cntr_reg[2]),
         .I4(timer_cntr_reg[0]),
         .I5(timer_cntr_reg[3]),
         .O(\timer_cntr[8]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'h5555555555555557)) 
+    \timer_cntr[8]_i_6 
+       (.I0(timer_cntr_reg[9]),
+        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
+        .I2(timer_cntr_reg[1]),
+        .I3(timer_cntr_reg[2]),
+        .I4(timer_cntr_reg[0]),
+        .I5(timer_cntr_reg[3]),
+        .O(\timer_cntr[8]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'h5555555555555557)) 
+    \timer_cntr[8]_i_7 
+       (.I0(timer_cntr_reg[8]),
+        .I1(\FSM_sequential_state[3]_i_4_n_0 ),
+        .I2(timer_cntr_reg[1]),
+        .I3(timer_cntr_reg[2]),
+        .I4(timer_cntr_reg[0]),
+        .I5(timer_cntr_reg[3]),
+        .O(\timer_cntr[8]_i_7_n_0 ));
   FDCE \timer_cntr_reg[0] 
        (.C(m_axis_aclk),
         .CE(1'b1),
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[0]_i_1_n_7 ),
         .Q(timer_cntr_reg[0]));
-  (* ADDER_THRESHOLD = "11" *) 
+  (* ADDER_THRESHOLD = "35" *) 
   CARRY4 \timer_cntr_reg[0]_i_1 
        (.CI(1'b0),
         .CO({\timer_cntr_reg[0]_i_1_n_0 ,\timer_cntr_reg[0]_i_1_n_1 ,\timer_cntr_reg[0]_i_1_n_2 ,\timer_cntr_reg[0]_i_1_n_3 }),
@@ -2772,7 +2952,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[12]_i_1_n_7 ),
         .Q(timer_cntr_reg[12]));
-  (* ADDER_THRESHOLD = "11" *) 
+  (* ADDER_THRESHOLD = "35" *) 
   CARRY4 \timer_cntr_reg[12]_i_1 
        (.CI(\timer_cntr_reg[8]_i_1_n_0 ),
         .CO({\NLW_timer_cntr_reg[12]_i_1_CO_UNCONNECTED [3],\timer_cntr_reg[12]_i_1_n_1 ,\timer_cntr_reg[12]_i_1_n_2 ,\timer_cntr_reg[12]_i_1_n_3 }),
@@ -2822,14 +3002,14 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[4]_i_1_n_7 ),
         .Q(timer_cntr_reg[4]));
-  (* ADDER_THRESHOLD = "11" *) 
+  (* ADDER_THRESHOLD = "35" *) 
   CARRY4 \timer_cntr_reg[4]_i_1 
        (.CI(\timer_cntr_reg[0]_i_1_n_0 ),
         .CO({\timer_cntr_reg[4]_i_1_n_0 ,\timer_cntr_reg[4]_i_1_n_1 ,\timer_cntr_reg[4]_i_1_n_2 ,\timer_cntr_reg[4]_i_1_n_3 }),
         .CYINIT(1'b0),
-        .DI({\timer_cntr[4]_i_2_n_0 ,\timer_cntr[4]_i_2_n_0 ,\timer_cntr[4]_i_2_n_0 ,timer_cntr_reg[4]}),
+        .DI({\timer_cntr[4]_i_2_n_0 ,\timer_cntr[4]_i_3_n_0 ,\timer_cntr[4]_i_4_n_0 ,timer_cntr_reg[4]}),
         .O({\timer_cntr_reg[4]_i_1_n_4 ,\timer_cntr_reg[4]_i_1_n_5 ,\timer_cntr_reg[4]_i_1_n_6 ,\timer_cntr_reg[4]_i_1_n_7 }),
-        .S({\timer_cntr[4]_i_3_n_0 ,\timer_cntr[4]_i_4_n_0 ,\timer_cntr[4]_i_5_n_0 ,\timer_cntr[4]_i_6_n_0 }));
+        .S({\timer_cntr[4]_i_5_n_0 ,\timer_cntr[4]_i_6_n_0 ,\timer_cntr[4]_i_7_n_0 ,\timer_cntr[4]_i_8_n_0 }));
   FDCE \timer_cntr_reg[5] 
        (.C(m_axis_aclk),
         .CE(1'b1),
@@ -2854,14 +3034,14 @@ module xadc_wiz_0_drp_to_axi4stream
         .CLR(m_axis_reset),
         .D(\timer_cntr_reg[8]_i_1_n_7 ),
         .Q(timer_cntr_reg[8]));
-  (* ADDER_THRESHOLD = "11" *) 
+  (* ADDER_THRESHOLD = "35" *) 
   CARRY4 \timer_cntr_reg[8]_i_1 
        (.CI(\timer_cntr_reg[4]_i_1_n_0 ),
         .CO({\timer_cntr_reg[8]_i_1_n_0 ,\timer_cntr_reg[8]_i_1_n_1 ,\timer_cntr_reg[8]_i_1_n_2 ,\timer_cntr_reg[8]_i_1_n_3 }),
         .CYINIT(1'b0),
-        .DI({timer_cntr_reg[11:10],\timer_cntr[4]_i_2_n_0 ,\timer_cntr[4]_i_2_n_0 }),
+        .DI({timer_cntr_reg[11:10],\timer_cntr[8]_i_2_n_0 ,\timer_cntr[8]_i_3_n_0 }),
         .O({\timer_cntr_reg[8]_i_1_n_4 ,\timer_cntr_reg[8]_i_1_n_5 ,\timer_cntr_reg[8]_i_1_n_6 ,\timer_cntr_reg[8]_i_1_n_7 }),
-        .S({\timer_cntr[8]_i_2_n_0 ,\timer_cntr[8]_i_3_n_0 ,\timer_cntr[8]_i_4_n_0 ,\timer_cntr[8]_i_5_n_0 }));
+        .S({\timer_cntr[8]_i_4_n_0 ,\timer_cntr[8]_i_5_n_0 ,\timer_cntr[8]_i_6_n_0 ,\timer_cntr[8]_i_7_n_0 }));
   FDCE \timer_cntr_reg[9] 
        (.C(m_axis_aclk),
         .CE(1'b1),
@@ -2873,9 +3053,9 @@ module xadc_wiz_0_drp_to_axi4stream
     valid_data_wren_i_1
        (.I0(drdy_i),
         .I1(\FSM_sequential_state_reg[0]_0 ),
-        .I2(state[2]),
-        .I3(state[1]),
-        .I4(state[3]),
+        .I2(state_0[2]),
+        .I3(state_0[1]),
+        .I4(state_0[3]),
         .I5(valid_data_wren_reg_0),
         .O(valid_data_wren_i_1_n_0));
   FDCE #(
@@ -2888,131 +3068,7 @@ module xadc_wiz_0_drp_to_axi4stream
         .Q(valid_data_wren_reg_0));
 endmodule
 
-(* ORIG_REF_NAME = "xadc_wiz_0_axi_xadc" *) 
-module xadc_wiz_0_xadc_wiz_0_axi_xadc
-   (daddr_in,
-    den_in,
-    di_in,
-    dwe_in,
-    do_out,
-    drdy_out,
-    s_axis_aclk,
-    m_axis_aclk,
-    m_axis_resetn,
-    m_axis_tdata,
-    m_axis_tvalid,
-    m_axis_tid,
-    m_axis_tready,
-    vauxp0,
-    vauxn0,
-    vauxp1,
-    vauxn1,
-    vauxp8,
-    vauxn8,
-    busy_out,
-    channel_out,
-    eoc_out,
-    eos_out,
-    ot_out,
-    alarm_out,
-    temp_out,
-    vp_in,
-    vn_in);
-  input [6:0]daddr_in;
-  input den_in;
-  input [15:0]di_in;
-  input dwe_in;
-  output [15:0]do_out;
-  output drdy_out;
-  input s_axis_aclk;
-  input m_axis_aclk;
-  input m_axis_resetn;
-  output [15:0]m_axis_tdata;
-  output m_axis_tvalid;
-  output [4:0]m_axis_tid;
-  input m_axis_tready;
-  input vauxp0;
-  input vauxn0;
-  input vauxp1;
-  input vauxn1;
-  input vauxp8;
-  input vauxn8;
-  output busy_out;
-  output [4:0]channel_out;
-  output eoc_out;
-  output eos_out;
-  output ot_out;
-  output [7:0]alarm_out;
-  output [11:0]temp_out;
-  input vp_in;
-  input vn_in;
-
-  wire \<const0> ;
-  wire [7:0]\^alarm_out ;
-  wire busy_out;
-  wire [4:0]channel_out;
-  wire [6:0]daddr_in;
-  wire den_in;
-  wire [15:0]di_in;
-  wire [15:0]do_out;
-  wire drdy_out;
-  wire dwe_in;
-  wire eoc_out;
-  wire eos_out;
-  wire m_axis_aclk;
-  wire m_axis_resetn;
-  wire [15:0]m_axis_tdata;
-  wire [4:0]m_axis_tid;
-  wire m_axis_tready;
-  wire m_axis_tvalid;
-  wire ot_out;
-  wire s_axis_aclk;
-  wire [11:0]temp_out;
-  wire vauxn0;
-  wire vauxn1;
-  wire vauxn8;
-  wire vauxp0;
-  wire vauxp1;
-  wire vauxp8;
-  wire vn_in;
-  wire vp_in;
-
-  assign alarm_out[7] = \^alarm_out [7];
-  assign alarm_out[6] = \<const0> ;
-  assign alarm_out[5] = \<const0> ;
-  assign alarm_out[4] = \<const0> ;
-  assign alarm_out[3:0] = \^alarm_out [3:0];
-  xadc_wiz_0_xadc_wiz_0_xadc_core_drp AXI_XADC_CORE_I
-       (.VAUXN({vauxn8,vauxn1,vauxn0}),
-        .VAUXP({vauxp8,vauxp1,vauxp0}),
-        .alarm_out({\^alarm_out [7],\^alarm_out [3:0]}),
-        .busy_out(busy_out),
-        .channel_out(channel_out),
-        .daddr_in(daddr_in),
-        .den_in(den_in),
-        .di_in(di_in),
-        .do_out(do_out),
-        .drdy_out(drdy_out),
-        .dwe_in(dwe_in),
-        .eoc_out(eoc_out),
-        .eos_out(eos_out),
-        .m_axis_aclk(m_axis_aclk),
-        .m_axis_resetn(m_axis_resetn),
-        .m_axis_tdata(m_axis_tdata),
-        .m_axis_tid(m_axis_tid),
-        .m_axis_tready(m_axis_tready),
-        .m_axis_tvalid(m_axis_tvalid),
-        .ot_out(ot_out),
-        .s_axis_aclk(s_axis_aclk),
-        .temp_out(temp_out),
-        .vn_in(vn_in),
-        .vp_in(vp_in));
-  GND GND
-       (.G(\<const0> ));
-endmodule
-
-(* ORIG_REF_NAME = "xadc_wiz_0_xadc_core_drp" *) 
-module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
+module xadc_wiz_0_xadc_core_drp
    (m_axis_tdata,
     m_axis_tid,
     busy_out,
@@ -3112,8 +3168,8 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
   wire ot_out;
   wire overlap_A;
   wire s_axis_aclk;
-  wire [0:0]state;
-  wire [1:0]state__0;
+  wire [1:0]state;
+  wire [0:0]state_0;
   wire [11:0]temp_out;
   wire vn_in;
   wire vp_in;
@@ -3124,12 +3180,13 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
 
   xadc_wiz_0_drp_arbiter Inst_drp_arbiter
        (.DO(do_C),
-        .\FSM_sequential_state_reg[0]_0 (Inst_drp_arbiter_n_24),
-        .\FSM_sequential_state_reg[0]_1 (axi4_stream_inst_n_35),
+        .FIFO18E1_inst_data(axi4_stream_inst_n_29),
+        .\FSM_sequential_state_reg[0]_0 (axi4_stream_inst_n_35),
         .\FSM_sequential_state_reg[3] (axi4_stream_inst_n_31),
-        .\FSM_sequential_state_reg[3]_0 (state),
+        .\FSM_sequential_state_reg[3]_0 (state_0),
         .\FSM_sequential_state_reg[3]_1 (axi4_stream_inst_n_32),
         .Q(do_i),
+        .XADC_INST(Inst_drp_arbiter_n_24),
         .bbusy_A(bbusy_A),
         .channel_out(channel_out[4]),
         .\daddr_C_reg_reg[6]_0 (daddr_C),
@@ -3154,11 +3211,10 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
         .m_axis_aclk(m_axis_aclk),
         .m_axis_reset(m_axis_reset),
         .m_axis_resetn(m_axis_resetn),
-        .\m_axis_tdata[15] (axi4_stream_inst_n_29),
         .mode_change(mode_change),
         .overlap_A(overlap_A),
         .overlap_B_reg_0(Inst_drp_arbiter_n_3),
-        .state__0(state__0),
+        .state(state),
         .wren_fifo(wren_fifo));
   (* box_type = "PRIMITIVE" *) 
   XADC #(
@@ -3224,13 +3280,14 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
         .VN(vn_in),
         .VP(vp_in));
   xadc_wiz_0_drp_to_axi4stream axi4_stream_inst
-       (.\FSM_sequential_state_reg[0]_0 (state),
+       (.\FSM_sequential_state_reg[0]_0 (state_0),
         .\FSM_sequential_state_reg[0]_1 (Inst_drp_arbiter_n_3),
         .\FSM_sequential_state_reg[1]_0 (axi4_stream_inst_n_32),
         .\FSM_sequential_state_reg[1]_1 (Inst_drp_arbiter_n_25),
         .\FSM_sequential_state_reg[2]_0 (Inst_drp_arbiter_n_24),
         .\FSM_sequential_state_reg[3]_0 (Inst_drp_arbiter_n_7),
         .Q(do_i),
+        .XADC_INST(axi4_stream_inst_n_31),
         .bbusy_A(bbusy_A),
         .busy_o_reg_0(axi4_stream_inst_n_35),
         .\channel_id_reg[6]_0 ({daddr_A[6],daddr_A[4:0]}),
@@ -3243,7 +3300,6 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
         .drdy_i(drdy_i),
         .eoc_out(eoc_out),
         .m_axis_aclk(m_axis_aclk),
-        .m_axis_aclk_0(axi4_stream_inst_n_31),
         .m_axis_reset(m_axis_reset),
         .m_axis_tdata(m_axis_tdata),
         .m_axis_tid(m_axis_tid),
@@ -3253,7 +3309,7 @@ module xadc_wiz_0_xadc_wiz_0_xadc_core_drp
         .mode_change_reg(mode_change_i_2_n_0),
         .overlap_A(overlap_A),
         .s_axis_aclk(s_axis_aclk),
-        .state__0(state__0),
+        .state(state),
         .temp_out(temp_out),
         .valid_data_wren_reg_0(axi4_stream_inst_n_29),
         .wren_fifo(wren_fifo));

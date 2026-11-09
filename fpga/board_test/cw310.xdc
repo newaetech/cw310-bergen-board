@@ -46,6 +46,10 @@ set_property -dict { PACKAGE_PIN  W26  IOSTANDARD   LVCMOS33 } [get_ports { USB_
 set_property -dict { PACKAGE_PIN  W25  IOSTANDARD   LVCMOS33 } [get_ports { USB_D[6] }]; #IO_L5P_T0_12
 set_property -dict { PACKAGE_PIN  Y26  IOSTANDARD   LVCMOS33 } [get_ports { USB_D[7] }]; #IO_L10N_T1_12
 
+set_property -dict { PACKAGE_PIN AB22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD0 }]; #IO_L17P_T2_12 - This is an OUTPUT from the FPGA
+set_property -dict { PACKAGE_PIN AA24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD0 }]; #IO_L12N_T1_MRCC_12 - This is an INPUT to the FPGA
+set_property -dict { PACKAGE_PIN AA22  IOSTANDARD   LVCMOS33 } [get_ports { SAM_RXD1 }]; #IO_L13N_T2_MRCC_12 - This is an OUTPUT from FPGA
+set_property -dict { PACKAGE_PIN  W24  IOSTANDARD   LVCMOS33 } [get_ports { SAM_TXD1 }]; #IO_L8N_T1_12 - This is an INPUT to the FPGA
 
 set_property -dict { PACKAGE_PIN  M26  IOSTANDARD   LVCMOS33 } [get_ports { USRLED[0] }]; #IO_L5N_T0_13
 set_property -dict { PACKAGE_PIN  M25  IOSTANDARD   LVCMOS33 } [get_ports { USRLED[1] }]; #IO_L3P_T0_DQS_13
