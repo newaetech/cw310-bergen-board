@@ -11,6 +11,7 @@ SRC += tasks.c thermal_power.c timers.c
 
 SRC += naeusb/circbuffer.c naeusb/udc.c naeusb/naeusb.c naeusb/naeusb_default.c naeusb/naeusb_usart.c naeusb/naeusb_fpga_target.c
 SRC += naeusb/usb_xmem.c naeusb/fpga_program.c naeusb/fpgaspi_program.c naeusb/tps56520.c naeusb/cdce906.c naeusb/i2c_util.c
+SRC += naeusb/naeusb_usart_dma.c naeusb/naeusb_usart_impl.c naeusb/naeusb_usart_spi.c
 
 LINKERFILE = naeusb/flash_sam3x8.ld
 

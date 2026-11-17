@@ -37,6 +37,9 @@
 #include "naeusb/naeusb_mpsse.h"
 #include <string.h>
 
+#include "naeusb_usart_impl.h"
+#include "naeusb_usart_dma.h"
+
 
 //Serial Number - will be read by device ID
 char usb_serial_number[33] = "000000000000DEADBEEF";
@@ -327,6 +330,8 @@ int main(void)
 		// cdc_send_to_pc();
 		check_power_state(); //make sure power hasn't been killed		
 		MPSSE_main_sendrecv_byte();
+		handle_cdc_txrx();
+		handle_sw_flow_control();
 	}
 }
 

@@ -148,6 +148,8 @@ void kill_fpga_power(void);
 
 #define CW_USE_USART0 1
 #define CW_USE_USART1 1
+#define CDC_DEFAULT 1
+#define USART_SW_FLOW_CONTROL
 
 #define FPGA_USE_BITBANG 0
 #define FPGA_USE_USART 1
@@ -426,6 +428,8 @@ void kill_fpga_power(void);
 
 #define CW_USE_USART0 1
 #define CW_USE_USART1 1
+#define CDC_DEFAULT 1
+#define USART_SW_FLOW_CONTROL
 
 
 #define FPGA_PROG_USART			USART2
